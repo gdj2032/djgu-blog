@@ -1,0 +1,7 @@
+$comp-name: 't-form';
+
+.#{$comp-name} {
+  &-item-wrapper {
+    max-width: 480px;
+  }
+}

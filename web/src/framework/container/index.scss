@@ -1,0 +1,11 @@
+.g-container {
+  width: 100vw;
+  height: 100vh;
+  min-width: $page-min-width;
+
+  .layout-content {
+    padding: 10px;
+    background: #F0F2F5;
+    overflow: auto;
+  }
+}

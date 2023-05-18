@@ -1,0 +1,10 @@
+certs
+dist
+electron_env
+mock
+native
+node_modules
+vendor
+public
+appsrc
+appjs

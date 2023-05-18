@@ -1,0 +1,26 @@
+/**
+ *  备注：
+ *  该文件已全局注入所有的scss文件中，不需要手动import来引入该文件
+ **/
+
+// 颜色定义
+$theme-color: #4D8BED;
+$nav-color: #333748;
+$content-bg: #FFFFFF;
+$white: #FFFFFF;
+
+$primary-btn-color: $theme-color;
+
+$login-project-name: #373B40;
+$login-bg-color: #E7F1FF;
+$login-title-color: #333748;
+$login-label-color: #81868C;
+
+$nav-white: #FFFFFF;
+$menu-nor-color: #FFFFFF;
+$header-font-color: #FFFFFF;
+
+// 布局定义
+$header-height: 64px;
+$page-min-width: 1280px;
+$side-menu-width: 200px;

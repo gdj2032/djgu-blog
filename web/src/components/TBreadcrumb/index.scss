@@ -1,0 +1,50 @@
+$comp-name: 't-breadcrumb';
+
+@keyframes #{$comp-name}_show_ani {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 100;
+  }
+}
+
+.#{$comp-name} {
+  height: 64px;
+  width: 100%;
+  position: relative;
+
+  &-container {
+    width: 100%;
+    height: 64px;
+    padding: 0px 12px;
+    line-height: 64px;
+    background-color: $white;
+  }
+
+  .ant-affix {
+    z-index: 999; // 在antd message 及 modal下面
+  }
+
+  .ant-affix>&-container {
+    z-index: 100;
+    width: auto;
+    background-color: white;
+    padding: 0px 15px;
+    box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.1);
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+
+  &-inner-breadcrumb {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 64px;
+  }
+
+  &-custom-item-wrapper {
+    float: right;
+    height: 100%;
+  }
+}

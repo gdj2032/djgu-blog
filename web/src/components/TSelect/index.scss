@@ -1,0 +1,11 @@
+$comp-name: 't-select';
+
+.#{$comp-name} {
+  &-loadmore-wrapper {
+    text-align: center;
+  }
+
+  &-loadmore-title {
+    margin-left: 10px;
+  }
+}

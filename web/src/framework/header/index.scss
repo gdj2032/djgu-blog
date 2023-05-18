@@ -1,0 +1,52 @@
+.layout-header {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: $header-height;
+  padding: 0 20px;
+  color: $header-font-color !important;
+  user-select: none;
+  background: $nav-color;
+  line-height: 64px;
+
+  .u-left-menu {
+    flex: 1;
+    height: 100%;
+
+    .u-app-name {
+      font-size: 20px;
+    }
+  }
+
+  .u-right-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+
+    .u-item {
+      display: flex;
+      align-items: center;
+
+      .u-icon {
+        font-size: 16px;
+      }
+
+      .u-text {
+        margin-left: 4px;
+        font-size: 14px;
+      }
+    }
+
+    .u-logout {
+      cursor: pointer;
+    }
+
+    .u-item+.u-item {
+      margin-left: 24px;
+    }
+  }
+}

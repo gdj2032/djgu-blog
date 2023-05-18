@@ -1,0 +1,106 @@
+$menu-nor-color: #B5BBD1;
+
+.layout-aside {
+  z-index: 99;
+  left: 0;
+  bottom: 0;
+  width: $side-menu-width;
+  background: $nav-color !important;
+  transform: translateZ(0);
+  font-size: 18px;
+  color: #000;
+  box-sizing: border-box;
+  overflow: hidden;
+  height: 100%;
+  user-select: none;
+
+  &:hover {
+    overflow-y: auto;
+  }
+
+  :global {
+    .ant-menu {
+      border: none;
+      background: $nav-color;
+      color: $menu-nor-color;
+      font-size: 14px;
+
+      .ant-menu-submenu-arrow {
+
+        &::before,
+        &::after {
+          background: $menu-nor-color;
+          background-image: none;
+        }
+      }
+
+      .ant-menu-item,
+      .ant-menu-submenu .ant-menu-submenu-title {
+        height: 50px;
+        line-height: 50px;
+        margin-bottom: 0;
+        margin-top: 0;
+      }
+
+      .ant-menu-submenu {
+
+        .ant-menu-submenu-title {
+          padding-left: 15px !important;
+
+          &:focus {
+            outline: none;
+          }
+
+          &:active {
+            background: none;
+          }
+        }
+
+        .ant-menu-item {
+          padding-left: 40px !important;
+        }
+      }
+
+      .ant-menu-item {
+        padding-left: 15px !important;
+
+        &:focus {
+          outline: none;
+        }
+
+        &:active {
+          background: none;
+        }
+
+        &.ant-menu-item-selected {
+          background: none;
+
+          &::after {
+            display: none;
+          }
+        }
+      }
+
+      .ant-menu-submenu .ant-menu-item,
+      .ant-menu-item {
+
+        &.ant-menu-item-selected,
+        &:hover {
+          color: #fff;
+          background: #4D8BED;
+        }
+      }
+
+      .ant-menu-submenu-selected,
+      .ant-menu-submenu-selected .ant-menu-submenu-title:hover {
+        color: #fff;
+      }
+
+      .ant-menu-submenu-title {
+        &:hover {
+          color: $menu-nor-color;
+        }
+      }
+    }
+  }
+}

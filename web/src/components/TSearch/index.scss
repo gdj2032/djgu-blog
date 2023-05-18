@@ -1,0 +1,59 @@
+$comp-name: 't-search';
+
+.#{$comp-name} {
+  position: relative;
+  padding-top: 10px;
+  margin: 10px 0;
+  background: #fff;
+  border-radius: 6px;
+  margin-bottom: 10px;
+
+
+  &-form {
+    position: relative;
+    margin-right: 20px;
+  }
+
+  &-btn-wrapper {
+    display: inline-block;
+  }
+
+  &-collapsed {
+    padding-bottom: 10px;
+  }
+
+  &-collapsed &-btn-wrapper {
+    position: absolute;
+    right: 0px;
+    top: 0;
+    display: flex;
+    height: 100%;
+    align-items: center;
+  }
+
+  & .ant-form-item {
+    margin-bottom: 10px;
+  }
+
+  &-collapsed .ant-form-item {
+    margin-bottom: 0;
+  }
+
+  &-footer {
+    text-align: right;
+    padding: 10px 20px;
+  }
+
+  &-btn {
+    margin-left: 10px;
+  }
+
+  &-btn-collapse {
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  & .ant-calendar-picker {
+    width: auto !important;
+  }
+}

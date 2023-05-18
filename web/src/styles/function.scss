@@ -1,0 +1,83 @@
+
+.f-fr {
+  float: right;
+}
+
+.f-fl {
+  float: left;
+}
+
+.f-tac {
+  text-align: center;
+}
+
+.f-wsp {
+  white-space: pre-wrap;
+}
+
+.f-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.f-mb10{
+  margin-bottom: 10px;
+}
+
+.f-mb15 {
+  margin-bottom: 15px;
+}
+
+.f-mb20 {
+  margin-bottom: 20px;
+}
+
+.f-mr10{
+  margin-right: 10px;
+}
+
+.f-mr20{
+  margin-right: 20px;
+}
+
+.f-mt10{
+  margin-top: 10px;
+}
+
+.f-mt20{
+  margin-top: 20px;
+}
+
+.f-ml10{
+  margin-left: 10px;
+}
+
+.f-ml20{
+  margin-left: 20px;
+}
+
+.f-ml60{
+  margin-left: 60px;
+}
+
+.f-tip-text{
+  color: #a7a7a7;
+}
+
+.f-title{
+  font-size: 18px;
+}
+
+.f-cb {
+  zoom: 1;
+
+  &::after {
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+    content: ".";
+  }
+}
