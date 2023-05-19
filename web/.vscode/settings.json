@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    ".gitlab-ci.yml": "concourse-task-yaml"
+  },
+  "debug.javascript.usePreview": false
+}

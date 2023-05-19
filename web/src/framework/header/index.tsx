@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { Layout } from 'antd'
 import { PoweroffOutlined, UserOutlined } from '@ant-design/icons'
 import { APPNAME } from '@/constants'
@@ -20,24 +20,19 @@ const CustomHeader = () => {
         </span>
       </div>
       <div className="u-right-menu">
-        {
-          username &&
-          <Fragment>
-            <div className="u-item">
-              <UserOutlined className="u-icon" />
-              <span className="u-text">
-                欢迎您，
+        <div className="u-item">
+          <UserOutlined className="u-icon" />
+          <span className="u-text">
+            欢迎您，
             {username || 'admin'}
-              </span>
-            </div>
-            <div className="u-item u-logout" onClick={doLogout}>
-              <PoweroffOutlined className="u-icon" />
-              <span className="u-text">
-                退出
           </span>
-            </div>
-          </Fragment>
-        }
+        </div>
+        <div className="u-item u-logout" onClick={doLogout}>
+          <PoweroffOutlined className="u-icon" />
+          <span className="u-text">
+            退出
+          </span>
+        </div>
       </div>
     </Header>
   )

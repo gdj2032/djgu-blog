@@ -10,7 +10,6 @@ import { PersistGate } from 'redux-persist/integration/react'
 import start, { microAction } from '@/micro';
 
 import '@/styles/global.scss';
-import { initRequest } from './utils';
 import { APPNAME } from './constants';
 
 // svg配置
@@ -42,8 +41,6 @@ const Apps = () => {
     setTimeout(() => {
       microAction.setGlobalState({ info: '主应用发送到子应用的信息' });
     }, 5000);
-    // request全局配置
-    initRequest()
   }, [])
 
   return (

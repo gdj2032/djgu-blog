@@ -15,7 +15,7 @@ public
 pack
 pc_release
 appjs
-/release
+release
 native/.vs
 native/RunHelper/bin
 native/exec/.vs

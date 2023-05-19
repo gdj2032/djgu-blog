@@ -6,6 +6,7 @@ import { Layout } from 'antd';
 import Aside from '../aside';
 import React from 'react';
 import './index.scss';
+import PageFrame from '@/components/PageFrame';
 
 const { Content } = Layout
 
@@ -16,18 +17,20 @@ interface IContainerProps {
 function ContainerPage(props: IContainerProps) {
   const { routes = [] } = props;
   return (
-    <Layout className="g-container">
-      <Header />
-      <Layout>
-        <Aside />
-        <Content className="layout-content">
-          <div id="micro-app" />
-          <Routes>
-            {routeList(routes)}
-          </Routes>
-        </Content>
+    <PageFrame>
+      <Layout className="g-container">
+        <Header />
+        <Layout>
+          <Aside />
+          <Content className="layout-content">
+            <div id="micro-app" />
+            <Routes>
+              {routeList(routes)}
+            </Routes>
+          </Content>
+        </Layout>
       </Layout>
-    </Layout>
+    </PageFrame>
   );
 }
 

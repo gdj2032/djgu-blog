@@ -1,7 +1,7 @@
-import { request } from '@/utils';
+import { request } from '@/request';
 import { UserService } from '../typings/user';
 
-export function login(params: UserService.ILoginParams): T_RESPONSE_BASE {
+export function login(params: UserService.ILoginParams): T_RESPONSE_BASE<any> {
   return request.post({
     path: '/user/login/password',
     data: params

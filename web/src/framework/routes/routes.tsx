@@ -6,8 +6,10 @@ import { RouteObject } from 'react-router/dist/lib/context';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NotFound from '../404';
+import Index from '../index'
 
 export const PathConfig = {
+  index: '/',
   ...pageRoutes,
 };
 
@@ -32,8 +34,8 @@ export const loginRoute: RouteObject[] = [
 
 export const pageRoute = (): RouteObject[] => [
   {
-    path: '/',
-    element: <Home />,
+    path: PathConfig.index,
+    element: <Index />,
   },
   {
     path: PathConfig.home,

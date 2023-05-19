@@ -1,0 +1,38 @@
+{
+  "asar": false,
+  "productName": "gdj-project",
+  "copyright": "Copyright © 2022 gdj Inc. All Rights Reserved.",
+  "appId": "dongjie.gu",
+  "directories": {
+    "buildResources": "res",
+    "output": "pc_release/output/ia32"
+  },
+  "electronDist": ".\\publish\\electronDist\\ia32",
+  "win": {
+    "icon": "../favicon.ico",
+    "files": [
+      "res",
+      "package.json",
+      {
+        "from": "pc_release/release",
+        "to": "../app/release"
+      },
+      "!node_modules/**"
+    ],
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "ia32"
+        ]
+      }
+    ],
+    "legalTrademarks": "Gdj"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "perMachine": true,
+    "deleteAppDataOnUninstall": true
+  }
+}

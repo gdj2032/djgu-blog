@@ -63,7 +63,7 @@ type str_num = string | number;
 
 interface ICodeMsg {
   code: str_num;
-  msg: string;
+  message: string;
   warnings?: string[];
 }
 

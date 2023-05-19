@@ -8,6 +8,7 @@ $theme-color: #4D8BED;
 $nav-color: #333748;
 $content-bg: #FFFFFF;
 $white: #FFFFFF;
+$dark-background-topbar: #4c2c9c; //顶部条颜色
 
 $primary-btn-color: $theme-color;
 
@@ -24,3 +25,13 @@ $header-font-color: #FFFFFF;
 $header-height: 64px;
 $page-min-width: 1280px;
 $side-menu-width: 200px;
+
+//危险操作
+$dark-danger-clr: #F94319;
+$dark-danger-clr-hover: #F94319;
+$dark-danger-clr-active: #F9431980;
+
+//普通操作
+$dark-normal-clr: #B8C1E0;
+$dark-normal-clr-hover: #B8C1E0;
+$dark-normal-clr-active: #B8C1E080;

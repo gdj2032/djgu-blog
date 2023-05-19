@@ -19,9 +19,4 @@ export const menuConfig: INavFormat[] = [
     key: pageRoutes.user,
     icon: 'user',
   },
-  {
-    label: '子应用',
-    key: '/react-admin-template',
-    icon: 'home',
-  },
 ]

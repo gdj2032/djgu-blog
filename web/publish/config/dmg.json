@@ -1,0 +1,25 @@
+{
+  "asar": false,
+  "productName": "gdj-project",
+  "copyright": "Copyright © 2022 gdj Inc. All Rights Reserved.",
+  "appId": "dongjie.gu",
+  "directories": {
+    "output": "pc_release/output/dmg"
+  },
+  "mac": {
+    "icon": "../favicon.ico",
+    "files": [
+      "res",
+      "package.json",
+      {
+        "from": "dist",
+        "to": "../app/release/dist"
+      },
+      {
+        "from": "pc_release/release",
+        "to": "../app/release"
+      },
+      "!node_modules/**"
+    ]
+  }
+}

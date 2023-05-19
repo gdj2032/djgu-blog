@@ -1,0 +1,111 @@
+@import '../../styles/variable.scss';
+
+.page-frame {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .page-frame-header {
+    position: relative;
+    height: 36px;
+    display: flex;
+    background: $dark-background-topbar;
+    border: 1px solid rgba(64, 71, 86, 0.60);
+    -webkit-app-region: drag;
+
+    &.transparent {
+      background-color: transparent;
+    }
+
+    .page-frame-flex-area {
+      height: 100%;
+      flex: 1;
+    }
+
+    .page-frame-title-wrap {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      padding-left: 10px;
+      padding-right: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: left;
+      z-index: 0;
+
+
+
+      .page-frame-icon {
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        display: flex;
+        align-items: center;
+
+        .default-app-icon {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .page-frame-title {
+        text-align: left;
+        margin-left: 10px;
+        flex: 1;
+        color: $nav-white;
+
+        &.center-title {
+          text-align: center;
+          margin-left: 0px;
+
+        }
+      }
+    }
+
+    .page-frame-custom {
+      z-index: 1;
+      -webkit-app-region: no-drag;
+    }
+
+    .page-frame-title-btn {
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      width: 43px;
+      -webkit-app-region: no-drag;
+
+      &:hover {
+        background-color: $dark-normal-clr-hover;
+      }
+
+      &:active {
+        background-color: $dark-normal-clr-active;
+      }
+
+      &.close:hover {
+        background-color: $dark-danger-clr-hover;
+      }
+
+      &.close:active {
+        background-color: $dark-danger-clr-active;
+      }
+    }
+  }
+
+  .page-frame-content {
+    flex: 1;
+    overflow: hidden;
+    background: $white;
+  }
+}
+
+.electron {
+  .page-frame {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
