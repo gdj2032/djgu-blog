@@ -5,7 +5,7 @@ import UserService from "./service"
 @RequestMapping('/user')
 export default class User {
 
-  @Get('/')
+  @Get('/', true)
   users(...args) {
     return UserService.Users(...args)
   }
