@@ -1,6 +1,5 @@
-// import { sqlService } from '@/db';
-// import { userSql } from '@/sql';
-import moment from 'moment';
+import DataBase from '@/db';
+import { USER_SQL } from '@/sql';
 const sessionKey = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ12345678abcdefghijklmnopqrstuvwxyz'
 // 加密
 export const jCode = function (value) {
@@ -50,6 +49,6 @@ export const getUserIdNameBySession = (s = '') => {
 //keys可以任意，不小于34个字符。
 
 // 设置保存session
-export const setSession = async ({ id, session }) => {
-  // await sqlService(userSql.updateSession({ id, session, loginTime: moment().valueOf() }))
+export const setSession = async ({ id, session, loginTime }) => {
+  await DataBase.sql(USER_SQL.updateSession, [session, loginTime, id])
 }

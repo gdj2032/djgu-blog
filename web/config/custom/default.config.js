@@ -66,19 +66,6 @@ module.exports = {
     static: {
       directory: path.resolve(__dirname, "dist")
     },
-    proxy: {
-      '/mock/*': {
-        target: 'http://localhost:3721',
-        changeOrigin: true,
-      },
-      '/api/*': {
-        target: 'http://localhost:9000',
-        pathRewrite: {
-          '^/api': '/api'
-        },
-        changeOrigin: true
-      }
-    }
   },
 
   // 仅作用在build

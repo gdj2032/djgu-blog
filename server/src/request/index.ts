@@ -111,6 +111,32 @@ export const Delete = (path: string): MethodDecorator => {
   }
 }
 
+export const NotNull = (key: string, message: string): MethodDecorator => {
+  return (target, key, { value }) => {
+    // const mFun: any = value;
+    const mProto = target.constructor.prototype
+    const mTime = setInterval(() => {
+      console.info('--- RequestData --->', target, target.constructor, key, value);
+      // console.log("🚀 ~ file: index.ts:118 ~ return ~ mProto:", mProto)
+      if (mProto.url) {
+        //   const mUrl = mProto.url + path
+        //   mApp.post(mUrl, async (req, res) => {
+        //     const mData = await mFun(req, res)
+        //     res.write("RequestData")
+        //     res.end();
+        //   })
+        clearInterval(mTime)
+      }
+    }, 5)
+  }
+}
+
+export const RequestQuery = (key: string, message: string): MethodDecorator => {
+  return (target, key) => {
+    const mProto = target.constructor.prototype
+  }
+}
+
 export {
   RequestMapping,
 }

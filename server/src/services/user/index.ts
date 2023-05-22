@@ -6,19 +6,19 @@ import UserService from "./service"
 export default class User {
 
   @Get('/')
-  async get(...args) {
+  users(...args) {
     return UserService.Users(...args)
   }
-  @Post('/')
-  post() {
-    return 'post'
+  @Post('/login')
+  login(...args) {
+    return UserService.Login(...args)
   }
-  @Put('/')
-  put() {
-    return 'put'
-  }
-  @Delete('/')
-  delete() {
-    return 'delete'
-  }
+  // @Put('/')
+  // put() {
+  //   return 'put'
+  // }
+  // @Delete('/')
+  // delete() {
+  //   return 'delete'
+  // }
 }

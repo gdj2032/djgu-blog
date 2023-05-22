@@ -7,12 +7,14 @@ export interface IUserState {
   first?: boolean,
   username: string;
   role: number;
+  session: string;
 }
 
 const initialState: IUserState = {
   id: '',
   username: '',
   role: -1,
+  session: ''
 };
 
 const userSlice = createSlice({

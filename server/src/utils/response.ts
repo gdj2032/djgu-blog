@@ -53,8 +53,7 @@ export const RESPONSE_TYPE = {
     code?: number;
   }) => {
     res.writeHead(status);
-    res.write(JSON.stringify({ code, data }));
-    res.end();
+    return JSON.stringify({ code, data, status });
   },
   commonSuccess2List: ({
     res,

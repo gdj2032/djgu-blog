@@ -87,7 +87,7 @@ interface IBaseListRes2<T> extends ICodeMsg {
   data: IBaseListData2<T>;
 }
 
-type T_RESPONSE_BASE<T = null> = Promise<[Error, IBaseRes<T>]>
-type T_RESPONSE_DATA<T = null> = Promise<[Error, IBaseListData<T>]>
-type T_RESPONSE_LIST<T = null> = Promise<[Error, IBaseListRes<T>]>
-type T_RESPONSE_LIST2<T = null> = Promise<[Error, IBaseListRes2<T>]>
+type T_RESPONSE_BASE<T = null> = Promise<IBaseRes<T>>
+type T_RESPONSE_DATA<T = null> = Promise<IBaseListData<T>>
+type T_RESPONSE_LIST<T = null> = Promise<IBaseListRes<T>>
+type T_RESPONSE_LIST2<T = null> = Promise<IBaseListRes2<T>>

@@ -3,13 +3,13 @@ const user = require('./user');
 const proxy = {
   _proxy: {
     proxy: {
-      '/xhr/(.*)': 'http://127.0.0.1:3721/',
-      // '/api/(.*)': 'http://192.168.1.110:8080/',
+      // '/xhr/(.*)': 'http://127.0.0.1:3721/',
+      '/api/(.*)': 'http://127.0.0.1:9999/',
       // '/api/(.*)': 'http://192.168.1.212:28081/api/',
     },
     pathRewrite: {
-      '^/xhr/': '',
-      // '^/api/': '',
+      // '^/xhr': '',
+      '^/api': '',
     },
     changeHost: true,
     httpProxy: {

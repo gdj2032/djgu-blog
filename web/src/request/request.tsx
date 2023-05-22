@@ -1,8 +1,7 @@
 import { API_HOST, Credentials, isElectron } from '@/constants';
-import to from 'await-to-js';
 import { genQuery, abortablePromise } from './helper';
-// import { userAction } from '@/actions';
-// import { store } from '@/stores/store';
+import { message } from 'antd';
+import { store } from '@/stores';
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE'];
 
@@ -16,6 +15,7 @@ function checkStatus(response: any, error: (error: any) => void = () => { }) {
     default:
       return (response.json()).then((json: any) => {
         if (json.message) {
+          message.error(json.message)
           error(json.message);
         } else {
           error(json);
@@ -38,6 +38,7 @@ function fetchRequest(options: IRequestOptions) {
     headers: {
       ...options.headers,
       ele: isElectron,
+      SESSION: store.getState()?.user?.session,
     }
   };
 
@@ -69,58 +70,58 @@ function fetchRequest(options: IRequestOptions) {
 
 const request = {
   get: (opts: IRequestOptions) => {
-    return to(fetchRequest({
+    return fetchRequest({
       ...opts,
       method: 'GET',
       headers: { 'Accept': 'application/json' }
-    }));
+    });
   },
   post: (opts: IRequestOptions) => {
-    return to(fetchRequest({
+    return fetchRequest({
       ...opts,
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
-    }));
+    })
   },
   postForm: (opts: IRequestOptions) => {
-    return to(fetchRequest({
+    return fetchRequest({
       ...opts,
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded'
       }
-    }));
+    })
   },
   delete: (opts: IRequestOptions) => {
-    return to(fetchRequest({
+    return fetchRequest({
       ...opts,
       method: 'DELETE',
       headers: { 'Accept': 'application/json' }
-    }));
+    })
   },
   put: (opts: IRequestOptions) => {
-    return to(fetchRequest({
+    return fetchRequest({
       ...opts,
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
-    }));
+    })
   },
   upload: (opts: IRequestOptions) => {
-    return to(fetchRequest({
+    return fetchRequest({
       ...opts,
       method: 'POST',
       headers: {
         'Accept': 'application/json'
       },
       upload: true
-    }))
+    })
   }
 };
 

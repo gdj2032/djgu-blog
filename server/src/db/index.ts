@@ -7,7 +7,12 @@ export default class DataBase {
 
   static database = new DataBase()
 
-  static sql(sql: string, params: any = []): any {
+  // query('SELECT * FROM user LIMIT ?, ?', [_offset, _limit]);
+  // query('SELECT * FROM user WHERE id=?;', [id]);
+  // query('INSERT INTO user (id, username, password, role, session, createTime) VALUES(?,?,?,?,?,?);', [])
+  // query('UPDATE users SET ? WHERE UserID = ?', [{Name: name}, userId], );
+
+  static sql(sql: string, params?: any): any {
     return new Promise((res) => {
       this.database.pool.query(sql, params, (error, data, fields) => {
         console.info('--- DataBase.sql --->', error, data);

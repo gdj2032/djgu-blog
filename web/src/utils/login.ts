@@ -11,36 +11,30 @@ import Setting from './setting';
 let timer: any;
 
 export const doLogin = (params: any) => new Promise(async (resolve, reject) => {
-  Setting.username = params.username
-  Setting.password = params.remember ? params.password : ''
-  store.dispatch(setUserInfo({ ...params, isLogin: true }));
-  if (isElectron) {
-    window.app.createWindowByName({ name: 'home' });
-    timer = setTimeout(() => {
-      // window.location.hash = PathConfig.home;
-      window.app.closeWindow();
-      timer = null;
-      resolve(true)
-    }, 1);
+  const res = await userService.login({
+    username: params.username,
+    password: sha1(params.password)
+  });
+  if (res?.code === 200) {
+    const { data } = res
+    Setting.username = params.username
+    Setting.password = params.remember ? params.password : ''
+    Setting.session = res.data.session
+    store.dispatch(setUserInfo({ ...data, isLogin: true }));
+    if (isElectron) {
+      window.app.createWindowByName({ name: 'home' });
+      timer = setTimeout(() => {
+        window.location.hash = PathConfig.home;
+        window.app.closeWindow();
+        timer = null;
+        resolve(true)
+      }, 1);
+    } else {
+      window.location.hash = PathConfig.home;
+    }
   } else {
-    window.location.hash = PathConfig.home;
+    reject(res?.message || '服务器错误')
   }
-  // const [, res] = await userService.login({ username: params.username, password });
-  // if (res?.code === 200) {
-  //   const { data } = res
-  //   Setting.username = params.username
-  //   Setting.password = params.remember ? params.password : ''
-  //   store.dispatch(setUserInfo({ ...data, isLogin: true }));
-  //   window.app.createWindowByName({ name: 'home' });
-  //   timer = setTimeout(() => {
-  //     // window.location.hash = PathConfig.home;
-  //     window.app.closeWindow();
-  //     timer = null;
-  //     resolve(true)
-  //   }, 1);
-  // } else {
-  //   reject(res?.message || '服务器错误')
-  // }
 })
 
 export const doLogout = () => {

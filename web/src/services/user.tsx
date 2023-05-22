@@ -14,3 +14,11 @@ export function logout(): T_RESPONSE_BASE {
     path: '/user/logout',
   })
 }
+
+
+export function users(query: ILimitOffset): T_RESPONSE_LIST<any> {
+  return request.get({
+    path: '/user',
+    query,
+  })
+}
