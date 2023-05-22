@@ -1,6 +1,5 @@
 import mysql from 'mysql';
 import { DATABASE_INFO } from '@/constants';
-import { RESPONSE_CODE_MSG, RESPONSE_TYPE } from '@/utils';
 
 export default class DataBase {
   pool = mysql.createPool(DATABASE_INFO);

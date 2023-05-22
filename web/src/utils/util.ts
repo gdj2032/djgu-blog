@@ -28,4 +28,4 @@ export const getQueryOption = (url: string) => {
   return opt;
 }
 
-export const isAdmin = () => store.getState()?.user?.role === USER_ROLE.admin;
+export const isAdmin = () => store.getState()?.user?.role === USER_ROLE.superAdmin;

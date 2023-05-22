@@ -10,9 +10,10 @@ class UserService {
     const _limit = +limit;
     const _offset = +offset;
     const { data } = await DataBase.sql(USER_SQL.queryLimitOffset, [_offset, _limit])
+    const newData = data?.map((e) => ({ ...e, password: undefined, session: undefined }))
     const { data: allData } = await DataBase.sql(USER_SQL.queryAll)
     return RESPONSE_TYPE.commonSuccess2List({
-      res, data,
+      res, data: newData,
       limit: _limit,
       offset: _offset,
       total: allData.length,

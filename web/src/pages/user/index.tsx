@@ -1,12 +1,20 @@
 import React from 'react';
 import './index.scss';
+import { USER_TAB } from '@/constants';
+import UserList from './comps/UserList';
+import DocumentType from './comps/DocumentType';
+import { Tabs } from 'antd';
 
-interface IProps {
-}
+function User() {
 
-function User(props: IProps) {
+  const tabs = [
+    { key: USER_TAB.user, label: '用户列表', children: <UserList /> },
+    { key: USER_TAB.documentType, label: '文档类型', children: <DocumentType /> },
+  ]
   return (
-    <div className="User">User 1</div>
+    <div className="g-user">
+      <Tabs items={tabs}></Tabs>
+    </div>
   )
 }
 
