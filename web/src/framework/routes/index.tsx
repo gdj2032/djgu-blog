@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { HashRouter, Routes } from 'react-router-dom';
 import ContainerPage from '../container';
 import routeList from './routeList';
-import { loginRoute, pageRoute, PathConfig } from './routes';
+import { loginRoute, pageRoute } from './routes';
 import { isElectron } from '@/constants';
 
 const Roots = () => {
@@ -33,15 +33,8 @@ const Roots = () => {
         </Routes>
       )
     }
-    if (local === PathConfig.index || local === '') {
-      return (
-        <Routes>
-          {routeList(routes)}
-        </Routes>
-      )
-    }
     return <ContainerPage routes={routes} />
-  }, [local, routes, user?.id])
+  }, [routes, user?.id])
   return (
     <HashRouter>
       {getContainer}

@@ -14,13 +14,17 @@ export const doLogin = (params: any) => new Promise(async (resolve, reject) => {
   Setting.username = params.username
   Setting.password = params.remember ? params.password : ''
   store.dispatch(setUserInfo({ ...params, isLogin: true }));
-  window.app.createWindowByName({ name: 'home' });
-  timer = setTimeout(() => {
-    // window.location.hash = PathConfig.home;
-    window.app.closeWindow();
-    timer = null;
-    resolve(true)
-  }, 1);
+  if (isElectron) {
+    window.app.createWindowByName({ name: 'home' });
+    timer = setTimeout(() => {
+      // window.location.hash = PathConfig.home;
+      window.app.closeWindow();
+      timer = null;
+      resolve(true)
+    }, 1);
+  } else {
+    window.location.hash = PathConfig.home;
+  }
   // const [, res] = await userService.login({ username: params.username, password });
   // if (res?.code === 200) {
   //   const { data } = res

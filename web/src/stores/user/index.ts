@@ -6,11 +6,13 @@ export interface IUserState {
   isLogin?: boolean,
   first?: boolean,
   username: string;
+  role: number;
 }
 
 const initialState: IUserState = {
   id: '',
   username: '',
+  role: -1,
 };
 
 const userSlice = createSlice({

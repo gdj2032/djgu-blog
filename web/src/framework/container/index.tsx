@@ -7,7 +7,6 @@ import Aside from '../aside';
 import React from 'react';
 import './index.scss';
 import PageFrame from '@/components/PageFrame';
-import { PathConfig } from '../routes/routes';
 
 const { Content } = Layout
 
@@ -17,13 +16,6 @@ interface IContainerProps {
 
 function ContainerPage(props: IContainerProps) {
   const { routes = [] } = props;
-  if (window.location.hash.replace('#', '') === PathConfig.index || window.location.hash === '') {
-    return (
-      <Routes>
-        {routeList(routes)}
-      </Routes>
-    )
-  }
   return (
     <PageFrame>
       <Layout className="g-container">

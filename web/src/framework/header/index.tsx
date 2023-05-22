@@ -12,6 +12,10 @@ const { Header } = Layout
 const CustomHeader = () => {
   const { username } = useAppSelector(userInfo);
 
+  if (username?.role !== 1) {
+    return null
+  }
+
   return (
     <Header className="layout-header">
       <div className="u-left-menu">

@@ -6,17 +6,21 @@ export interface INavFormat {
   key: string;
   icon?: ReactNode;
   children?: INavFormat[];
+  admin?: boolean;
 }
 
 export const menuConfig: INavFormat[] = [
   {
-    label: '首页',
+    label: '最近更新',
     key: pageRoutes.home,
-    icon: 'home',
   },
   {
-    label: '用户',
+    label: '文档',
+    key: pageRoutes.document,
+  },
+  {
+    label: '管理员',
     key: pageRoutes.user,
-    icon: 'user',
+    admin: true,
   },
 ]

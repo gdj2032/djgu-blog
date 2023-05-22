@@ -1,9 +1,10 @@
 import { request } from '@/request';
 import { UserService } from '../typings/user';
+import { IUserState } from '@/stores/user';
 
-export function login(params: UserService.ILoginParams): T_RESPONSE_BASE<any> {
+export function login(params: UserService.ILoginParams): T_RESPONSE_BASE<IUserState> {
   return request.post({
-    path: '/user/login/password',
+    path: '/user/login',
     data: params
   })
 }

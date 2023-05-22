@@ -7,6 +7,8 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import './index.scss';
+import { PathConfig } from '../routes/routes';
+import { useAppSelector, userAction } from '@/stores';
 
 const { Sider } = Layout;
 
@@ -58,14 +60,18 @@ const findSelectedKey = (key: string, config: INavFormat[] = []) => {
 function Aside(props: IProps) {
   const history = useNavigate()
   const location = useLocation()
+  const { role } = useAppSelector(userAction.userInfo);
   const [selectedKey, changeSelectedKeys] = useState(location.pathname)
-  const [defaultOpenKeys] = useState(findSubMenuPath(location.pathname, menuConfig))
+
+  const menus = menuConfig.filter((e) => e.admin ? role === 1 && e.admin : true)
+
+  const [defaultOpenKeys] = useState(findSubMenuPath(location.pathname, menus))
 
 
   useEffect(() => {
-    const currentSelectedKey = findSelectedKey(location.pathname, menuConfig)
+    const currentSelectedKey = findSelectedKey(location.pathname, menus)
     changeSelectedKeys(currentSelectedKey)
-  }, [location.pathname])
+  }, [location.pathname, menus])
 
   const changeRouteHandle = ({ key }) => {
     history(key)
@@ -76,13 +82,18 @@ function Aside(props: IProps) {
       width={200}
       className="layout-aside"
     >
+      <div className='aside-logo' onClick={() => {
+        history(PathConfig.home)
+      }}>
+        GDJ
+      </div>
       <Menu
         theme="light"
         mode="inline"
         selectedKeys={[selectedKey]}
         defaultOpenKeys={defaultOpenKeys}
         onClick={(changeRouteHandle)}
-        items={menuConfig}
+        items={menus}
       />
     </Sider>
   )

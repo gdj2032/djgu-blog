@@ -1,12 +1,11 @@
 import pageRoutes from '@/pages/pageRoutes'
 import {
-  Home, Login, User
+  Home, Login, User, Document,
 } from '@/pages';
 import { RouteObject } from 'react-router/dist/lib/context';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NotFound from '../404';
-import Index from '../index'
 
 export const PathConfig = {
   index: '/',
@@ -35,7 +34,7 @@ export const loginRoute: RouteObject[] = [
 export const pageRoute = (): RouteObject[] => [
   {
     path: PathConfig.index,
-    element: <Index />,
+    element: <Home />,
   },
   {
     path: PathConfig.home,
@@ -48,6 +47,10 @@ export const pageRoute = (): RouteObject[] => [
   {
     path: PathConfig.user,
     element: <User />,
+  },
+  {
+    path: PathConfig.document,
+    element: <Document />,
   },
   {
     path: '*',
