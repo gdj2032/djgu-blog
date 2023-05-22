@@ -4,12 +4,14 @@
 import React from 'react';
 import './index.scss';
 
-interface IProps {
-}
-
-function Index(props: IProps) {
+function Index() {
   return (
-    <div className='index'>index</div>
+    <div className='g-index'>
+      <div className="m-container-bg">
+        <div>Test</div>
+        <a href="#/home">进入</a>
+      </div>
+    </div>
   )
 }
 

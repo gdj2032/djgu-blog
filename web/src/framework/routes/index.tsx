@@ -1,5 +1,5 @@
 import { useAppSelector, userAction } from '@/stores';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { HashRouter, Routes } from 'react-router-dom';
 import ContainerPage from '../container';
 import routeList from './routeList';
@@ -9,14 +9,20 @@ import { isElectron } from '@/constants';
 const Roots = () => {
   const user = useAppSelector(userAction.userInfo);
   const routes = pageRoute();
+  const [local, setLocal] = useState(window.location.hash.replace('#', ''))
+
+  console.info('--- local --->', local);
 
   useEffect(() => {
     const browserLanguage = (navigator.language || navigator.language).toLowerCase().split(/[-_]/)[0];
     console.info('🚀 ~ file: index.tsx ~ line 40 ~ useEffect ~ browserLanguage', browserLanguage)
+
+    window.onhashchange = () => {
+      setLocal(window.location.hash.replace('#', ''))
+    }
   }, [])
 
-  const getContainer = () => {
-    console.info('--- window.location.pathname --->', window.location);
+  const getContainer = useMemo(() => {
     if (isElectron) {
       if (user?.id) {
         return <ContainerPage routes={routes} />
@@ -27,7 +33,7 @@ const Roots = () => {
         </Routes>
       )
     }
-    if (window.location.hash.replace('#', '') === PathConfig.index) {
+    if (local === PathConfig.index || local === '') {
       return (
         <Routes>
           {routeList(routes)}
@@ -35,10 +41,10 @@ const Roots = () => {
       )
     }
     return <ContainerPage routes={routes} />
-  }
+  }, [local, routes, user?.id])
   return (
     <HashRouter>
-      {getContainer()}
+      {getContainer}
     </HashRouter>
   );
 }
