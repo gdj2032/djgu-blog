@@ -19,7 +19,7 @@ function Login() {
       <div className="layout-login">
         <div className="login-wrap">
           <div className="login-content">
-            <div className="project-name">DEMO</div>
+            {/* <div className="project-name">DEMO</div> */}
             <div className="login-form">
               <div className="login-title">登录</div>
               <Form

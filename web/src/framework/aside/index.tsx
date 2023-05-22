@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import './index.scss';
 import { PathConfig } from '../routes/routes';
-import { useAppSelector, userAction } from '@/stores';
+import { isAdmin } from '@/utils';
 
 const { Sider } = Layout;
 
@@ -60,10 +60,9 @@ const findSelectedKey = (key: string, config: INavFormat[] = []) => {
 function Aside(props: IProps) {
   const history = useNavigate()
   const location = useLocation()
-  const { role } = useAppSelector(userAction.userInfo);
   const [selectedKey, changeSelectedKeys] = useState(location.pathname)
 
-  const menus = menuConfig.filter((e) => e.admin ? role === 1 && e.admin : true)
+  const menus = menuConfig.filter((e) => e.admin ? isAdmin() && e.admin : true)
 
   const [defaultOpenKeys] = useState(findSubMenuPath(location.pathname, menus))
 

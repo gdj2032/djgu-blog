@@ -1,3 +1,7 @@
+import { useAppSelector } from './../stores/hooks';
+import { store, userAction } from "@/stores";
+import { USER_ROLE } from '@/constants';
+
 export const noop = () => { }
 
 export const nextTick = (func: (value: void) => void): Promise<void> => Promise.resolve().then(func);
@@ -23,3 +27,5 @@ export const getQueryOption = (url: string) => {
   // console.log('getQueryOption opt =', opt);
   return opt;
 }
+
+export const isAdmin = () => store.getState()?.user?.role === USER_ROLE.admin;
