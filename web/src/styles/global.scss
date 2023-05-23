@@ -1,3 +1,32 @@
 @import './reset.scss';
 @import './function.scss';
-@import './antd-reset.scss';
+
+
+.text-area-resize-none {
+  & textarea {
+    resize: none;
+  }
+}
+
+.global-black-symbol {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  text-align: center;
+  line-height: 16px;
+  border-radius: 50% 50%;
+  background-color: #000;
+  color: #fff;
+  font-size: 10px;
+  margin: 0 4px;
+}
+
+.global-red-point {
+  display: inline-block;
+  margin-right: 4px;
+  color: #ff4d4f;
+  font-size: 14px;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+  content: '*';
+}

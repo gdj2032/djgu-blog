@@ -9,14 +9,17 @@ export default class DocumentType {
   list(...args) {
     return documentTypeService.list(...args)
   }
+
   @Post('/create')
   create(...args) {
     return documentTypeService.create(...args)
   }
+
   @Put('/edit/:id')
-  create(...args) {
+  edit(...args) {
     return documentTypeService.edit(...args)
   }
+
   @Delete('/delete/:id')
   delete(...args) {
     return documentTypeService.delete(...args)

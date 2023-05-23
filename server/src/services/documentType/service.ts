@@ -23,6 +23,11 @@ class DocumentTypeService {
     })
   }
 
+  async allTypes() {
+    const { data } = await DataBase.sql(DOCUMENT_TYPE_SQL.queryAll)
+    return data
+  }
+
   async create(...args) {
     const [req, res] = args;
     const { name, description, imageUrl } = req.body as any;
@@ -32,6 +37,7 @@ class DocumentTypeService {
         { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
       ]
     })
+    console.info('--- errorAble --->', errorAble);
     if (errorAble) return errorAble;
     const reqSession = req.headers?.session as string;
     const userInfo = getUserIdNameBySession(reqSession)
@@ -61,6 +67,7 @@ class DocumentTypeService {
         { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
       ]
     })
+    console.info('--- edit type errorAble --->', errorAble);
     if (errorAble) return errorAble;
     const time = moment().valueOf();
     await DataBase.sql(DOCUMENT_TYPE_SQL.update, [{ name, description, imageUrl, updateTime: time }, id])

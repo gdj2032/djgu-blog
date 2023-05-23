@@ -86,6 +86,7 @@ const common = async ({ value, target, path, sessionAble, method, isUpload }: {
       const mUrl = mProto.url + (path === '/' ? '' : path)
       console.info('--- common url --->', mUrl);
       mApp[method](mUrl, async (req, res) => {
+        console.info('--- common url --->', mUrl);
         if (sessionAble) {
           const sessionRes = await check(req, res);
           if (sessionRes) {

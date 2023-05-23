@@ -24,25 +24,29 @@ function UpdateDocTypeModal(props: IProps) {
   const handleOk = async () => {
     const params = await formRef?.validateFields();
     setLoading(true)
-    if (data) {
-      const res = await documentTypeService.dtEdit(data.id, {
-        name: params.name,
-        description: params.description
-      });
-      if (res?.code === 200) {
-        message.success('编辑成功')
-        close?.(true)
+    try {
+      if (data) {
+        const res = await documentTypeService.dtEdit(data.id, {
+          name: params.name,
+          description: params.description
+        });
+        if (res?.code === 200) {
+          message.success('编辑成功')
+          close?.(true)
+        }
+      } else {
+        const res = await documentTypeService.dtCreate({
+          name: params.name,
+          description: params.description
+        });
+        console.log("🚀 ~ file: UpdateDocTypeModal.tsx:30 ~ handleOk ~ res", res)
+        if (res?.code === 200) {
+          message.success('新增成功')
+          close?.(true)
+        }
       }
-    } else {
-      const res = await documentTypeService.dtCreate({
-        name: params.name,
-        description: params.description
-      });
-      console.log("🚀 ~ file: UpdateDocTypeModal.tsx:30 ~ handleOk ~ res", res)
-      if (res?.code === 200) {
-        message.success('新增成功')
-        close?.(true)
-      }
+    } catch (error) {
+      console.log("🚀 ~ file: UpdateDocTypeModal.tsx:49 ~ handleOk ~ error:", error)
     }
     setLoading(false)
   }
@@ -84,11 +88,18 @@ function UpdateDocTypeModal(props: IProps) {
         initialValues={data}
       >
         <Form.Item
-          label="文档类型名称"
+          label="名称"
           name="name"
-          rules={[{ required: true, message: '请输入文档类型名称' }, { max: 20, message: '文档类型名称长度不能超过20字' }]}
+          rules={[{ required: true, message: '请输入名称' }, { max: 20, message: '名称长度不能超过20字' }]}
         >
-          <Input placeholder="请输入文档类型名称" />
+          <Input placeholder="请输入名称" />
+        </Form.Item>
+        <Form.Item
+          label="描述"
+          name="description"
+          className='text-area-resize-none'
+        >
+          <Input.TextArea placeholder="请输入描述" />
         </Form.Item>
         {/* <Form.Item
           label="图片"
