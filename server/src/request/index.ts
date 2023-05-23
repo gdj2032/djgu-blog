@@ -6,9 +6,14 @@ import { getUserIdNameBySession, RESPONSE_TYPE, RESPONSE_CODE_MSG } from "@/util
 import DataBase from "@/db";
 import { USER_SQL } from "@/sql";
 import moment from "moment";
+import multer from 'multer'
 import { SESSION_TIME } from "@/constants";
 
 const mApp = App.instance.app
+
+const upload = multer({
+  dest: './tmp/'
+});
 
 const allowSession = 'session可用'
 
@@ -52,12 +57,13 @@ const check = async (req: core.Request, res: core.Response) => {
   return allow
 }
 
-const common = async ({ value, target, path, sessionAble, method }: {
+const common = async ({ value, target, path, sessionAble, method, isUpload }: {
   value: any,
   target: any,
   path: string;
   sessionAble?: boolean;
-  method: 'get' | 'post' | 'delete' | 'put',
+  method: 'get' | 'post' | 'delete' | 'put' | 'patch',
+  isUpload?: boolean;
 }) => {
   /*
   **
@@ -79,8 +85,8 @@ const common = async ({ value, target, path, sessionAble, method }: {
     if (mProto.url) {
       // 拿到url，拼接上之后直接放到express之中即可
       const mUrl = mProto.url + (path === '/' ? '' : path)
+      console.info('--- common url --->', mUrl);
       mApp[method](mUrl, async (req, res) => {
-        console.info('--- common url --->', mUrl);
         if (sessionAble) {
           const sessionRes = await check(req, res);
           if (sessionRes) {
@@ -124,9 +130,47 @@ export const Put = (path: string, sessionAble?: boolean): MethodDecorator => {
     common({ target, value, path, sessionAble, method: 'put' })
   }
 }
+
 export const Delete = (path: string, sessionAble?: boolean): MethodDecorator => {
   return (target, key, { value }) => {
     common({ target, value, path, sessionAble, method: 'delete' })
+  }
+}
+
+export const Patch = (path: string, sessionAble?: boolean): MethodDecorator => {
+  return (target, key, { value }) => {
+    common({ target, value, path, sessionAble, method: 'patch' })
+  }
+}
+
+export const Upload = (path: string, sessionAble?: boolean): MethodDecorator => {
+  return (target, key, { value }) => {
+    const mFun = value as unknown as Methods.Get
+    const mProto = target.constructor.prototype
+    const mTime = setInterval(() => {
+      if (mProto.url) {
+        const mUrl = mProto.url + (path === '/' ? '' : path)
+        console.info('--- common url --->', mUrl);
+        mApp.post(mUrl, upload.single('file'), async (req, res) => {
+          if (sessionAble) {
+            const sessionRes = await check(req, res);
+            if (sessionRes) {
+              res.write(sessionRes)
+              res.end();
+              return;
+            }
+          }
+          const mData = await mFun(req, res)
+          if (typeof mData === 'string') {
+            res.write(mData)
+          } else {
+            res.write(JSON.stringify(mData))
+          }
+          res.end();
+        })
+        clearInterval(mTime)
+      }
+    }, 5)
   }
 }
 

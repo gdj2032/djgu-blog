@@ -61,10 +61,9 @@ function Aside(props: IProps) {
   const location = useLocation()
   const [selectedKey, changeSelectedKeys] = useState(location.pathname)
 
-  const menus = menuConfig.filter((e) => e.admin ? USER_ROLE.isAdminForSelf() && e.admin : true)
+  const menus = menuConfig.filter((e) => e.admin ? USER_ROLE.isAdminForSelf() && e.admin : true).map((e) => ({ ...e, admin: undefined }))
 
   const [defaultOpenKeys] = useState(findSubMenuPath(location.pathname, menus))
-
 
   useEffect(() => {
     const currentSelectedKey = findSelectedKey(location.pathname, menus)

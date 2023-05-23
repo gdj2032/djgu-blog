@@ -1,10 +1,13 @@
 /**
  * 新增编辑文档类型
  */
-import { Form, Input, message, Modal } from 'antd';
+import { Form, Input, message, Modal, Button } from 'antd';
 import React, { useState } from 'react';
 import { IModalProps } from '@djgu/react-comps/dist/utils/openModal'
 import { documentTypeService } from '@/services';
+import { CUpload } from '@/components';
+import { UploadOutlined } from '@ant-design/icons';
+import { API_HOST } from '@/constants';
 
 interface IProps extends IModalProps {
   data?: any;
@@ -13,6 +16,7 @@ interface IProps extends IModalProps {
 function UpdateDocTypeModal(props: IProps) {
   const { visible, close, data, ...arg } = props;
   const [loading, setLoading] = useState(false)
+  const [imageUrl, setImageUrl] = useState('')
 
   let formRef;
 
@@ -35,6 +39,26 @@ function UpdateDocTypeModal(props: IProps) {
     }
     setLoading(false)
   }
+
+  const uploadParams = {
+    action: `${API_HOST}/file/upload`,
+    onChange: (info) => {
+      if (info.file.status === 'uploading') {
+        setLoading(true);
+        return;
+      }
+      if (info.file.status === 'done') {
+        setLoading(false);
+        setImageUrl(info.file?.response?.data?.url);
+        return;
+      }
+      if (info.file.status === 'error') {
+        setLoading(false);
+        message.error('上传失败')
+      }
+    }
+  }
+
   return (
     <Modal
       visible={visible}
@@ -58,6 +82,15 @@ function UpdateDocTypeModal(props: IProps) {
           rules={[{ required: true, message: '请输入文档类型名称' }, { max: 20, message: '文档类型名称长度不能超过20字' }]}
         >
           <Input placeholder="请输入文档类型名称" />
+        </Form.Item>
+        <Form.Item
+          label="图片"
+          name="imageUrl"
+          rules={[{ required: true, message: '请选择图片' }]}
+        >
+          <CUpload {...uploadParams}>
+            <Button icon={<UploadOutlined />}>点击上传</Button>
+          </CUpload>
         </Form.Item>
       </Form>
     </Modal>

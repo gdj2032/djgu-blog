@@ -12,7 +12,7 @@ class App {
   static listen(port: number) {
     this.instance.app.use(fileUpload({
       useTempFiles: true,
-      tempFileDir: FILE_PATH
+      tempFileDir: FILE_PATH,
     }))
     this.instance.app.use(bodyParser.json());
     this.instance.app.use(bodyParser.urlencoded({ extended: false }));
