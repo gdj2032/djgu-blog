@@ -72,7 +72,7 @@ interface IBaseRes<T = null> extends ICodeMsg {
 }
 
 interface IBaseListData<T = null> extends IPageInfo {
-  data: T;
+  data: T[];
 }
 
 interface IBaseListRes<T> extends ICodeMsg {
@@ -91,3 +91,8 @@ type T_RESPONSE_BASE<T = null> = Promise<IBaseRes<T>>
 type T_RESPONSE_DATA<T = null> = Promise<IBaseListData<T>>
 type T_RESPONSE_LIST<T = null> = Promise<IBaseListRes<T>>
 type T_RESPONSE_LIST2<T = null> = Promise<IBaseListRes2<T>>
+
+interface IIdName<T = string> {
+  id: T;
+  name: string;
+}

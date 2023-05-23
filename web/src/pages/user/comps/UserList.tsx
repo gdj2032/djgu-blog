@@ -7,16 +7,17 @@ import { userService } from '@/services';
 import { Table } from 'antd';
 import { USER_ROLE, DATE_FORMAT } from '@/constants';
 import moment from 'moment'
+import { UserService } from '@/typings/user';
 
 interface IProps {
 }
 
 function UserList(props: IProps) {
-  const { tableProps, paginationProps } = usePagination(async ({ limit, offset }) => {
+  const { tableProps, paginationProps } = usePagination<UserService.IListData>(async ({ limit, offset }) => {
     const res = await userService.users({ limit, offset })
     return {
       dataSource: res.data.data,
-      total: res.data.data
+      total: res.data.total
     }
   })
 
@@ -33,6 +34,7 @@ function UserList(props: IProps) {
         {...tableProps}
         pagination={paginationProps}
         columns={columns}
+        rowKey={r => r.id}
       />
     </div>
   )

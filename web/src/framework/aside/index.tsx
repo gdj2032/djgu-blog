@@ -1,14 +1,13 @@
 /**
  * 左侧导航栏
  */
-import { INavFormat, menuConfig } from '@/constants';
+import { INavFormat, menuConfig, USER_ROLE } from '@/constants';
 import { Layout, Menu } from 'antd';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import './index.scss';
 import { PathConfig } from '../routes/routes';
-import { isAdmin } from '@/utils';
 
 const { Sider } = Layout;
 
@@ -62,7 +61,7 @@ function Aside(props: IProps) {
   const location = useLocation()
   const [selectedKey, changeSelectedKeys] = useState(location.pathname)
 
-  const menus = menuConfig.filter((e) => e.admin ? isAdmin() && e.admin : true)
+  const menus = menuConfig.filter((e) => e.admin ? USER_ROLE.isAdminForSelf() && e.admin : true)
 
   const [defaultOpenKeys] = useState(findSubMenuPath(location.pathname, menus))
 

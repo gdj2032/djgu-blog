@@ -14,4 +14,11 @@ export declare namespace UserService {
     password: string;
   }
 
+  interface IListData {
+    id: string;
+    username: string;
+    role: string;
+    createTime: string;
+    loginTime: string;
+  }
 }

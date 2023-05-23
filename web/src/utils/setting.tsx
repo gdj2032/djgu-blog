@@ -1,7 +1,7 @@
 import * as ls from 'local-storage';
 import { EventEmitter } from 'events';
 
-import randomString from 'random-string'; // 获取随机字符串
+// import randomString from 'random-string'; // 获取随机字符串
 import { isElectron } from '@/constants';
 
 export const ALL_FPS = [1, 3, 5, 10, 15, 20];

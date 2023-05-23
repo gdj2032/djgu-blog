@@ -1,17 +1,17 @@
 import DataBase from "@/db";
 import { USER_SQL } from "@/sql";
-import { RESPONSE_TYPE, RESPONSE_CODE_MSG, getSession, setSession } from "@/utils";
+import { RESPONSE_TYPE, RESPONSE_CODE_MSG, getSession, setSession, getUserIdNameBySession } from "@/utils";
 import moment from "moment";
 
 class UserService {
-  async Users(...args) {
+  async list(...args) {
     const [req, res] = args;
     const { limit = 10, offset = 0 } = req.query as any;
     const _limit = +limit;
     const _offset = +offset;
     const { data } = await DataBase.sql(USER_SQL.queryLimitOffset, [_offset, _limit])
     const newData = data?.map((e) => ({ ...e, password: undefined, session: undefined }))
-    const { data: allData } = await DataBase.sql(USER_SQL.queryAll)
+    const allData = await this.allUsers()
     return RESPONSE_TYPE.commonSuccess2List({
       res, data: newData,
       limit: _limit,
@@ -20,7 +20,12 @@ class UserService {
     })
   }
 
-  async Login(...args) {
+  async allUsers() {
+    const { data } = await DataBase.sql(USER_SQL.queryAll)
+    return data
+  }
+
+  async login(...args) {
     const [req, res] = args;
     const { username, password } = req.body || {}
     if (!username) {
@@ -45,6 +50,15 @@ class UserService {
     } else {
       return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.userNotExist })
     }
+  }
+
+  async logout(...args) {
+    const [req, res] = args;
+    const reqSession = req.headers?.session as string;
+    const userInfoStr = getUserIdNameBySession(reqSession);
+    const userInfo = JSON.parse(userInfoStr) || {}
+    await setSession({ id: userInfo.id, session: '', loginTime: '' })
+    return RESPONSE_TYPE.commonSuccess({ res, data: null })
   }
 }
 

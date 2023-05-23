@@ -16,7 +16,7 @@ export function logout(): T_RESPONSE_BASE {
 }
 
 
-export function users(query: ILimitOffset): T_RESPONSE_LIST<any> {
+export function users(query: ILimitOffset): T_RESPONSE_LIST<UserService.IListData> {
   return request.get({
     path: '/user',
     query,

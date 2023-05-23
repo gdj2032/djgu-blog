@@ -1,7 +1,4 @@
 // 用户
-import { userUuid } from '@/utils';
-import { UserSql } from "@/typings/user";
-
 export const USER_SQL = {
   queryAll: 'SELECT * FROM user',
   queryLimitOffset: 'SELECT * FROM user LIMIT ?, ?;',
