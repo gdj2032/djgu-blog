@@ -8,9 +8,10 @@ import { documentTypeService } from '@/services';
 import { CUpload } from '@/components';
 import { UploadOutlined } from '@ant-design/icons';
 import { API_HOST } from '@/constants';
+import { DocumentTypeService } from '@/typings/documentType';
 
 interface IProps extends IModalProps {
-  data?: any;
+  data?: DocumentTypeService.IListData;
 }
 
 function UpdateDocTypeModal(props: IProps) {
@@ -24,18 +25,24 @@ function UpdateDocTypeModal(props: IProps) {
     const params = await formRef?.validateFields();
     setLoading(true)
     if (data) {
-      // const res = await documentTypeService.editDocumentType(data.id, params.name);
-      // if (res?.code === 200) {
-      //   message.success('编辑文档类型成功')
-      //   close?.(true)
-      // }
+      const res = await documentTypeService.dtEdit(data.id, {
+        name: params.name,
+        description: params.description
+      });
+      if (res?.code === 200) {
+        message.success('编辑成功')
+        close?.(true)
+      }
     } else {
-      // const res = await documentTypeService.addDocumentType(params.name);
-      // console.log("🚀 ~ file: UpdateDocTypeModal.tsx:30 ~ handleOk ~ res", res)
-      // if (res?.code === 200) {
-      //   message.success('新增文档类型成功')
-      //   close?.(true)
-      // }
+      const res = await documentTypeService.dtCreate({
+        name: params.name,
+        description: params.description
+      });
+      console.log("🚀 ~ file: UpdateDocTypeModal.tsx:30 ~ handleOk ~ res", res)
+      if (res?.code === 200) {
+        message.success('新增成功')
+        close?.(true)
+      }
     }
     setLoading(false)
   }
@@ -83,7 +90,7 @@ function UpdateDocTypeModal(props: IProps) {
         >
           <Input placeholder="请输入文档类型名称" />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="图片"
           name="imageUrl"
           rules={[{ required: true, message: '请选择图片' }]}
@@ -91,7 +98,7 @@ function UpdateDocTypeModal(props: IProps) {
           <CUpload {...uploadParams}>
             <Button icon={<UploadOutlined />}>点击上传</Button>
           </CUpload>
-        </Form.Item>
+        </Form.Item> */}
       </Form>
     </Modal>
   )

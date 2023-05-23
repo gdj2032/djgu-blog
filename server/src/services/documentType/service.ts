@@ -1,8 +1,9 @@
 import { DOCUMENT_TYPE_SQL } from './../../sql/documentType';
 import DataBase from "@/db";
 import { USER_SQL } from "@/sql";
-import { RESPONSE_TYPE, documentTypeUuid } from "@/utils";
+import { RESPONSE_TYPE, documentTypeUuid, getUserIdNameBySession, RESPONSE_CODE_MSG } from "@/utils";
 import userService from '../user/service';
+import moment from 'moment';
 
 class DocumentTypeService {
   async list(...args) {
@@ -24,9 +25,55 @@ class DocumentTypeService {
 
   async create(...args) {
     const [req, res] = args;
-    const { } = req.body as any;
-    const id = documentTypeUuid()
-    return { success: 1 }
+    const { name, description, imageUrl } = req.body as any;
+    const errorAble = await RESPONSE_TYPE.commonErrors({
+      res,
+      errs: [
+        { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
+      ]
+    })
+    if (errorAble) return errorAble;
+    const reqSession = req.headers?.session as string;
+    const userInfo = getUserIdNameBySession(reqSession)
+    const tId = documentTypeUuid()
+    const time = moment().valueOf();
+    await DataBase.sql(DOCUMENT_TYPE_SQL.insert, [tId, name, description, time, time, userInfo.id, imageUrl])
+    const { data } = await DataBase.sql(DOCUMENT_TYPE_SQL.queryByName, [name]);
+    const allUsers = (await userService.allUsers()).map((e) => ({ id: e.id, name: e.username, role: e.role }))
+    const newData = {
+      ...data[0],
+      userId: undefined,
+      user: allUsers.find(v => v.id === data[0].userId)
+    }
+    return RESPONSE_TYPE.commonSuccess({
+      res, data: newData,
+    })
+  }
+
+  async edit(...args) {
+    const [req, res] = args;
+    const { id } = req.params;
+    const { name, description, imageUrl } = req.body as any;
+    const errorAble = await RESPONSE_TYPE.commonErrors({
+      res,
+      errs: [
+        { func: () => !id, ...RESPONSE_CODE_MSG.idNotEmpty },
+        { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
+      ]
+    })
+    if (errorAble) return errorAble;
+    const time = moment().valueOf();
+    await DataBase.sql(DOCUMENT_TYPE_SQL.update, [{ name, description, imageUrl, updateTime: time }, id])
+    const { data } = await DataBase.sql(DOCUMENT_TYPE_SQL.queryById, [id]);
+    const allUsers = (await userService.allUsers()).map((e) => ({ id: e.id, name: e.username, role: e.role }))
+    const newData = {
+      ...data[0],
+      userId: undefined,
+      user: allUsers.find(v => v.id === data[0].userId)
+    }
+    return RESPONSE_TYPE.commonSuccess({
+      res, data: newData,
+    })
   }
 }
 

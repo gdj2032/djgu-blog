@@ -110,16 +110,15 @@ export const RESPONSE_TYPE = {
     }[]
   }) => {
     const { res, errs } = info
-    let allow = true;
+    let errorAble;
     for (const err of errs) {
       const { func, ...arg } = err;
       const bool = await func?.()
       if (bool) {
-        allow = false
-        RESPONSE_TYPE.commonError({ res, ...arg })
+        errorAble = RESPONSE_TYPE.commonError({ res, ...arg })
         break;
       }
     }
-    return allow;
+    return errorAble;
   }
 }

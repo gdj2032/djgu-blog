@@ -13,6 +13,10 @@ export default class DocumentType {
   create(...args) {
     return documentTypeService.create(...args)
   }
+  @Put('/edit/:id')
+  create(...args) {
+    return documentTypeService.edit(...args)
+  }
   // @Put('/')
   // put() {
   //   return 'put'

@@ -43,7 +43,12 @@ export const getSession = ({ id, username, loginTime }) => {
 
 // 解析session
 export const getUserIdNameBySession = (s = '') => {
-  return zCode(s)
+  try {
+    return JSON.parse(zCode(s)) || {}
+  } catch (error) {
+    console.log("🚀 ~ getUserIdNameBySession ~ error:", error)
+  }
+  return {}
 }
 
 //keys可以任意，不小于34个字符。

@@ -21,8 +21,7 @@ export const CheckSession = async (req: core.Request, res: core.Response) => new
   const reqSession = req.headers?.session as string;
   if (reqSession) {
     // console.log("DBUtil ~ checkSession= ~ reqSession: ", reqSession)
-    const userInfoStr = getUserIdNameBySession(reqSession);
-    const userInfo = JSON.parse(userInfoStr) || {}
+    const userInfo = getUserIdNameBySession(reqSession);
     // console.log("🚀 ~ file: DBUtil.ts ~ line 30 ~ DBUtil ~ checkSession= ~ userInfo", userInfo)
     // console.log("🚀 ~ file: DBUtil.ts ~ line 18 ~ DBUtil ~ checkSession= ~ data", data)
     if (userInfo?.id) {

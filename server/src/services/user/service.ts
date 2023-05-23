@@ -28,11 +28,14 @@ class UserService {
   async login(...args) {
     const [req, res] = args;
     const { username, password } = req.body || {}
-    if (!username) {
-      return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.usernameNotEmpty })
-    } else if (!password) {
-      return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.passwordNotEmpty })
-    }
+    const errorAble = await RESPONSE_TYPE.commonErrors({
+      res,
+      errs: [
+        { func: () => !username, ...RESPONSE_CODE_MSG.usernameNotEmpty },
+        { func: () => !password, ...RESPONSE_CODE_MSG.passwordNotEmpty },
+      ]
+    })
+    if (errorAble) return errorAble;
     const { data } = await DataBase.sql(USER_SQL.queryByName, username);
     if (data?.length > 0) {
       if (password !== data[0].password) {

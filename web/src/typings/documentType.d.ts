@@ -12,7 +12,6 @@ export declare namespace DocumentTypeService {
   interface ICreateInfo {
     name: string;
     description?: string;
-    userId: string;
-    imageUrl: string;
+    imageUrl?: string;
   }
 }
