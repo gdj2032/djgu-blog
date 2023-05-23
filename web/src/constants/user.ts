@@ -15,4 +15,5 @@ export const USER_ROLE = {
 export const USER_TAB = {
   user: '1',
   documentType: '2',
+  document: '3',
 }

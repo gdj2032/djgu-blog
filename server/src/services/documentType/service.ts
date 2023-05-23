@@ -8,7 +8,7 @@ import moment from 'moment';
 class DocumentTypeService {
   async list(...args) {
     const [req, res] = args;
-    const { limit = 10, offset = 0 } = req.query as any;
+    const { limit = 10, offset = 0, name } = req.query as any;
     const _limit = +limit;
     const _offset = +offset;
     const { data } = await DataBase.sql(DOCUMENT_TYPE_SQL.queryLimitOffset, [_offset, _limit])
@@ -74,6 +74,24 @@ class DocumentTypeService {
     return RESPONSE_TYPE.commonSuccess({
       res, data: newData,
     })
+  }
+
+  async delete(...args) {
+    const [req, res] = args;
+    const { id } = req.params;
+    const errorAble = await RESPONSE_TYPE.commonErrors({
+      res,
+      errs: [
+        { func: () => !id, ...RESPONSE_CODE_MSG.idNotEmpty },
+      ]
+    })
+    if (errorAble) return errorAble;
+    const { error, data } = await DataBase.sql(DOCUMENT_TYPE_SQL.deleteById, [id])
+    console.log("🚀 ~ file: service.ts:90 ~ DocumentTypeService ~ delete ~ error, data:", error, data)
+    if (!error) {
+      return RESPONSE_TYPE.commonSuccess({ res })
+    }
+    return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
   }
 }
 

@@ -1,6 +1,6 @@
 import pageRoutes from '@/pages/pageRoutes'
 import {
-  Home, Login, User, Document,
+  Home, Login, User, Document, DocumentDetail, DocumentCreate,
 } from '@/pages';
 import { RouteObject } from 'react-router/dist/lib/context';
 import React, { useEffect } from 'react';
@@ -51,6 +51,14 @@ export const pageRoute = (): RouteObject[] => [
   {
     path: PathConfig.document,
     element: <Document />,
+  },
+  {
+    path: PathConfig.documentDetail,
+    element: <DocumentDetail />,
+  },
+  {
+    path: PathConfig.documentCreate,
+    element: <DocumentCreate />,
   },
   {
     path: '*',

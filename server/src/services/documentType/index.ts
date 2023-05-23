@@ -17,12 +17,8 @@ export default class DocumentType {
   create(...args) {
     return documentTypeService.edit(...args)
   }
-  // @Put('/')
-  // put() {
-  //   return 'put'
-  // }
-  // @Delete('/')
-  // delete() {
-  //   return 'delete'
-  // }
+  @Delete('/delete/:id')
+  delete(...args) {
+    return documentTypeService.delete(...args)
+  }
 }

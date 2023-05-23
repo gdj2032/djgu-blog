@@ -10,7 +10,7 @@ import { useAppSelector, userAction } from '@/stores';
 import { usePagination, openModal2 } from '@djgu/react-comps';
 import { DocumentTypeService } from '@/typings/documentType';
 
-function DocumentType() {
+function Document() {
   const user = useAppSelector(userAction.userInfo);
   const { tableProps, paginationProps, debounceRefresh } = usePagination<DocumentTypeService.IListData>(async ({ limit, offset }) => {
     const res = await documentTypeService.dtList({ limit, offset })
@@ -25,11 +25,11 @@ function DocumentType() {
       title: '是否删除文档类型?',
       icon: null,
       onOk: async () => {
-        const res = await documentTypeService.dtDelete(id);
-        if (res?.code === 200) {
-          message.success('删除成功')
-        }
-        debounceRefresh()
+        // const res = await documentTypeService.deleteDocumentType(id);
+        // if (res?.code === 200) {
+        //   message.success('删除文档类型成功')
+        // }
+        // debounceRefresh()
       }
     })
   }
@@ -73,6 +73,6 @@ function DocumentType() {
   )
 }
 
-DocumentType.displayName = 'DocumentType';
+Document.displayName = 'Document';
 
-export default DocumentType;
+export default Document;
