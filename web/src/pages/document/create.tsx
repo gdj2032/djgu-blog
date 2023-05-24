@@ -135,7 +135,7 @@ function Create() {
             label="描述"
             className='text-area-resize-none'
           >
-            <Input.TextArea placeholder="请输入描述" lineNumber={5} />
+            <Input.TextArea placeholder="请输入描述" rows={5} maxLength={200} showCount />
           </Form.Item>
           <Form.Item
             label="文档类型"
