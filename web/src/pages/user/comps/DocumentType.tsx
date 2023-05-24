@@ -6,12 +6,10 @@ import { documentTypeService } from '@/services';
 import { Button, message, Modal, Table } from 'antd';
 import React from 'react';
 import UpdateDocTypeModal from './UpdateDocTypeModal';
-import { useAppSelector, userAction } from '@/stores';
 import { usePagination, openModal2 } from '@djgu/react-comps';
 import { DocumentTypeService } from '@/typings/documentType';
 
 function DocumentType() {
-  const user = useAppSelector(userAction.userInfo);
   const { tableProps, paginationProps, debounceRefresh } = usePagination<DocumentTypeService.IListData>(async ({ limit, offset }) => {
     const res = await documentTypeService.dtList({ limit, offset })
     if (res?.code === 200) {
@@ -51,7 +49,7 @@ function DocumentType() {
     { title: '描述', dataIndex: 'description', key: 'description' },
     { title: '创建人', dataIndex: 'user', key: 'user', render: t => t?.name },
     {
-      title: '操作', dataIndex: 'operation', key: 'operation', render: (_, record) => USER_ROLE.isAdmin(user.role) && (
+      title: '操作', dataIndex: 'operation', key: 'operation', render: (_, record) => USER_ROLE.isAdminForSelf() && (
         <>
           <Button type="link" onClick={() => handleUpdate(record)}>编辑</Button>
           <Button type="link" danger onClick={() => handleDelete(record.id)}>删除</Button>

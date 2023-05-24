@@ -1,6 +1,32 @@
 @import './reset.scss';
 @import './function.scss';
 
+.global-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.global-ellipsis-line-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.global-mgr-20 {
+  margin-right: 20px;
+}
+
+.global-mgt-20 {
+  margin-top: 20px;
+}
+
+.global-mgt-12 {
+  margin-top: 12px;
+}
 
 .text-area-resize-none {
   & textarea {

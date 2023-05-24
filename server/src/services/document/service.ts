@@ -11,7 +11,8 @@ class DocumentService {
     const { limit = 10, offset = 0, name, types } = req.query as any;
     const _limit = +limit;
     const _offset = +offset;
-    const { data } = await DataBase.sql(DOCUMENT_SQL.queryLimitOffset, [_offset, _limit])
+    const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryLimitOffset, [_offset, _limit, name])
+    console.log("🚀 ~ file: service.ts:15 ~ DocumentService ~ list ~ error, data:", error, data)
     const allUsers = (await userService.allUsers()).map((e) => ({ id: e.id, name: e.username, role: e.role }))
     const newData = data?.map((e) => ({ ...e, user: allUsers.find(v => v.id === e.userId), userId: undefined }))
     const { data: allData } = await DataBase.sql(USER_SQL.queryAll)

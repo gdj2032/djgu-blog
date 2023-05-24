@@ -1,13 +1,10 @@
 /**
  * 新增编辑文档类型
  */
-import { Form, Input, message, Modal, Button } from 'antd';
+import { Form, Input, message, Modal } from 'antd';
 import React, { useState } from 'react';
 import { IModalProps } from '@djgu/react-comps/dist/utils/openModal'
 import { documentTypeService } from '@/services';
-import { CUpload } from '@/components';
-import { UploadOutlined } from '@ant-design/icons';
-import { API_HOST } from '@/constants';
 import { DocumentTypeService } from '@/typings/documentType';
 
 interface IProps extends IModalProps {
@@ -17,7 +14,7 @@ interface IProps extends IModalProps {
 function UpdateDocTypeModal(props: IProps) {
   const { visible, close, data, ...arg } = props;
   const [loading, setLoading] = useState(false)
-  const [imageUrl, setImageUrl] = useState('')
+  // const [imageUrl, setImageUrl] = useState('')
 
   let formRef;
 
@@ -51,24 +48,24 @@ function UpdateDocTypeModal(props: IProps) {
     setLoading(false)
   }
 
-  const uploadParams = {
-    action: `${API_HOST}/file/upload`,
-    onChange: (info) => {
-      if (info.file.status === 'uploading') {
-        setLoading(true);
-        return;
-      }
-      if (info.file.status === 'done') {
-        setLoading(false);
-        setImageUrl(info.file?.response?.data?.url);
-        return;
-      }
-      if (info.file.status === 'error') {
-        setLoading(false);
-        message.error('上传失败')
-      }
-    }
-  }
+  // const uploadParams = {
+  //   action: `${API_HOST}/file/upload`,
+  //   onChange: (info) => {
+  //     if (info.file.status === 'uploading') {
+  //       setLoading(true);
+  //       return;
+  //     }
+  //     if (info.file.status === 'done') {
+  //       setLoading(false);
+  //       setImageUrl(info.file?.response?.data?.url);
+  //       return;
+  //     }
+  //     if (info.file.status === 'error') {
+  //       setLoading(false);
+  //       message.error('上传失败')
+  //     }
+  //   }
+  // }
 
   return (
     <Modal
