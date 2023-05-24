@@ -3,13 +3,14 @@ import { TBreadcrumb } from '@/components';
 import './index.scss';
 import { PathConfig } from '@/framework/routes/routes';
 import { USER_ROLE, USER_TAB } from '@/constants';
-import { Card, Form, Input, Select, message } from 'antd';
+import { Card, Form, Input, Select, message, Space, Button } from 'antd';
 import { documentTypeService, documentService } from '@/services';
 import Editor from 'for-editor'
 import { IRowItem } from '@/components/ItemsRow';
 import { useNavigate } from 'react-router';
-import { useQuery } from '@djgu/react-comps';
+import { useQuery, openModal2 } from '@djgu/react-comps';
 import { DocumentService } from '@/typings/document';
+import UpdateDocTypeModal from '../user/comps/UpdateDocTypeModal';
 
 function Create() {
   const { id } = useQuery()
@@ -69,12 +70,12 @@ function Create() {
     }
   ]
 
-  const initTypes = useMemo(async () => {
+  const initTypes = async () => {
     const res = await documentTypeService.dtList({ limit: 10000, offset: 0 });
     setTypes(res.data.data)
-  }, [])
+  }
 
-  const initDoc = useMemo(async () => {
+  const initDoc = async () => {
     if (id) {
       const res = await documentService.dDetail(id);
       setData(res.data)
@@ -86,12 +87,12 @@ function Create() {
         content: res.data.content,
       })
     }
-  }, [id])
+  }
 
   useEffect(() => {
-    initDoc
-    initTypes
-  }, [initDoc, initTypes])
+    initDoc()
+    initTypes()
+  }, [])
 
   if (!USER_ROLE.isAdminForSelf()) {
     return <div>暂无权限</div>
@@ -100,6 +101,16 @@ function Create() {
   const addImg = (file) => {
     editorRef.current.$img2Url('111', 'file_url')
   }
+
+  const handleAddType = () => {
+    const { destroy } = openModal2(UpdateDocTypeModal, {
+      afterClose: () => {
+        initTypes()
+        destroy()
+      }
+    })
+  }
+
   return (
     <div className="g-document-create">
       <TBreadcrumb route={routes} customItems={customItems} />
@@ -127,21 +138,30 @@ function Create() {
             <Input.TextArea placeholder="请输入描述" lineNumber={5} />
           </Form.Item>
           <Form.Item
-            name="types"
             label="文档类型"
-            rules={[
-              { required: true, message: '请选择文档类型' }
-            ]}
+            className="ant-form-label-point-show"
           >
-            <Select
-              options={types}
-              mode="multiple"
-              fieldNames={{ label: 'name', value: 'id' }}
-              optionFilterProp="name"
-              allowClear
-              showSearch
-              placeholder="请选择文档类型"
-            />
+            <Space>
+              <Form.Item
+                name="types"
+                noStyle
+                rules={[
+                  { required: true, message: '请选择文档类型' }
+                ]}
+              >
+                <Select
+                  style={{ width: 240 }}
+                  options={types}
+                  mode="multiple"
+                  fieldNames={{ label: 'name', value: 'id' }}
+                  optionFilterProp="name"
+                  allowClear
+                  showSearch
+                  placeholder="请选择文档类型"
+                />
+                <Button type="link" onClick={handleAddType}>新增类型</Button>
+              </Form.Item>
+            </Space>
           </Form.Item>
           <Form.Item
             name="content"
