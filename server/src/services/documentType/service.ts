@@ -37,7 +37,6 @@ class DocumentTypeService {
         { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
       ]
     })
-    console.info('--- errorAble --->', errorAble);
     if (errorAble) return errorAble;
     const reqSession = req.headers?.session as string;
     const userInfo = getUserIdNameBySession(reqSession)
@@ -67,7 +66,6 @@ class DocumentTypeService {
         { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
       ]
     })
-    console.info('--- edit type errorAble --->', errorAble);
     if (errorAble) return errorAble;
     const time = moment().valueOf();
     await DataBase.sql(DOCUMENT_TYPE_SQL.update, [{ name, description, imageUrl, updateTime: time }, id])

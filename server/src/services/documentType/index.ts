@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { RequestMapping, Get, Post, Put, Delete } from "@/request"
 import documentTypeService from "./service"
 

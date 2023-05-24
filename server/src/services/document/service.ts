@@ -8,7 +8,7 @@ import moment from 'moment';
 class DocumentService {
   async list(...args) {
     const [req, res] = args;
-    const { limit = 10, offset = 0, name } = req.query as any;
+    const { limit = 10, offset = 0, name, types } = req.query as any;
     const _limit = +limit;
     const _offset = +offset;
     const { data } = await DataBase.sql(DOCUMENT_TYPE_SQL.queryLimitOffset, [_offset, _limit])
