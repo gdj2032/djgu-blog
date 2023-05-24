@@ -35,6 +35,16 @@ class DocumentTypeService {
       res,
       errs: [
         { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
+        {
+          func: async () => {
+            const { data: d1 } = await DataBase.sql(DOCUMENT_TYPE_SQL.queryByName, [name])
+            if (d1?.length) {
+              return true;
+            }
+            return false;
+          },
+          ...RESPONSE_CODE_MSG.nameExist,
+        },
       ]
     })
     if (errorAble) return errorAble;
@@ -64,6 +74,19 @@ class DocumentTypeService {
       errs: [
         { func: () => !id, ...RESPONSE_CODE_MSG.idNotEmpty },
         { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
+        {
+          func: async () => {
+            const { data: d1 } = await DataBase.sql(DOCUMENT_TYPE_SQL.queryByName, [name])
+            if (d1?.length) {
+              const d2 = d1.filter(e => e.id !== id);
+              if (d2?.length) {
+                return true;
+              }
+            }
+            return false;
+          },
+          ...RESPONSE_CODE_MSG.nameExist,
+        },
       ]
     })
     if (errorAble) return errorAble;

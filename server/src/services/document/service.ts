@@ -1,7 +1,7 @@
-import { DOCUMENT_TYPE_SQL } from '../../sql/documentType';
+import { documentUuid } from './../../utils/util';
 import DataBase from "@/db";
-import { USER_SQL } from "@/sql";
-import { RESPONSE_TYPE, documentTypeUuid, getUserIdNameBySession, RESPONSE_CODE_MSG } from "@/utils";
+import { DOCUMENT_SQL, USER_SQL } from "@/sql";
+import { RESPONSE_TYPE, getUserIdNameBySession, RESPONSE_CODE_MSG } from "@/utils";
 import userService from '../user/service';
 import moment from 'moment';
 
@@ -11,7 +11,7 @@ class DocumentService {
     const { limit = 10, offset = 0, name, types } = req.query as any;
     const _limit = +limit;
     const _offset = +offset;
-    const { data } = await DataBase.sql(DOCUMENT_TYPE_SQL.queryLimitOffset, [_offset, _limit])
+    const { data } = await DataBase.sql(DOCUMENT_SQL.queryLimitOffset, [_offset, _limit])
     const allUsers = (await userService.allUsers()).map((e) => ({ id: e.id, name: e.username, role: e.role }))
     const newData = data?.map((e) => ({ ...e, user: allUsers.find(v => v.id === e.userId), userId: undefined }))
     const { data: allData } = await DataBase.sql(USER_SQL.queryAll)
@@ -23,32 +23,36 @@ class DocumentService {
     })
   }
 
-  // async create(...args) {
-  //   const [req, res] = args;
-  //   const { name, description, imageUrl } = req.body as any;
-  //   const errorAble = await RESPONSE_TYPE.commonErrors({
-  //     res,
-  //     errs: [
-  //       { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
-  //     ]
-  //   })
-  //   if (errorAble) return errorAble;
-  //   const reqSession = req.headers?.session as string;
-  //   const userInfo = getUserIdNameBySession(reqSession)
-  //   const tId = documentTypeUuid()
-  //   const time = moment().valueOf();
-  //   await DataBase.sql(DOCUMENT_TYPE_SQL.insert, [tId, name, description, time, time, userInfo.id, imageUrl])
-  //   const { data } = await DataBase.sql(DOCUMENT_TYPE_SQL.queryByName, [name]);
-  //   const allUsers = (await userService.allUsers()).map((e) => ({ id: e.id, name: e.username, role: e.role }))
-  //   const newData = {
-  //     ...data[0],
-  //     userId: undefined,
-  //     user: allUsers.find(v => v.id === data[0].userId)
-  //   }
-  //   return RESPONSE_TYPE.commonSuccess({
-  //     res, data: newData,
-  //   })
-  // }
+  async create(...args) {
+    const [req, res] = args;
+    const { name, description, content, types } = req.body as any;
+    const errorAble = await RESPONSE_TYPE.commonErrors({
+      res,
+      errs: [
+        { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
+        { func: () => !content, ...RESPONSE_CODE_MSG.contentNotEmpty },
+        { func: () => !types?.length, ...RESPONSE_CODE_MSG.typeNotEmpty },
+        {
+          func: async () => {
+            const { data: d1 } = await DataBase.sql(DOCUMENT_SQL.queryByName, [name])
+            if (d1?.length) {
+              return true;
+            }
+            return false;
+          },
+          ...RESPONSE_CODE_MSG.nameExist,
+        },
+      ]
+    })
+    if (errorAble) return errorAble;
+    const dId = documentUuid()
+    const time = moment().valueOf();
+    await DataBase.sql(DOCUMENT_SQL.insert, [dId, name, description, content, JSON.stringify(types), time, time])
+    const { data } = await DataBase.sql(DOCUMENT_SQL.queryById, [dId]);
+    return RESPONSE_TYPE.commonSuccess({
+      res, data,
+    })
+  }
 
   // async edit(...args) {
   //   const [req, res] = args;

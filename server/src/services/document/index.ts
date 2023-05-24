@@ -2,16 +2,16 @@ import { RequestMapping, Get, Post, Put, Upload } from "@/request"
 import documentService from "./service"
 
 @RequestMapping('/document')
-export default class File {
+export default class Document {
 
-  @Get('/')
+  @Get('/list')
   list(...args) {
     return documentService.list(...args)
   }
-  // @Put('/')
-  // put() {
-  //   return 'put'
-  // }
+  @Post('/create')
+  put(...args) {
+    return documentService.create(...args)
+  }
   // @Delete('/')
   // delete() {
   //   return 'delete'

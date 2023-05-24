@@ -20,7 +20,7 @@ class App {
       res.header('Access-Control-Allow-Origin', '*')
       res.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length, Authorization, Accept,X-Requested-With')
       res.header('Access-Control-Allow-Credentials', 'true')
-      res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS')
+      res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,PATCH,OPTIONS')
       res.header(HEADER_CONFIG_KEY.CONTENT_TYPE, HEADER_CONFIG_VALUE.APPLICATION_JSON);
       if (req.method == 'OPTIONS') return res.status(200).send('OK')
       next()
