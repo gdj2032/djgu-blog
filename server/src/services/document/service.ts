@@ -41,7 +41,6 @@ class DocumentService {
     })
     if (errorAble) return errorAble;
     const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryById, [id])
-    console.log("🚀 ~ file: service.ts:44 ~ DocumentService ~ detail ~ data:", data)
     if (!error) {
       const types = (await documentTypeService.typeByIds(JSON.parse(data[0].types))).map((e) => ({ id: e.id, name: e.name }))
       return RESPONSE_TYPE.commonSuccess({
