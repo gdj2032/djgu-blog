@@ -39,7 +39,8 @@ function Document() {
   }
 
   const columns = () => [
-    { title: '名称', dataIndex: 'name', key: 'name' },
+    { title: '名称', dataIndex: 'name', key: 'name', render: (t, r) => <Button type="link" onClick={() => navigate(`${PathConfig.documentDetail}?id=${r.id}`)}>{t}</Button> },
+    { title: '文档类型', dataIndex: 'types', key: 'types', render: (t) => t?.map((e) => e.name)?.join(',') },
     { title: '描述', dataIndex: 'description', key: 'description' },
     {
       title: '操作', dataIndex: 'operation', key: 'operation', render: (_, record) => USER_ROLE.isAdminForSelf() && (

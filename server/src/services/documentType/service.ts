@@ -28,6 +28,16 @@ class DocumentTypeService {
     return data
   }
 
+  async typeById(id) {
+    const { data } = await DataBase.sql(DOCUMENT_TYPE_SQL.queryById, [id])
+    return data
+  }
+
+  async typeByIds(ids) {
+    const { data } = await DataBase.sql(DOCUMENT_TYPE_SQL.queryByIds, [ids])
+    return data
+  }
+
   async create(...args) {
     const [req, res] = args;
     const { name, description, imageUrl } = req.body as any;

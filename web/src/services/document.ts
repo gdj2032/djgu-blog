@@ -8,6 +8,12 @@ export function dList(query: ILimitOffset): T_RESPONSE_LIST<DocumentService.ILis
   })
 }
 
+export function dDetail(id): T_RESPONSE_BASE<DocumentService.IListData> {
+  return request.get({
+    path: `/document/detail/${id}`,
+  })
+}
+
 export function dCreate(data: DocumentService.ICreateInfo): T_RESPONSE_BASE<DocumentService.IListData> {
   return request.post({
     path: '/document/create',

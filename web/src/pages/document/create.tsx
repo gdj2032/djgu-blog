@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { TBreadcrumb } from '@/components';
 import './index.scss';
 import { PathConfig } from '@/framework/routes/routes';
@@ -8,32 +8,49 @@ import { documentTypeService, documentService } from '@/services';
 import Editor from 'for-editor'
 import { IRowItem } from '@/components/ItemsRow';
 import { useNavigate } from 'react-router';
+import { useQuery } from '@djgu/react-comps';
+import { DocumentService } from '@/typings/document';
 
 function Create() {
+  const { id } = useQuery()
   const navigate = useNavigate()
   const [types, setTypes] = useState<IIdName[]>([])
   const [loading, setLoading] = useState(false)
   const editorRef = useRef<any>();
   const formRef = useRef<any>();
+  const [data, setData] = useState<DocumentService.IListData>()
 
   const routes = [
     { name: '管理员', url: `${PathConfig.user}?current=${USER_TAB.document}` },
-    { name: '新增文档' },
+    { name: id ? '编辑文档' : '新增文档' },
   ]
 
   const handleSubmit = async () => {
     const params = await formRef.current.validateFields();
     setLoading(true)
     try {
-      const res = await documentService.dCreate({
-        name: params.name,
-        description: params.description,
-        types: params.types,
-        content: params.content,
-      })
-      if (res.code === 200) {
-        message.success('新增文档成功')
-        navigate(`${PathConfig.user}?current=${USER_TAB.document}`)
+      if (id) {
+        const res = await documentService.dEdit(id, {
+          name: params.name,
+          description: params.description,
+          types: params.types,
+          content: params.content,
+        })
+        if (res.code === 200) {
+          message.success('编辑文档成功')
+          navigate(`${PathConfig.user}?current=${USER_TAB.document}`)
+        }
+      } else {
+        const res = await documentService.dCreate({
+          name: params.name,
+          description: params.description,
+          types: params.types,
+          content: params.content,
+        })
+        if (res.code === 200) {
+          message.success('新增文档成功')
+          navigate(`${PathConfig.user}?current=${USER_TAB.document}`)
+        }
       }
     } catch (error) {
       console.log("🚀 ~ file: create.tsx:39 ~ handleSubmit ~ error:", error)
@@ -52,14 +69,29 @@ function Create() {
     }
   ]
 
-  const initTypes = async () => {
+  const initTypes = useMemo(async () => {
     const res = await documentTypeService.dtList({ limit: 10000, offset: 0 });
     setTypes(res.data.data)
-  }
+  }, [])
+
+  const initDoc = useMemo(async () => {
+    if (id) {
+      const res = await documentService.dDetail(id);
+      setData(res.data)
+      console.info('--- formRef --->', formRef.current);
+      formRef.current?.setFieldsValue({
+        name: res.data.name,
+        description: res.data.description,
+        types: res.data.types.map((e) => e.id),
+        content: res.data.content,
+      })
+    }
+  }, [id])
 
   useEffect(() => {
-    initTypes()
-  }, [])
+    initDoc
+    initTypes
+  }, [initDoc, initTypes])
 
   if (!USER_ROLE.isAdminForSelf()) {
     return <div>暂无权限</div>
