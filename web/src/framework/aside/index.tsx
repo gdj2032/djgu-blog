@@ -2,12 +2,13 @@
  * 左侧导航栏
  */
 import { INavFormat, menuConfig, USER_ROLE } from '@/constants';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Button } from 'antd';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import './index.scss';
 import { PathConfig } from '../routes/routes';
+import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 
 const { Sider } = Layout;
 
@@ -60,6 +61,7 @@ function Aside(props: IProps) {
   const history = useNavigate()
   const location = useLocation()
   const [selectedKey, changeSelectedKeys] = useState(location.pathname)
+  const [inlineCollapsed, setInlineCollapsed] = useState(true)
 
   const menus = menuConfig.filter((e) => e.admin ? USER_ROLE.isAdminForSelf() && e.admin : true).map((e) => ({ ...e, admin: undefined }))
 
@@ -76,7 +78,7 @@ function Aside(props: IProps) {
 
   return (
     <Sider
-      width={200}
+      width={inlineCollapsed ? 54 : 200}
       className="layout-aside"
     >
       <div className='aside-logo' onClick={() => {
@@ -84,6 +86,9 @@ function Aside(props: IProps) {
       }}>
         GDJ
       </div>
+      <a className="layout-aside-collapsed" onClick={() => setInlineCollapsed(!inlineCollapsed)} >
+        {inlineCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+      </a>
       <Menu
         theme="light"
         mode="inline"
@@ -91,6 +96,7 @@ function Aside(props: IProps) {
         defaultOpenKeys={defaultOpenKeys}
         onClick={(changeRouteHandle)}
         items={menus}
+        inlineCollapsed={inlineCollapsed}
       />
     </Sider>
   )
