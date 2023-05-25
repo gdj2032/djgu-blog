@@ -2,7 +2,7 @@
  * 左侧导航栏
  */
 import { INavFormat, menuConfig, USER_ROLE } from '@/constants';
-import { Layout, Menu, Button } from 'antd';
+import { Layout, Menu } from 'antd';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';

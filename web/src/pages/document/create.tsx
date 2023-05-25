@@ -19,7 +19,7 @@ function Create() {
   const [loading, setLoading] = useState(false)
   const editorRef = useRef<any>();
   const formRef = useRef<any>();
-  const [data, setData] = useState<DocumentService.IListData>()
+  const [, setData] = useState<DocumentService.IListData>()
 
   const routes = [
     { name: '管理员', url: `${PathConfig.user}?current=${USER_TAB.document}` },

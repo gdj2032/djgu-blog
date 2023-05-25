@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@djgu/react-comps';
-import ReactMarkdown from 'react-markdown'
 import './index.scss';
 import { DocumentService } from '@/typings/document';
 import { documentService } from '@/services';
@@ -10,9 +9,7 @@ import { DATE_FORMAT } from '@/constants';
 import moment from 'moment';
 import { PathConfig } from '@/framework/routes/routes';
 import { TBreadcrumb } from '@/components';
-import remarkGfm from 'remark-gfm'
 import Editor from 'for-editor'
-import Card from 'antd/es/card/Card';
 
 function Detail() {
   const { id } = useQuery()
