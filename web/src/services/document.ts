@@ -33,3 +33,9 @@ export function dDelete(id: string): T_RESPONSE_BASE {
     path: `/document/delete/${id}`,
   })
 }
+
+export function dSee(id: string): T_RESPONSE_BASE {
+  return request.post({
+    path: `/document/see/${id}`,
+  })
+}

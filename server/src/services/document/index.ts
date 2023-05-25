@@ -24,4 +24,8 @@ export default class Document {
   delete(...args) {
     return documentService.delete(...args)
   }
+  @Post('/see/:id')
+  see(...args) {
+    return documentService.see(...args)
+  }
 }

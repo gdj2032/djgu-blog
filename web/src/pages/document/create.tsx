@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TBreadcrumb } from '@/components';
 import './index.scss';
 import { PathConfig } from '@/framework/routes/routes';
 import { USER_ROLE, USER_TAB } from '@/constants';
 import { Card, Form, Input, Select, message, Space, Button } from 'antd';
-import { documentTypeService, documentService } from '@/services';
+import { documentTypeService, documentService, fileService } from '@/services';
 import Editor from 'for-editor'
 import { IRowItem } from '@/components/ItemsRow';
 import { useNavigate } from 'react-router';
@@ -98,8 +98,15 @@ function Create() {
     return <div>暂无权限</div>
   }
 
-  const addImg = (file) => {
-    editorRef.current.$img2Url('111', 'file_url')
+  const addImg = async (file) => {
+    const formData = new FormData();
+    formData.set('file', file)
+    formData.set('name', file.name)
+    formData.set('type', file.type)
+    const res = await fileService.upload(formData);
+    if (res.code === 200) {
+      editorRef.current.$img2Url(file.name, res.data.url)
+    }
   }
 
   const handleAddType = () => {

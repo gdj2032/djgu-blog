@@ -7,6 +7,7 @@ export declare namespace DocumentService {
     createTime: string;
     updateTime: string;
     types: IIdName[]
+    see: number;
   }
 
   interface ICreateInfo {

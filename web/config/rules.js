@@ -60,7 +60,7 @@ exports.js = {
             : null
         ].filter(plugin => !!plugin),
       }
-    }
+    },
   ],
   include: globals.SourceDirectory,
 };

@@ -3,21 +3,21 @@ import DataBase from "@/db";
 import { USER_SQL } from "@/sql";
 import { RESPONSE_TYPE, RESPONSE_CODE_MSG, getSession, setSession, getUserIdNameBySession } from "@/utils";
 import moment from "moment";
-import * as fs from 'fs'
-// import fs from 'fs'
-// import co from 'co';
-// import OSS from 'ali-oss';
+import fs from 'fs'
+import co from 'co';
+import OSS from 'ali-oss';
+import { ALI_KEY } from '@/constants';
 
-// const client = new OSS({
-//   region: ALI_KEY.REGION, // 公共云下OSS Region
-//   accessKeyId: ALI_KEY.ACCESSKEY_ID, // AccessKey ID
-//   accessKeySecret: ALI_KEY.ACCESSKEY_SECRET // AccessKey Secret
-// });
+const client = new OSS({
+  region: ALI_KEY.REGION, // 公共云下OSS Region
+  accessKeyId: ALI_KEY.ACCESSKEY_ID, // AccessKey ID
+  accessKeySecret: ALI_KEY.ACCESSKEY_SECRET // AccessKey Secret
+});
 
-// const ali_oss = {
-//   bucket: ALI_KEY.BUCKET_NAME,	// Bucket名称
-//   endPoint: ALI_KEY.ENDPOINT,	// 公共云下OSS 外网Endpoint
-// };
+const ali_oss = {
+  bucket: ALI_KEY.BUCKET_NAME,	// Bucket名称
+  endPoint: ALI_KEY.ENDPOINT,	// 公共云下OSS 外网Endpoint
+};
 
 class FileService {
 
@@ -34,9 +34,10 @@ class FileService {
     const [req, res] = args;
     if (req.files?.file) {
       const { name, tempFilePath } = req.files.file;
-      const url = `${tempFilePath}_${name}`
-
-      fs.renameSync(tempFilePath, url);
+      const url = await this.aliUploadImage({
+        filename: name,
+        localFile: tempFilePath,
+      })
 
       return RESPONSE_TYPE.commonSuccess({ res, data: { url } })
     }
@@ -96,29 +97,29 @@ class FileService {
   // }
 
   // // 阿里云上传图片
-  // aliUploadImage = (info: {
-  //   filename: string;
-  //   localFile: string;
-  // }) => new Promise<string>((resolve, reject) => {
-  //   const { filename, localFile } = info;
-  //   // 阿里云 上传文件
-  //   const today = moment().format('YYYY-MM-DD')
-  //   const key = `${ALI_KEY.BUCKET_FILE_NAME}/${today}/${filename}`;
-  //   co(function* () {
-  //     client.useBucket(ali_oss.bucket);
-  //     const result = yield client.put(key, localFile);
-  //     // 上传成功返回图片路径域名-域名修改成自己绑定到oss的
-  //     const imageSrc = `http://${ALI_KEY.ENDPOINT}/${result.name}`
-  //     // 上传之后删除本地文件
-  //     fs.unlinkSync(localFile);
-  //     resolve(imageSrc)
-  //   }).catch(function (err) {
-  //     console.log("🚀 ~ file: file.ts:124 ~ FileService ~ co ~ err", err)
-  //     // 上传之后删除本地文件
-  //     fs.unlinkSync(localFile);
-  //     reject('文件上传失败')
-  //   })
-  // })
+  aliUploadImage = (info: {
+    filename: string;
+    localFile: string;
+  }) => new Promise<string>((resolve, reject) => {
+    const { filename, localFile } = info;
+    // 阿里云 上传文件
+    const today = moment().format('YYYY-MM-DD')
+    const key = `${ALI_KEY.BUCKET_FILE_NAME}/${today}/${filename}`;
+    co(function* () {
+      client.useBucket(ali_oss.bucket);
+      const result = yield client.put(key, localFile);
+      // 上传成功返回图片路径域名-域名修改成自己绑定到oss的
+      const imageSrc = `http://${ALI_KEY.ENDPOINT}/${result.name}`
+      // 上传之后删除本地文件
+      fs.unlinkSync(localFile);
+      resolve(imageSrc)
+    }).catch(function (err) {
+      console.log("🚀 ~ file: file.ts:124 ~ FileService ~ co ~ err", err)
+      // 上传之后删除本地文件
+      fs.unlinkSync(localFile);
+      reject('文件上传失败')
+    })
+  })
 }
 
 const fileService = new FileService()

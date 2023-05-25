@@ -20,8 +20,12 @@
   margin-right: 20px;
 }
 
-.global-mgt-20 {
-  margin-top: 20px;
+.global-mgt-8 {
+  margin-top: 8px;
+}
+
+.global-mgl-12 {
+  margin-left: 12px;
 }
 
 .global-mgt-12 {
@@ -69,4 +73,17 @@
       content: '*';
     }
   }
+}
+
+.global-h1 {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 48px;
+}
+
+.global-description {
+  border-left: 4px solid #ccc;
+  padding-left: 8px;
+  line-height: 20px;
+  font-size: 14px;
 }

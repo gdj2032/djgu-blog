@@ -136,6 +136,31 @@ class DocumentService {
     }
     return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
   }
+
+  async see(...args) {
+    const [req, res] = args;
+    const { id } = req.params;
+    const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryById, [id]);
+    const errorAble = await RESPONSE_TYPE.commonErrors({
+      res,
+      errs: [
+        { func: () => !id, ...RESPONSE_CODE_MSG.idNotEmpty },
+        { func: () => !data?.[0], ...RESPONSE_CODE_MSG.documentNotExist },
+        {
+          func: async () => {
+            if (error) return true;
+            return false;
+          }, ...RESPONSE_CODE_MSG.serverError
+        },
+      ]
+    })
+    if (errorAble) return errorAble;
+    const { error: e2 } = await DataBase.sql(DOCUMENT_SQL.update, [{ see: data[0].see + 1 }, id])
+    if (e2) {
+      return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
+    }
+    return RESPONSE_TYPE.commonSuccess({ res })
+  }
 }
 
 const documentService = new DocumentService()
