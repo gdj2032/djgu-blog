@@ -22,7 +22,7 @@
   "dependencies": {
     "@alifd/field": "^1.6.0",
     "@ant-design/icons": "^5.0.1",
-    "@djgu/react-comps": "^1.0.3",
+    "@djgu/react-comps": "^1.0.4",
     "@electron/remote": "^2.0.9",
     "@reduxjs/toolkit": "^1.9.1",
     "@tmind/utils": "^0.0.13",

@@ -4,23 +4,20 @@
 import React, { useState } from 'react';
 import './index.scss';
 import { useNavigate } from 'react-router';
-// import { useVirtualList } from '@djgu/react-comps';
+import { useVirtualList } from '@djgu/react-comps';
 import { DocumentService } from '@/typings/document';
 import { documentService } from '@/services';
 import { Input, Spin } from 'antd';
 import { DocumentItem } from '@/components';
 import { PathConfig } from '@/framework/routes/routes';
-import useVirtualList from './test';
 
 function Document() {
   const navigate = useNavigate()
   const [loadingMore, setLoadingMore] = useState(false)
   const [value, setValue] = useState('')
-  console.log("🚀 ~ file: index.tsx:18 ~ Document ~ value:", value)
   const {
     dataSource, debounceRefresh, loading, paginationProps
   } = useVirtualList<DocumentService.IListData>(async ({ limit, offset }) => {
-    console.info('--- value --->', value);
     const res = await documentService.dList({
       limit,
       offset,
@@ -28,7 +25,7 @@ function Document() {
     })
     setLoadingMore(false)
     if (res?.code === 200) {
-      return { dataSource: res.data.data, total: +res.data.total }
+      return { dataSource: res.data?.data || [], total: +res.data.total }
     }
     return { dataSource: [], total: 0 }
   }, [value])

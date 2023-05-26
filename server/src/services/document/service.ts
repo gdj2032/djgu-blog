@@ -12,7 +12,10 @@ class DocumentService {
     const { limit = 10, offset = 0, name = '', types } = req.query as any;
     const _limit = +limit;
     const _offset = +offset;
-    const { data } = await DataBase.sql(DOCUMENT_SQL.queryLimitOffset, [_offset, _limit, name])
+    const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryLimitOffset2, [`%${name}%`, `%${name}%`, _offset, _limit])
+    if (error) {
+      return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
+    }
     const allTypes = (await documentTypeService.allTypes()).map((e) => ({ id: e.id, name: e.name }))
     const newData = data?.map((e) => {
       const cTypes = JSON.parse(e.types)
