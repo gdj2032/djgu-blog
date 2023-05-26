@@ -1,23 +1,31 @@
 import { documentUuid } from './../../utils/util';
 import DataBase from "@/db";
-import { DOCUMENT_SQL, USER_SQL } from "@/sql";
+import { DOCUMENT_SQL } from "@/sql";
 import { RESPONSE_TYPE, RESPONSE_CODE_MSG } from "@/utils";
-import userService from '../user/service';
 import moment from 'moment';
 import documentTypeService from '../documentType/service';
 
 class DocumentService {
   async list(...args) {
     const [req, res] = args;
-    const { limit = 10, offset = 0, name = '', types } = req.query as any;
+    const { limit = 10, offset = 0, name = '', latest = false } = req.query as any;
     const _limit = +limit;
     const _offset = +offset;
-    const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryLimitOffset2, [`%${name}%`, `%${name}%`, _offset, _limit])
-    if (error) {
+    let error0, data0;
+    if (!latest) {
+      const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryLimitOffset2, [`%${name}%`, `%${name}%`, _offset, _limit])
+      error0 = error;
+      data0 = data
+    } else {
+      const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryLimitOffset, [_offset, _limit])
+      error0 = error;
+      data0 = data
+    }
+    if (error0) {
       return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
     }
     const allTypes = (await documentTypeService.allTypes()).map((e) => ({ id: e.id, name: e.name }))
-    const newData = data?.map((e) => {
+    const newData = data0?.map((e) => {
       const cTypes = JSON.parse(e.types)
       return {
         ...e,
