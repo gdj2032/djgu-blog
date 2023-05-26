@@ -1,0 +1,12 @@
+.g-document-item {
+  padding: 12px;
+  background-color: $white;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  border: 1px solid $white;
+
+  &:hover {
+    cursor: pointer;
+    border: 1px solid rgba(164, 164, 164, .5);
+  }
+}

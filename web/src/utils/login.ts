@@ -40,7 +40,7 @@ export const doLogin = (params: any) => new Promise(async (resolve, reject) => {
 export const doLogout = () => {
   store.dispatch(clearUserInfo())
   if (!isElectron) {
-    window.location.hash = PathConfig.login
+    window.location.hash = PathConfig.home
   } else {
     window.app.setWindowVisible(false);
     const createParams: CreateWindowParam = {

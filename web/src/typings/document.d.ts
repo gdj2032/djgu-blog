@@ -16,4 +16,9 @@ export declare namespace DocumentService {
     content: string;
     types: string[];
   }
+
+  interface IQueryInfo extends ILimitOffset {
+    name?: string;
+    types?: string;
+  }
 }

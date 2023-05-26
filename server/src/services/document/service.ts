@@ -9,7 +9,7 @@ import documentTypeService from '../documentType/service';
 class DocumentService {
   async list(...args) {
     const [req, res] = args;
-    const { limit = 10, offset = 0, name, types } = req.query as any;
+    const { limit = 10, offset = 0, name = '', types } = req.query as any;
     const _limit = +limit;
     const _offset = +offset;
     const { data } = await DataBase.sql(DOCUMENT_SQL.queryLimitOffset, [_offset, _limit, name])
@@ -21,7 +21,7 @@ class DocumentService {
         types: allTypes.filter((v) => cTypes.includes(v.id)),
       }
     })
-    const { data: allData } = await DataBase.sql(USER_SQL.queryAll)
+    const { data: allData } = await DataBase.sql(DOCUMENT_SQL.queryAll)
     return RESPONSE_TYPE.commonSuccess2List({
       res, data: newData,
       limit: _limit,
@@ -78,7 +78,7 @@ class DocumentService {
     if (errorAble) return errorAble;
     const dId = documentUuid()
     const time = moment().valueOf();
-    await DataBase.sql(DOCUMENT_SQL.insert, [dId, name, description, content, JSON.stringify(types), time, time])
+    await DataBase.sql(DOCUMENT_SQL.insert, [dId, name, description, content, JSON.stringify(types), time, time, 0])
     const { data } = await DataBase.sql(DOCUMENT_SQL.queryById, [dId]);
     return RESPONSE_TYPE.commonSuccess({
       res, data,

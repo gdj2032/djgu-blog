@@ -1,7 +1,7 @@
 import { request } from "@/request";
 import { DocumentService } from "@/typings/document";
 
-export function dList(query: ILimitOffset): T_RESPONSE_LIST<DocumentService.IListData> {
+export function dList(query: DocumentService.IQueryInfo): T_RESPONSE_LIST<DocumentService.IListData> {
   return request.get({
     path: '/document/list',
     query,

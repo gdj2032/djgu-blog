@@ -166,8 +166,8 @@ function Create() {
                   showSearch
                   placeholder="请选择文档类型"
                 />
-                <Button type="link" onClick={handleAddType}>新增类型</Button>
               </Form.Item>
+              <Button type="link" onClick={handleAddType}>新增类型</Button>
             </Space>
           </Form.Item>
           <Form.Item

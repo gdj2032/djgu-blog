@@ -2,6 +2,7 @@ import { API_HOST, Credentials, isElectron } from '@/constants';
 import { genQuery, abortablePromise } from './helper';
 import { message } from 'antd';
 import { store } from '@/stores';
+import { doLogout } from '@/utils';
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE'];
 
@@ -10,7 +11,7 @@ function checkStatus(response: any, error: (error: any) => void = () => { }) {
     case 200:
       return response.text().then((text: string) => Promise.resolve(text ? JSON.parse(text) : {}));
     case 401:
-      // store.dispatch(userAction.logout() as any)
+      doLogout()
       break;
     default:
       return (response.json()).then((json: any) => {
