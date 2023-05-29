@@ -9,7 +9,7 @@ function getIndexAddr() {
   if (app.isPackaged) {
     return url.format({ pathname: path.join(__dirname, './dist/index.html'), protocol: 'file:', slashes: true, hash: '#' });
   } else {
-    return 'http://localhost:9000/#';
+    return 'http://localhost:8000/#';
   }
 }
 
