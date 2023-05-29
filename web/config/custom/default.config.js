@@ -46,7 +46,7 @@ module.exports = {
       'process.env.BUILD_ENV': JSON.stringify('development'),
     },
 
-    port: 8000,  // dev server 运行的端口
+    port: 9000,  // dev server 运行的端口
 
     supportBrowserRouter: false, // 是否支持BrowserRouter
 
@@ -62,7 +62,7 @@ module.exports = {
     hot: true, // 热更新
     historyApiFallback: true, // 解决启动后刷新404
     // open: true,
-    port: 8000,
+    port: 9000,
     static: {
       directory: path.resolve(__dirname, "dist")
     },

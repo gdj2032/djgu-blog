@@ -217,7 +217,7 @@ export default class PageFrame extends React.Component<IFramePageProps, IFramePa
     const minimizable = isElectron && this.props.minimizable; //明确指定了true才不显示
     const closable = this.isClosable();
     return (
-      <div className={`page-frame ${this.props.className || ''}`} onClick={(e) => e.stopPropagation()}>
+      <div className={`page-frame ${isElectron && 'page-frame-ele'} ${this.props.className || ''}`} onClick={(e) => e.stopPropagation()}>
         {!this.props.hideTitleBar && (
           <div className={`page-frame-header ${this.props.transparent ? 'transparent' : ''}`}>
             <div className="page-frame-title-wrap">
