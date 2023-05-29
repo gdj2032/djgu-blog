@@ -8,7 +8,7 @@ const __DEV__ = process.env.NODE_ENV === 'development'
 let API_HOST = ''
 
 if (isProduction) {
-  API_HOST = 'http://127.0.0.1:9999'; //
+  API_HOST = 'http://localhost:9999'; //
 } else {
   API_HOST = !mockSwitch ? '/api' : '/mock';
 }
