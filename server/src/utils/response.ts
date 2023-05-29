@@ -37,7 +37,8 @@ export const RESPONSE_CODE_MSG = {
   typeNotExist: { status: 400, code: 1010, msg: '类型不存在' },
   typeNotEmpty: { status: 400, code: 1011, msg: '类型不能为空' },
   contentNotEmpty: { status: 400, code: 1012, msg: '正文不能为空' },
-  documentNotExist: { status: 400, code: 1012, msg: '文档不存在' },
+  documentNotExist: { status: 400, code: 1013, msg: '文档不存在' },
+  documentInsertError: { status: 400, code: 1014, msg: '新增文档失败' },
 }
 
 export const RESPONSE_TYPE = {

@@ -4,7 +4,7 @@
   "description": "#### 介绍 node连接数据库和前端页面接口",
   "main": "index.js",
   "scripts": {
-    "dev": "__DEV__=true nodemon --watch 'src/' -e ts --exec 'ts-node' ./src/index.ts  --files",
+    "dev": "nodemon --watch 'src/' -e ts --exec 'ts-node' ./src/index.ts  --files",
     "build": "tsc && tsc-alias"
   },
   "repository": {

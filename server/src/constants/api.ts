@@ -11,3 +11,6 @@ export const FILE_TIME = 1 * 24 * 60 * 60 * 1000;
 export const HOME_PATH = os.homedir();
 
 export const FILE_PATH = `${HOME_PATH}/testImage`
+
+export const isDev = process.env.NODE_ENV === 'development'
+console.log("🚀 ~ file: api.ts:16 ~ isDev:", isDev)

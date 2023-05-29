@@ -1,5 +1,5 @@
 {
   "env": {
-    "__DEV__": "development"
+    "NODE_ENV": "development"
   }
 }

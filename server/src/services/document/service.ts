@@ -89,7 +89,10 @@ class DocumentService {
     if (errorAble) return errorAble;
     const dId = documentUuid()
     const time = moment().valueOf();
-    await DataBase.sql(DOCUMENT_SQL.insert, [dId, name, description, content, JSON.stringify(types), time, time, 0])
+    const { error } = await DataBase.sql(DOCUMENT_SQL.insert, [dId, name, description, content, JSON.stringify(types), time, time, 0])
+    if (error) {
+      return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.documentInsertError })
+    }
     const { data } = await DataBase.sql(DOCUMENT_SQL.queryById, [dId]);
     return RESPONSE_TYPE.commonSuccess({
       res, data,

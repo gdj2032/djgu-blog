@@ -8,8 +8,10 @@ const __DEV__ = process.env.NODE_ENV === 'development'
 let API_HOST = ''
 
 if (isProduction) {
-  // API_HOST = 'http://116.62.21.79:9999';
   API_HOST = '/api';
+  if (isElectron) {
+    API_HOST = 'http://116.62.21.79:5678/api';
+  }
 } else {
   API_HOST = !mockSwitch ? '/api' : '/mock';
 }
