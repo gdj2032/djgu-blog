@@ -74,6 +74,7 @@ function Detail() {
             border: 'none',
             boxShadow: 'none',
             background: '#fff',
+            height: '100%'
           }}
         />
       </div>

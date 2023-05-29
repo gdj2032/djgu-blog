@@ -15,7 +15,7 @@ export default class DataBase {
     return new Promise((res) => {
       this.database.pool.query(sql, params, (error, data, fields) => {
         if (error) {
-          console.info('--- DataBase.sql error --->', { error, sql, params });
+          console.info('--- DataBase.sql error --->', JSON.stringify({ error, sql, params }));
         }
         res({ data, fields, error })
       })
