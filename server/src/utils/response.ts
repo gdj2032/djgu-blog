@@ -39,6 +39,9 @@ export const RESPONSE_CODE_MSG = {
   contentNotEmpty: { status: 400, code: 1012, msg: '正文不能为空' },
   documentNotExist: { status: 400, code: 1013, msg: '文档不存在' },
   documentInsertError: { status: 400, code: 1014, msg: '新增文档失败' },
+  uploadFileError: { status: 400, code: 1015, msg: '文件上传失败' },
+  fileNotEmpty: { status: 400, code: 1016, msg: '文件不能为空' },
+  fileContentError: { status: 400, code: 1016, msg: '获取文件内容失败' },
 }
 
 export const RESPONSE_TYPE = {

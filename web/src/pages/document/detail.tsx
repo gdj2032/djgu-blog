@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@djgu/react-comps';
 import './index.scss';
 import { DocumentService } from '@/typings/document';
-import { documentService } from '@/services';
+import { documentService, fileService } from '@/services';
 import { Spin, Tag } from 'antd';
 import { HistoryOutlined, EyeOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { DATE_FORMAT } from '@/constants';
@@ -14,6 +14,7 @@ import Editor from 'for-editor'
 function Detail() {
   const { id } = useQuery()
   const [data, setData] = useState<DocumentService.IListData>()
+  const [content, setContent] = useState<string>('')
   const [spinning, setSpinning] = useState(false)
 
   const routes = [
@@ -32,6 +33,8 @@ function Detail() {
       const res = await documentService.dDetail(id);
       if (res.code === 200) {
         setData(res.data)
+        const res1 = await fileService.getFile(res.data.fileId)
+        setContent(res1.data)
       }
     } catch (error) {
       console.log("🚀 ~ file: detail.tsx:26 ~ init ~ error:", error)
@@ -66,7 +69,7 @@ function Detail() {
       </div>
       <div className="global-mgt-8">
         <Editor
-          value={data.content}
+          value={content}
           preview
           disabled
           toolbar={{}}

@@ -1,6 +1,6 @@
 import { documentUuid } from './../../utils/util';
 import DataBase from "@/db";
-import { DOCUMENT_SQL } from "@/sql";
+import { DOCUMENT_SQL, FILE_SQL } from "@/sql";
 import { RESPONSE_TYPE, RESPONSE_CODE_MSG } from "@/utils";
 import moment from 'moment';
 import documentTypeService from '../documentType/service';
@@ -26,7 +26,7 @@ class DocumentService {
     }
     const allTypes = (await documentTypeService.allTypes()).map((e) => ({ id: e.id, name: e.name }))
     const newData = data0?.map((e) => {
-      const cTypes = JSON.parse(e.types)
+      const cTypes = e.types.split(',')
       return {
         ...e,
         types: allTypes.filter((v) => cTypes.includes(v.id)),
@@ -53,7 +53,7 @@ class DocumentService {
     if (errorAble) return errorAble;
     const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryById, [id])
     if (!error) {
-      const types = (await documentTypeService.typeByIds(JSON.parse(data[0].types))).map((e) => ({ id: e.id, name: e.name }))
+      const types = (await documentTypeService.typeByIds(data[0].types.split(','))).map((e) => ({ id: e.id, name: e.name }))
       return RESPONSE_TYPE.commonSuccess({
         res,
         data: {
@@ -67,12 +67,12 @@ class DocumentService {
 
   async create(...args) {
     const [req, res] = args;
-    const { name, description, content, types } = req.body as any;
+    const { name, description, fileId, types } = req.body as any;
     const errorAble = await RESPONSE_TYPE.commonErrors({
       res,
       errs: [
         { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
-        { func: () => !content, ...RESPONSE_CODE_MSG.contentNotEmpty },
+        { func: () => !fileId, ...RESPONSE_CODE_MSG.fileNotEmpty },
         { func: () => !types?.length, ...RESPONSE_CODE_MSG.typeNotEmpty },
         {
           func: async () => {
@@ -89,11 +89,12 @@ class DocumentService {
     if (errorAble) return errorAble;
     const dId = documentUuid()
     const time = moment().valueOf();
-    const { error } = await DataBase.sql(DOCUMENT_SQL.insert, [dId, name, description, content, JSON.stringify(types), time, time, 0])
+    const { error } = await DataBase.sql(DOCUMENT_SQL.insert, [dId, name, description, fileId, types.join(','), time, time, 0])
     if (error) {
       return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.documentInsertError })
     }
     const { data } = await DataBase.sql(DOCUMENT_SQL.queryById, [dId]);
+    DataBase.sql(FILE_SQL.update, [{ used: 1 }, fileId])
     return RESPONSE_TYPE.commonSuccess({
       res, data,
     })
@@ -102,13 +103,13 @@ class DocumentService {
   async edit(...args) {
     const [req, res] = args;
     const { id } = req.params;
-    const { name, description, content, types } = req.body as any;
+    const { name, description, fileId, types } = req.body as any;
     const errorAble = await RESPONSE_TYPE.commonErrors({
       res,
       errs: [
         { func: () => !id, ...RESPONSE_CODE_MSG.idNotEmpty },
         { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
-        { func: () => !content, ...RESPONSE_CODE_MSG.contentNotEmpty },
+        { func: () => !fileId, ...RESPONSE_CODE_MSG.fileNotEmpty },
         { func: () => !types?.length, ...RESPONSE_CODE_MSG.typeNotEmpty },
         {
           func: async () => {
@@ -127,8 +128,9 @@ class DocumentService {
     })
     if (errorAble) return errorAble;
     const time = moment().valueOf();
-    await DataBase.sql(DOCUMENT_SQL.update, [{ name, description, content, types: JSON.stringify(types), updateTime: time }, id])
+    await DataBase.sql(DOCUMENT_SQL.update, [{ name, description, fileId, types: types.join(','), updateTime: time }, id])
     const { data } = await DataBase.sql(DOCUMENT_SQL.queryById, [id]);
+    DataBase.sql(FILE_SQL.update, [{ used: 1 }, fileId])
     return RESPONSE_TYPE.commonSuccess({
       res, data,
     })

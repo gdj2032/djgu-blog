@@ -1,12 +1,12 @@
-import { fileUuid } from './../../utils/util';
 import DataBase from "@/db";
-import { USER_SQL } from "@/sql";
-import { RESPONSE_TYPE, RESPONSE_CODE_MSG, getSession, setSession, getUserIdNameBySession } from "@/utils";
+import { FILE_SQL } from "@/sql";
+import { RESPONSE_TYPE, RESPONSE_CODE_MSG, fileUuid } from "@/utils";
 import moment from "moment";
 import fs from 'fs'
 import co from 'co';
 import OSS from 'ali-oss';
-import { ALI_KEY } from '@/constants';
+import { ALI_KEY, FILE_TYPE, FILE_PATH, FILE_TIME } from '@/constants';
+import { fetchRequest } from "@/utils/request";
 
 const client = new OSS({
   region: ALI_KEY.REGION, // 公共云下OSS Region
@@ -21,6 +21,12 @@ const ali_oss = {
 
 class FileService {
 
+  constructor() {
+    // setInterval(() => {
+    //   this.deleteExpireFile()
+    // }, FILE_TIME)
+  }
+
   // name: 'circle.jpeg',
   // data: <Buffer >,
   // size: 32956,
@@ -32,72 +38,43 @@ class FileService {
   // mv: [Function: mv]
   async upload(...args) {
     const [req, res] = args;
+    if (req.body) {
+      // 上传文本
+      return this.uploadContent(req, res)
+    }
     if (req.files?.file) {
       const { name, tempFilePath } = req.files.file;
-      const url = await this.aliUploadImage({
+      const url = await this.aliUpload({
         filename: name,
         localFile: tempFilePath,
       })
 
       return RESPONSE_TYPE.commonSuccess({ res, data: { url } })
     }
-    return RESPONSE_TYPE.serverError(res, '上传文件失败')
+    return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.uploadFileError })
   }
 
+  async getFile(...args) {
+    const [req, res] = args;
+    const { id } = req.params as any;
+    const errorAble = await RESPONSE_TYPE.commonErrors({
+      res,
+      errs: [
+        { func: () => !id, ...RESPONSE_CODE_MSG.idNotEmpty },
+      ]
+    })
+    if (errorAble) return errorAble;
+    const { error, data } = await DataBase.sql(FILE_SQL.queryById, [id])
+    if (!error && data?.[0]) {
+      const u = data[0].url
+      const d = await fetchRequest(u)
+      return RESPONSE_TYPE.commonSuccess({ res, data: JSON.parse(JSON.stringify(d)) })
+    }
+    return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.fileContentError })
+  }
 
-  // fileUpload = async (params: IServiceParams) => {
-  //   const { res, req, resKey } = params as any;
-  //   const { fieldname, path: tempFilePath, mimetype, originalname } = req.file;
-  //   if (fieldname === 'file') {
-  //     if (tempFilePath) {
-  //       try {
-  //         const id = fileUuid()
-  //         const mimeType = mimetype
-  //         const filename = `${id}_${originalname}`
-  //         const url = await this.aliUploadImage({
-  //           filename,
-  //           localFile: tempFilePath,
-  //         })
-  //         const data = {
-  //           id,
-  //           filename,
-  //           url,
-  //           mimeType,
-  //           createTime: moment().valueOf().toString(),
-  //           persistenceStorage: 0,
-  //         }
-  //         await sqlService(fileSql.add(data), resKey)
-  //         RESPONSE_TYPE.commonSuccess({ res, data })
-  //         return;
-  //       } catch (error) {
-  //         console.info('--- fileUpload error ---', error);
-  //       }
-  //     }
-  //   }
-  //   RESPONSE_TYPE.serverError(res, '上传文件失败')
-  // }
-
-  // // 删除过期且未持久化的文件
-  // deleteExpireFile = async () => {
-  //   const files = await sqlService(fileSql.all())
-  //   const curTime = moment().valueOf()
-  //   const needDeleteFiles = files.filter((e) => {
-  //     const moreOneDay = (curTime - +e.createTime) >= FILE_TIME;
-  //     return e.persistenceStorage === 0 && moreOneDay;
-  //   })
-
-  //   if (needDeleteFiles?.length > 0) {
-  //     // 删除文件
-  //     needDeleteFiles.forEach((e) => {
-  //       fs.unlinkSync(e.url)
-  //     })
-  //     // 删除数据
-  //     await sqlService(fileSql.batchDeleteById(needDeleteFiles.map((e) => e.id)))
-  //   }
-  // }
-
-  // // 阿里云上传图片
-  aliUploadImage = (info: {
+  // 阿里云上传图片
+  private aliUpload = (info: {
     filename: string;
     localFile: string;
   }) => new Promise<string>((resolve, reject) => {
@@ -120,6 +97,46 @@ class FileService {
       reject('文件上传失败')
     })
   })
+
+  private async uploadContent(req, res) {
+    const { content, type } = req.body
+    if (!content) return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.contentNotEmpty });
+    if (type === FILE_TYPE.content) {
+      const fileId = fileUuid()
+      const filename = `${fileId}.txt`;
+      const filepath = `${FILE_PATH}/${filename}`;
+      // 创建文件
+      fs.writeFileSync(filepath, content, { flag: 'w', encoding: 'utf-8' })
+      const url = await this.aliUpload({
+        filename,
+        localFile: filepath,
+      })
+      const { error } = await DataBase.sql(FILE_SQL.insert, [fileId, url, 0, moment().valueOf().toString()])
+      if (!error) {
+        return RESPONSE_TYPE.commonSuccess({ res, data: { id: fileId, url } })
+      }
+    }
+    return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.uploadFileError })
+  }
+
+  private async allFile() {
+    return DataBase.sql(FILE_SQL.queryAll)
+  }
+
+  // 删除过期且未持久化的文件
+  private deleteExpireFile = async () => {
+    const files = await this.allFile()
+    const curTime = moment().valueOf()
+    // const needDeleteFiles = files.filter((e) => {
+    //   const moreOneDay = (curTime - +e.createTime) >= FILE_TIME;
+    //   return e.persistenceStorage === 0 && moreOneDay;
+    // })
+
+    // if (needDeleteFiles?.length > 0) {
+    //   // 删除数据
+    //   await DataBase.sql(FILE_SQL.deleteById, )
+    // }
+  }
 }
 
 const fileService = new FileService()

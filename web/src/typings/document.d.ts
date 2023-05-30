@@ -3,7 +3,7 @@ export declare namespace DocumentService {
     id: string;
     name: string;
     description: string;
-    content: string;
+    fileId: string;
     createTime: string;
     updateTime: string;
     types: IIdName[]
@@ -13,7 +13,7 @@ export declare namespace DocumentService {
   interface ICreateInfo {
     name: string;
     description?: string;
-    content: string;
+    fileId: string;
     types: string[];
   }
 

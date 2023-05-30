@@ -8,6 +8,10 @@ export default class File {
   upload(...args) {
     return fileService.upload(...args)
   }
+  @Get('/:id')
+  content(...args) {
+    return fileService.getFile(...args)
+  }
   // @Put('/')
   // put() {
   //   return 'put'

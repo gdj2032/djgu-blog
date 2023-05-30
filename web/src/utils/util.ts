@@ -1,3 +1,6 @@
+import moment from "moment";
+import { fileService } from "@/services";
+
 export const noop = () => { }
 
 export const nextTick = (func: (value: void) => void): Promise<void> => Promise.resolve().then(func);
@@ -22,4 +25,18 @@ export const getQueryOption = (url: string) => {
   }
   // console.log('getQueryOption opt =', opt);
   return opt;
+}
+
+export const fileUuid = () => {
+  const time1 = moment().valueOf().toString()
+  return time1;
+}
+
+export const uploadFile = async ({ content }) => {
+  const formData = new FormData()
+  formData.append('file', `${fileUuid()}.txt`)
+  formData.append('content', content);
+  formData.append('type', 'content');
+  const res = await fileService.upload(formData);
+  return res
 }

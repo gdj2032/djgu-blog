@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router';
 import { useQuery, openModal2 } from '@djgu/react-comps';
 import { DocumentService } from '@/typings/document';
 import UpdateDocTypeModal from '../user/comps/UpdateDocTypeModal';
+import { fileUuid, uploadFile } from '@/utils';
 
 function Create() {
   const { id } = useQuery()
@@ -28,14 +29,16 @@ function Create() {
 
   const handleSubmit = async () => {
     const params = await formRef.current.validateFields();
-    setLoading(true)
     try {
+      setLoading(true)
+      const { data } = await uploadFile({ content: params.content })
+      const fileId = data.id;
       if (id) {
         const res = await documentService.dEdit(id, {
           name: params.name,
           description: params.description,
           types: params.types,
-          content: params.content,
+          fileId,
         })
         if (res.code === 200) {
           message.success('编辑文档成功')
@@ -46,7 +49,7 @@ function Create() {
           name: params.name,
           description: params.description,
           types: params.types,
-          content: params.content,
+          fileId,
         })
         if (res.code === 200) {
           message.success('新增文档成功')
@@ -84,7 +87,7 @@ function Create() {
         name: res.data.name,
         description: res.data.description,
         types: res.data.types.map((e) => e.id),
-        content: res.data.content,
+        // content: res.data.content,
       })
     }
   }
