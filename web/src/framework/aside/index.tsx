@@ -2,13 +2,14 @@
  * 左侧导航栏
  */
 import { INavFormat, menuConfig, USER_ROLE } from '@/constants';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Tooltip } from 'antd';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import './index.scss';
 import { PathConfig } from '../routes/routes';
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { MenuUnfoldOutlined, MenuFoldOutlined, LogoutOutlined } from '@ant-design/icons';
+import { doLogout } from '@/utils';
 
 const { Sider } = Layout;
 
@@ -86,9 +87,18 @@ function Aside(props: IProps) {
       }}>
         GDJ
       </div>
-      <a className="layout-aside-collapsed" onClick={() => setInlineCollapsed(!inlineCollapsed)} >
-        {inlineCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-      </a>
+      {USER_ROLE.isAdminForSelf() && (
+        <Tooltip title="登出" placement="right">
+          <div className="aside-logout" onClick={doLogout}>
+            <LogoutOutlined />
+          </div>
+        </Tooltip>
+      )}
+      <Tooltip title="收缩" placement="right">
+        <a className="layout-aside-collapsed" onClick={() => setInlineCollapsed(!inlineCollapsed)} >
+          {inlineCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        </a>
+      </Tooltip>
       <Menu
         theme="light"
         mode="inline"

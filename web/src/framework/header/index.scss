@@ -9,7 +9,7 @@
   color: $header-font-color !important;
   user-select: none;
   background: $theme-color;
-  line-height: 64px;
+  line-height: $header_height;
 
   .u-left-menu {
     flex: 1;

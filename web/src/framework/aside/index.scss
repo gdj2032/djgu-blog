@@ -1,10 +1,10 @@
 $menu-nor-color: #B5BBD1;
 
 .layout-aside {
+  position: relative;
   z-index: 99;
   left: 0;
   bottom: 0;
-  width: $side-menu-width;
   background: $theme-color !important;
   transform: translateZ(0);
   font-size: 18px;
@@ -17,12 +17,24 @@ $menu-nor-color: #B5BBD1;
   .layout-aside-collapsed {
     position: absolute;
     right: 10px;
-    bottom: 10px;
+    bottom: 40px;
     color: #fff;
   }
 
+  .aside-logout {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    color: #fff;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.5;
+    }
+  }
+
   .aside-logo {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     color: #fff;
     line-height: 40px;
     padding-left: 12px;
@@ -120,5 +132,15 @@ $menu-nor-color: #B5BBD1;
         color: #4D8BED;
       }
     }
+  }
+}
+
+.page-frame-ele {
+  .layout-aside-collapsed {
+    bottom: 76px;
+  }
+
+  .aside-logout {
+    bottom: 46px;
   }
 }

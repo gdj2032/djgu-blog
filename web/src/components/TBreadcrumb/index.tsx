@@ -5,6 +5,7 @@ import ItemRow, { IRowItem } from '../ItemsRow';
 import { AffixProps } from 'antd';
 import './index.scss'
 import { getClassName } from '../util';
+import { isElectron } from '@/constants';
 
 interface IBreadcrumbProps {
   route?: Array<{ name: string; url?: string }>;
@@ -22,7 +23,7 @@ const classname = (n: string = '') => {
 export default class TBreadcrumb extends React.Component<IBreadcrumbProps, any> {
 
   static defaultProps = {
-    offsetTop: 0,
+    offsetTop: isElectron ? 36 : 0,
   }
   affixRef?: AffixProps;
   item: HTMLElement | null;

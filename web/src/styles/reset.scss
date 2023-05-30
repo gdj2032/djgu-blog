@@ -1,109 +1,107 @@
 // reset style
-:global {
-  * {
-    font-family: "Hiragino Sans GB", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
-  }
+* {
+  font-family: "Hiragino Sans GB", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
 
-  html,
-  body {
-    width: 100%;
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  // 修复iOS下滑动卡顿
+  -webkit-overflow-scrolling: touch;
+
+  #root {
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    // 修复iOS下滑动卡顿
-    -webkit-overflow-scrolling: touch;
-
-    #root {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
   }
+}
 
-  html,
-  body,
-  p,
-  ol,
-  ul,
-  li,
-  dl,
-  dt,
-  dd,
-  blockquote,
-  figure,
-  fieldset,
-  legend,
-  textarea,
-  pre,
-  iframe,
-  hr,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: 0;
-    padding: 0;
-  }
+html,
+body,
+p,
+ol,
+ul,
+li,
+dl,
+dt,
+dd,
+blockquote,
+figure,
+fieldset,
+legend,
+textarea,
+pre,
+iframe,
+hr,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-size: 100%;
-    font-weight: normal;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
 
-  ul {
-    list-style: none;
-  }
+ul {
+  list-style: none;
+}
 
-  button,
-  input,
-  select,
-  textarea {
-    margin: 0;
-  }
+button,
+input,
+select,
+textarea {
+  margin: 0;
+}
 
-  html {
-    box-sizing: border-box;
-  }
+html {
+  box-sizing: border-box;
+}
 
-  *,
-  *:before,
-  *:after {
-    box-sizing: inherit;
-  }
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
 
-  img,
-  embed,
-  iframe,
-  object,
-  audio,
-  video {
-    height: auto;
-    max-width: 100%;
-  }
+img,
+embed,
+iframe,
+object,
+audio,
+video {
+  height: auto;
+  max-width: 100%;
+}
 
-  iframe {
-    border: 0;
-  }
+iframe {
+  border: 0;
+}
 
-  table {
-    border-collapse: collapse;
-    border-spacing: 0;
-  }
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
 
-  td,
-  th {
-    padding: 0;
-    text-align: left;
-  }
+td,
+th {
+  padding: 0;
+  text-align: left;
+}
 
-  a:hover {
-    text-decoration: none;
-  }
+a:hover {
+  text-decoration: none;
 }
