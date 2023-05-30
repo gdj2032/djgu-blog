@@ -6,9 +6,14 @@ import { doLogout } from '@/utils';
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE'];
 
-function checkStatus(response: any, error: (error: any) => void = () => { }) {
+function checkStatus(response: any, download?: boolean) {
   switch (response.status) {
     case 200:
+      if (download) {
+        return response.blob().then((blob: Blob) => {
+          return Promise.resolve(blob);
+        });
+      }
       return response.text().then((text: string) => Promise.resolve(text ? JSON.parse(text) : {}));
     case 401:
       doLogout()
@@ -17,9 +22,6 @@ function checkStatus(response: any, error: (error: any) => void = () => { }) {
       return (response.json()).then((json: any) => {
         if (json.message) {
           message.error(json.message)
-          error(json.message);
-        } else {
-          error(json);
         }
         return Promise.reject(json);
       });
@@ -66,7 +68,7 @@ function fetchRequest(options: IRequestOptions) {
   }
 
   return abortablePromise(fetch(requestUrl, config))
-    .then(response => checkStatus(response));
+    .then(response => checkStatus(response, options.download));
 }
 
 const request = {

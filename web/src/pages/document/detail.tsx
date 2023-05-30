@@ -34,7 +34,8 @@ function Detail() {
       if (res.code === 200) {
         setData(res.data)
         const res1 = await fileService.getFile(res.data.fileId)
-        setContent(res1.data)
+        console.log("🚀 ~ file: detail.tsx:37 ~ init ~ res1:", res1)
+        // setContent(res1)
       }
     } catch (error) {
       console.log("🚀 ~ file: detail.tsx:26 ~ init ~ error:", error)

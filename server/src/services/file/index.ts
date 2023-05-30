@@ -1,4 +1,4 @@
-import { RequestMapping, Get, Post, Put, Upload } from "@/request"
+import { RequestMapping, Get, Post } from "@/request"
 import fileService from "./service"
 
 @RequestMapping('/file')

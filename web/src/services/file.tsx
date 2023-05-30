@@ -7,8 +7,12 @@ export function upload(data: FormData): T_RESPONSE_BASE<{ id: string, url: strin
   })
 }
 
-export function getFile(id: string): T_RESPONSE_BASE<string> {
+export function getFile(id: string): Blob {
   return request.get({
     path: `/file/${id}`,
-  })
+    download: true,
+    headers: {
+      responseType: 'blob',
+    }
+  }) as any
 }

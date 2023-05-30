@@ -5,8 +5,8 @@ import moment from "moment";
 import fs from 'fs'
 import co from 'co';
 import OSS from 'ali-oss';
-import { ALI_KEY, FILE_TYPE, FILE_PATH, FILE_TIME } from '@/constants';
-import { fetchRequest } from "@/utils/request";
+import http from 'http'
+import { ALI_KEY, FILE_TYPE, FILE_PATH } from '@/constants';
 
 const client = new OSS({
   region: ALI_KEY.REGION, // 公共云下OSS Region
@@ -67,8 +67,10 @@ class FileService {
     const { error, data } = await DataBase.sql(FILE_SQL.queryById, [id])
     if (!error && data?.[0]) {
       const u = data[0].url
-      const d = await fetchRequest(u)
-      return RESPONSE_TYPE.commonSuccess({ res, data: JSON.parse(JSON.stringify(d)) })
+      http.get(u, (stream) => {
+        stream.pipe(res);
+      });
+      return { returns: true }
     }
     return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.fileContentError })
   }

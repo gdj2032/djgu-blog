@@ -6,14 +6,9 @@ import { getUserIdNameBySession, RESPONSE_TYPE, RESPONSE_CODE_MSG } from "@/util
 import DataBase from "@/db";
 import { USER_SQL } from "@/sql";
 import moment from "moment";
-import multer from 'multer'
 import { SESSION_TIME } from "@/constants";
 
 const mApp = App.instance.app
-
-const upload = multer({
-  dest: './tmp/'
-});
 
 const allowSession = 'session可用'
 
@@ -94,7 +89,8 @@ const common = async ({ value, target, path, sessionAble, method, isUpload }: {
             return;
           }
         }
-        const mData = await mFun(req, res)
+        const mData: any = await mFun(req, res)
+        if (mData?.returns) return;
         if (typeof mData === 'string') {
           res.write(mData)
         } else {
@@ -139,37 +135,6 @@ export const Delete = (path: string, sessionAble?: boolean): MethodDecorator => 
 export const Patch = (path: string, sessionAble?: boolean): MethodDecorator => {
   return (target, key, { value }) => {
     common({ target, value, path, sessionAble, method: 'patch' })
-  }
-}
-
-export const Upload = (path: string, sessionAble?: boolean): MethodDecorator => {
-  return (target, key, { value }) => {
-    const mFun = value as unknown as Methods.Get
-    const mProto = target.constructor.prototype
-    const mTime = setInterval(() => {
-      if (mProto.url) {
-        const mUrl = mProto.url + (path === '/' ? '' : path)
-        console.info('--- common url --->', mUrl);
-        mApp.post(mUrl, upload.single('file'), async (req, res) => {
-          if (sessionAble) {
-            const sessionRes = await check(req, res);
-            if (sessionRes) {
-              res.write(sessionRes)
-              res.end();
-              return;
-            }
-          }
-          const mData = await mFun(req, res)
-          if (typeof mData === 'string') {
-            res.write(mData)
-          } else {
-            res.write(JSON.stringify(mData))
-          }
-          res.end();
-        })
-        clearInterval(mTime)
-      }
-    }, 5)
   }
 }
 

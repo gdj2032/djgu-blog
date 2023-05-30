@@ -28,6 +28,7 @@ interface IRequestOptions {
   data?: IRequestParams;
   headers?: any;
   upload?: boolean;
+  download?: boolean;
 }
 
 interface menuOption {
