@@ -23,7 +23,7 @@ function genQuery(params?: IRequestParams) {
  * @param {Promise} basePromise
  * @param {number} timeout
  */
-const abortablePromise = (basePromise: Promise<any>, timeout: number = 5000) => {
+const abortablePromise = (basePromise: Promise<any>, timeout: number = 20000) => {
   let abortFunc: () => void = null;
 
   const abortPromise = new Promise((_, reject) => {

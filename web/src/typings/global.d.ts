@@ -29,6 +29,7 @@ interface IRequestOptions {
   headers?: any;
   upload?: boolean;
   download?: boolean;
+  timeout?: number;
 }
 
 interface menuOption {

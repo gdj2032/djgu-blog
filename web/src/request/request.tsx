@@ -67,7 +67,7 @@ function fetchRequest(options: IRequestOptions) {
     }
   }
 
-  return abortablePromise(fetch(requestUrl, config))
+  return abortablePromise(fetch(requestUrl, config), options.timeout)
     .then(response => checkStatus(response, options.download));
 }
 
