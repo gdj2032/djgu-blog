@@ -82,7 +82,14 @@ function Create() {
     if (id) {
       const res = await documentService.dDetail(id);
       setData(res.data)
-      console.info('--- formRef --->', formRef.current);
+      // console.info('--- formRef --->', formRef.current);
+      const res1 = await fileService.getFile(res.data.fileId)
+      // console.log("🚀 ~ file: detail.tsx:37 ~ init ~ res1:", res1)
+      const fr = new FileReader()
+      fr.addEventListener('loadend', (e: any) => {
+        formRef.current?.setFieldsValue({ content: e.target.result })
+      })
+      fr.readAsText(res1)
       formRef.current?.setFieldsValue({
         name: res.data.name,
         description: res.data.description,

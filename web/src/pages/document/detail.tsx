@@ -34,7 +34,11 @@ function Detail() {
       if (res.code === 200) {
         setData(res.data)
         const res1 = await fileService.getFile(res.data.fileId)
-        console.log("🚀 ~ file: detail.tsx:37 ~ init ~ res1:", res1)
+        const fr = new FileReader()
+        fr.addEventListener('loadend', (e: any) => {
+          setContent(e.target.result)
+        })
+        fr.readAsText(res1)
         // setContent(res1)
       }
     } catch (error) {

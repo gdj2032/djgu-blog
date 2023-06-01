@@ -67,7 +67,7 @@ class DocumentService {
 
   async create(...args) {
     const [req, res] = args;
-    const { name, description, fileId, types } = req.body as any;
+    const { name, description, fileId, types, content = '' } = req.body as any;
     const errorAble = await RESPONSE_TYPE.commonErrors({
       res,
       errs: [
@@ -89,7 +89,7 @@ class DocumentService {
     if (errorAble) return errorAble;
     const dId = documentUuid()
     const time = moment().valueOf();
-    const { error } = await DataBase.sql(DOCUMENT_SQL.insert, [dId, name, description, fileId, types.join(','), time, time, 0])
+    const { error } = await DataBase.sql(DOCUMENT_SQL.insert, [dId, name, description, fileId, content, types.join(','), time, time, 0])
     if (error) {
       return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.documentInsertError })
     }
