@@ -1,13 +1,9 @@
-import { useAppSelector, userAction } from '@/stores';
-import React, { useEffect, useState, useMemo } from 'react';
-import { HashRouter, Routes } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { HashRouter } from 'react-router-dom';
 import ContainerPage from '../container';
-import routeList from './routeList';
-import { loginRoute, pageRoute } from './routes';
-import { isElectron } from '@/constants';
+import { pageRoute } from './routes';
 
 const Roots = () => {
-  const user = useAppSelector(userAction.userInfo);
   const routes = pageRoute();
   const [local, setLocal] = useState(window.location.hash.replace('#', ''))
 
@@ -22,22 +18,9 @@ const Roots = () => {
     }
   }, [])
 
-  const getContainer = useMemo(() => {
-    if (isElectron) {
-      if (user?.id) {
-        return <ContainerPage routes={routes} />
-      }
-      return (
-        <Routes>
-          {routeList(loginRoute)}
-        </Routes>
-      )
-    }
-    return <ContainerPage routes={routes} />
-  }, [routes, user?.id])
   return (
     <HashRouter>
-      {getContainer}
+      <ContainerPage routes={routes} />
     </HashRouter>
   );
 }

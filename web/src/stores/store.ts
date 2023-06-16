@@ -14,6 +14,7 @@ import {
   REGISTER
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage';
+import { sysReducer } from './sys';
 
 const persistConfig = {
   key: 'root',
@@ -24,6 +25,7 @@ const persistConfig = {
 const allReducers = combineReducers({
   counter: counterReducer,
   user: userReducer,
+  sys: sysReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, allReducers)

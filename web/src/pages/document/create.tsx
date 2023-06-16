@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router';
 import { useQuery, openModal2 } from '@djgu/react-comps';
 import { DocumentService } from '@/typings/document';
 import UpdateDocTypeModal from '../user/comps/UpdateDocTypeModal';
-import { fileUuid, uploadFile } from '@/utils';
+import { uploadFile } from '@/utils';
 
 function Create() {
   const { id } = useQuery()

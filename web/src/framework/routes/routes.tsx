@@ -4,7 +4,7 @@ import {
 } from '@/pages';
 import { RouteObject } from 'react-router/dist/lib/context';
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import NotFound from '../404';
 
 export const PathConfig = {
@@ -12,24 +12,24 @@ export const PathConfig = {
   ...pageRoutes,
 };
 
-function Redirect({ to }: { to: string }) {
-  const navigate = useNavigate();
-  useEffect(() => {
-    navigate(to);
-  });
-  return null;
-}
+// function Redirect({ to }: { to: string }) {
+//   const navigate = useNavigate();
+//   useEffect(() => {
+//     navigate(to);
+//   });
+//   return null;
+// }
 
-export const loginRoute: RouteObject[] = [
-  {
-    element: <Redirect to={PathConfig.login} />,
-    path: '*'
-  },
-  {
-    element: <Login />,
-    path: PathConfig.login,
-  },
-];
+// export const loginRoute: RouteObject[] = [
+//   {
+//     element: <Redirect to={PathConfig.login} />,
+//     path: '*'
+//   },
+//   {
+//     element: <Login />,
+//     path: PathConfig.login,
+//   },
+// ];
 
 export const pageRoute = (): RouteObject[] => [
   {

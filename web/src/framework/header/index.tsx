@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout } from 'antd'
 import { PoweroffOutlined, UserOutlined } from '@ant-design/icons'
-import { APPNAME } from '@/constants'
+import { APPNAME, USER_ROLE } from '@/constants'
 import './index.scss'
 import { doLogout } from '@/utils'
 import { useAppSelector } from '@/stores'
@@ -10,9 +10,9 @@ import { userInfo } from '@/stores/user'
 const { Header } = Layout
 
 const CustomHeader = () => {
-  const { username } = useAppSelector(userInfo);
+  const { username, role } = useAppSelector(userInfo);
 
-  if (username?.role !== 1) {
+  if (!USER_ROLE.isAdmin(role)) {
     return null
   }
 

@@ -1,0 +1,46 @@
+.g-fixed-view {
+  position: relative;
+
+  .menu-button {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    font-size: 16px;
+    padding: 4px 8px;
+    height: auto;
+    line-height: auto;
+  }
+
+  .mode-switch {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(64, 150, 255, .6);
+
+    .ant-switch-inner {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .ant-switch-inner-unchecked,
+    .ant-switch-inner-checked {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &:hover {
+      background-color: rgba(64, 150, 255, .2) !important;
+    }
+
+    .ant-switch-handle {
+      &::before {
+        opacity: 0.6;
+      }
+    }
+  }
+}

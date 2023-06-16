@@ -1,34 +1,29 @@
 import routeList from '../routes/routeList';
 import { Routes } from 'react-router';
 import { RouteObject } from 'react-router/dist/lib/context';
-import Header from '../header';
 import { Layout } from 'antd';
-import Aside from '../aside';
 import React from 'react';
 import './index.scss';
 import PageFrame from '@/components/PageFrame';
-
-const { Content } = Layout
+import FixedView from '../fixedView';
+import { sysAction, useAppSelector, userAction } from '@/stores';
+import { isElectron } from '@/constants';
 
 interface IContainerProps {
   routes: RouteObject[]
 }
 
 function ContainerPage(props: IContainerProps) {
+  const user = useAppSelector(userAction.userInfo);
+  const sys = useAppSelector(sysAction.sysInfo);
   const { routes = [] } = props;
   return (
-    <PageFrame>
+    <PageFrame className={sys.mode}>
+      <FixedView menuShow={isElectron ? !!user?.id : true} />
       <Layout className="g-container">
-        <Header />
-        <Layout>
-          <Aside />
-          <Content className="layout-content">
-            <div id="micro-app" />
-            <Routes>
-              {routeList(routes)}
-            </Routes>
-          </Content>
-        </Layout>
+        <Routes>
+          {routeList(routes)}
+        </Routes>
       </Layout>
     </PageFrame>
   );
