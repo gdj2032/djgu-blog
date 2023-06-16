@@ -5,7 +5,6 @@ import React from 'react';
 // import { VERSION } from '@/constants';
 import './index.scss';
 import Setting from '@/utils/setting';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
 function Login() {
   const onFinish = (values: any) => {
@@ -21,26 +20,26 @@ function Login() {
             <div className="login-title">登录</div>
             <Form
               name="basic"
-              labelCol={{ span: 0 }}
+              labelCol={{ span: 6 }}
               initialValues={{ remember: true }}
               onFinish={onFinish}
             >
               <Form.Item
-                label=""
+                label="用户名"
                 name="username"
                 rules={[{ required: true, message: '请输入用户名' }]}
                 initialValue={Setting.username}
               >
-                <Input placeholder="请输入用户名" prefix={<UserOutlined />} />
+                <Input placeholder="请输入用户名" />
               </Form.Item>
 
               <Form.Item
-                label=""
+                label="密码"
                 name="password"
                 rules={[{ required: true, message: '请输入密码' }]}
                 initialValue={Setting.password}
               >
-                <Input.Password placeholder="请输入密码" prefix={<LockOutlined />} />
+                <Input.Password placeholder="请输入密码" />
               </Form.Item>
 
               <Form.Item name="remember" valuePropName="checked">

@@ -6,6 +6,7 @@ import { isElectron } from '@/constants';
 import { userService } from '@/services';
 import { CreateWindowParam } from '@/electron/electron-client';
 import Setting from './setting';
+import { message } from 'antd';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 let timer: any;
@@ -21,6 +22,7 @@ export const doLogin = (params: any) => new Promise(async (resolve, reject) => {
     Setting.password = params.remember ? params.password : ''
     Setting.session = res.data.session
     store.dispatch(setUserInfo({ ...data, isLogin: true }));
+    message.success('登录成功')
     if (isElectron) {
       window.app.createWindowByName({ name: 'home' });
       timer = setTimeout(() => {
@@ -39,6 +41,7 @@ export const doLogin = (params: any) => new Promise(async (resolve, reject) => {
 
 export const doLogout = () => {
   store.dispatch(clearUserInfo())
+  message.success('登出成功')
   if (!isElectron) {
     window.location.hash = PathConfig.home
   } else {

@@ -1,14 +1,19 @@
 /**
  * 左侧目录弹窗
  */
-import { Icon } from '@/components';
+import { INavFormat } from '@/constants';
 import pageRoutes from '@/pages/pageRoutes';
 import { useAppSelector, userAction } from '@/stores';
-import { CloseOutlined } from '@ant-design/icons';
+import { doLogout } from '@/utils';
+import { CloseOutlined, HomeOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Drawer, Row } from 'antd';
 import React from 'react';
 import { useNavigate } from 'react-router';
 import './index.scss';
+
+interface IItem extends INavFormat {
+  click?: () => void;
+}
 
 interface IProps {
   visible: boolean;
@@ -20,18 +25,31 @@ function MenuModal(props: IProps) {
   const user = useAppSelector(userAction.userInfo)
   const navigate = useNavigate()
 
-  const bottomMenu = () => [
-    {
-      label: '首页',
-      key: pageRoutes.home,
-      icon: <Icon name="home" fill="#fff" size={14} />
-    },
-    {
-      label: '管理',
-      key: user.id ? pageRoutes.user : pageRoutes.login,
-      icon: <Icon name="admin" fill="#fff" size={14} />
-    },
-  ]
+  const bottomMenu = () => {
+    const items: IItem[] = [
+      {
+        label: '首页',
+        key: pageRoutes.home,
+        icon: <HomeOutlined />
+      },
+      {
+        label: '管理',
+        key: user.id ? pageRoutes.user : pageRoutes.login,
+        icon: <UserOutlined />
+      },
+    ]
+    if (user.id) {
+      items.push(
+        {
+          label: '退出登录',
+          key: pageRoutes.login,
+          click: doLogout,
+          icon: <LogoutOutlined />
+        }
+      )
+    }
+    return items;
+  }
   return (
     <Drawer
       open={visible}
@@ -51,7 +69,18 @@ function MenuModal(props: IProps) {
       <div className='m-menu-bottom'>
         {
           bottomMenu().map(e => (
-            <div key={e.key} className='p-mb-item' onClick={() => { navigate(e.key); onClose?.() }}>
+            <div
+              key={e.key}
+              className='p-mb-item'
+              onClick={() => {
+                if (e.click) {
+                  e.click();
+                } else {
+                  navigate(e.key)
+                }
+                onClose?.()
+              }}
+            >
               {e.icon}
               <span>{e.label}</span>
             </div>

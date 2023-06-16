@@ -1,6 +1,8 @@
 .layout-login {
+  height: 100%;
   overflow: hidden;
   position: relative;
+  @include theme-bg;
 
   .login-wrap {
     height: 100%;
@@ -29,8 +31,9 @@
       margin: 0 auto;
 
       .login-title {
-        font-size: 16px;
-        color: $login-title-color;
+        font-size: 20px;
+        font-weight: 500;
+        color: var(--theme-title-color);
         letter-spacing: 0;
         box-sizing: border-box;
         text-align: center;
@@ -82,6 +85,7 @@
         .ant-btn.ant-btn-primary {
           height: 40px;
           font-size: 18px;
+          border-radius: 20px;
           background-color: $primary-btn-color;
           border-color: $primary-btn-color;
         }
@@ -92,6 +96,17 @@
         margin: 0 auto 0;
         display: block;
       }
+    }
+  }
+
+  .ant-input-affix-wrapper {
+    background: rgba(255, 255, 255, .8);
+    border-width: 0;
+    border-radius: 18px;
+    height: 36px;
+
+    .ant-input {
+      background-color: transparent !important;
     }
   }
 }
