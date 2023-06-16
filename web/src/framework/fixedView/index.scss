@@ -1,3 +1,5 @@
+$zIndex: 999;
+
 .g-fixed-view {
   position: relative;
 
@@ -8,6 +10,7 @@
     font-size: 16px;
     padding: 4px 8px;
     height: auto;
+    z-index: $zIndex;
     line-height: auto;
   }
 
@@ -17,6 +20,7 @@
     right: 12px;
     background-color: rgba(0, 0, 0, 0.8);
     border: 1px solid rgba(64, 150, 255, .6);
+    z-index: $zIndex;
 
     .ant-switch-inner {
       height: 100%;

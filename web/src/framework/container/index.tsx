@@ -18,7 +18,7 @@ function ContainerPage(props: IContainerProps) {
   const sys = useAppSelector(sysAction.sysInfo);
   const { routes = [] } = props;
   return (
-    <PageFrame className={sys.mode}>
+    <PageFrame className={sys.mode} hideTitleBar={!isElectron}>
       <FixedView menuShow={isElectron ? !!user?.id : true} />
       <Layout className="g-container">
         <Routes>

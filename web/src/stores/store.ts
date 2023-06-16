@@ -19,7 +19,7 @@ import { sysReducer } from './sys';
 const persistConfig = {
   key: 'root',
   storage: storage, //指定存储位置，一定要写
-  whitelist: ['user']
+  whitelist: ['user', 'sys']
 }
 
 const allReducers = combineReducers({

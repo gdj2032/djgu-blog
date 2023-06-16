@@ -13,9 +13,9 @@ export interface INavFormat {
 
 export const menuConfig: INavFormat[] = [
   {
-    label: '最近',
+    label: '首页',
     key: pageRoutes.home,
-    icon: <Icon name="latest" fill="#fff" />
+    icon: <Icon name="home" fill="#fff" />
   },
   {
     label: '文档',

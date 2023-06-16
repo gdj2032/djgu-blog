@@ -5,8 +5,9 @@ import { Icon } from '@/components';
 import { useAppSelector, sysAction } from '@/stores';
 import { MenuOutlined } from '@ant-design/icons';
 import { Button, Switch } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import MenuModal from '../menuModal';
 import './index.scss';
 
 interface IProps {
@@ -18,10 +19,11 @@ function FixedView(props: IProps) {
   const { menuShow = true, modeShow = true } = props;
   const dispatch = useDispatch()
   const sysInfo = useAppSelector(sysAction.sysInfo)
+  const [visible, setVisible] = useState<boolean>(false)
   return (
     <div className='g-fixed-view'>
       {menuShow && (
-        <Button className='menu-button'>
+        <Button className='menu-button' onClick={() => setVisible(true)}>
           <MenuOutlined />
         </Button>
       )}
@@ -36,6 +38,10 @@ function FixedView(props: IProps) {
           }}
         />
       )}
+      <MenuModal
+        visible={visible}
+        onClose={() => setVisible(false)}
+      />
     </div>
   )
 }
