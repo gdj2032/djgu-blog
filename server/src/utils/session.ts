@@ -1,6 +1,6 @@
 import DataBase from '@/db';
 import { USER_SQL } from '@/sql';
-const sessionKey = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ12345678abcdefghijklmnopqrstuvwxyz'
+const sessionKey = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789abcdefghijklmnopqrstuvwxyz'
 // 加密
 export const jCode = function (value) {
   const kleng = sessionKey.length;

@@ -1,5 +1,5 @@
 import routeList from '../routes/routeList';
-import { Routes } from 'react-router';
+import { Routes, useLocation } from 'react-router';
 import { RouteObject } from 'react-router/dist/lib/context';
 import { Layout } from 'antd';
 import React, { useEffect, useState } from 'react';
@@ -15,16 +15,14 @@ interface IContainerProps {
 }
 
 function ContainerPage(props: IContainerProps) {
+  const { pathname } = useLocation()
   const user = useAppSelector(userAction.userInfo);
   const sys = useAppSelector(sysAction.sysInfo);
-  const [local, setLocal] = useState(window.location.hash.replace('#', ''))
-  console.info('--- local --->', local);
+  const [local, setLocal] = useState(pathname)
   const { routes = [] } = props;
   useEffect(() => {
-    window.onhashchange = () => {
-      setLocal(window.location.hash.replace('#', ''))
-    }
-  }, [])
+    setLocal(pathname)
+  }, [pathname])
   return (
     <PageFrame className={sys.mode} hideTitleBar={!isElectron}>
       <FixedView menuShow={isElectron ? !!user?.id : true} modeShow={!local.includes(PathConfig.documentCreate)} />

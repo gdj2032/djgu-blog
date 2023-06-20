@@ -44,9 +44,11 @@ export const doLogout = (info?: { tip?: string | boolean, type?: 'success' | 'er
   store.dispatch(clearUserInfo())
   if (tip) {
     if (type === 'success') {
-      message.success(tip || '登出成功')
+      const msg = typeof tip === 'string' ? tip : '登出成功'
+      message.success(msg)
     } else {
-      message.error(tip || '已登出')
+      const msg = typeof tip === 'string' ? tip : '已登出'
+      message.error(msg)
     }
   }
   if (!isElectron) {
