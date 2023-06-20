@@ -16,7 +16,7 @@ function checkStatus(response: any, download?: boolean) {
       }
       return response.text().then((text: string) => Promise.resolve(text ? JSON.parse(text) : {}));
     case 401:
-      doLogout()
+      doLogout({ tip: '登录已失效', type: 'error' });
       break;
     default:
       return (response.json()).then((json: any) => {

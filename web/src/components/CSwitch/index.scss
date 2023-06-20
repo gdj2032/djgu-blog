@@ -1,0 +1,53 @@
+.c-switch {
+  position: relative;
+
+  .c-switch-checkbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    border: 0;
+    appearance: none;
+    cursor: pointer;
+  }
+
+  .c-switch-container {
+    position: relative;
+    border-radius: 28px;
+    background: #a7aaa6;
+    z-index: 0;
+    margin: 0;
+    padding: 0;
+    appearance: none;
+    border: 0;
+    transition: all 0.3s;
+  }
+
+  .c-switch-circle {
+    position: relative;
+    left: 1px;
+    top: 1px;
+    // width: 26px;
+    // height: 26px;
+    border-radius: 50%;
+    content: "";
+    transition: all 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .c-switch-container-checked {
+    .c-switch-circle {
+      // transform: translateX(32px);
+    }
+  }
+}
+
+.c-switch-disabled {
+  user-select: none;
+  opacity: 0.8;
+}

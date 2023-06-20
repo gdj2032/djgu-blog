@@ -89,7 +89,7 @@ function Aside(props: IProps) {
       </div>
       {USER_ROLE.isAdminForSelf() && (
         <Tooltip title="登出" placement="right">
-          <div className="aside-logout" onClick={doLogout}>
+          <div className="aside-logout" onClick={() => doLogout()}>
             <LogoutOutlined />
           </div>
         </Tooltip>

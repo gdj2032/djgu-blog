@@ -43,7 +43,7 @@ function MenuModal(props: IProps) {
         {
           label: '退出登录',
           key: pageRoutes.login,
-          click: doLogout,
+          click: () => doLogout(),
           icon: <LogoutOutlined />
         }
       )

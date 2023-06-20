@@ -39,9 +39,16 @@ export const doLogin = (params: any) => new Promise(async (resolve, reject) => {
   }
 })
 
-export const doLogout = () => {
+export const doLogout = (info?: { tip?: string | boolean, type?: 'success' | 'error' }) => {
+  const { tip = true, type = 'success' } = info || {};
   store.dispatch(clearUserInfo())
-  message.success('登出成功')
+  if (tip) {
+    if (type === 'success') {
+      message.success(tip || '登出成功')
+    } else {
+      message.error(tip || '已登出')
+    }
+  }
   if (!isElectron) {
     window.location.hash = PathConfig.home
   } else {

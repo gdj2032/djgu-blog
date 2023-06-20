@@ -1,10 +1,10 @@
 /**
  * fix ui
  */
-import { Icon } from '@/components';
+import { CSwitch, Icon, Loading } from '@/components';
 import { useAppSelector, sysAction } from '@/stores';
 import { MenuOutlined } from '@ant-design/icons';
-import { Button, Switch } from 'antd';
+import { Button } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import MenuModal from '../menuModal';
@@ -20,6 +20,7 @@ function FixedView(props: IProps) {
   const dispatch = useDispatch()
   const sysInfo = useAppSelector(sysAction.sysInfo)
   const [visible, setVisible] = useState<boolean>(false)
+  let timer
   return (
     <div className='g-fixed-view'>
       {menuShow && (
@@ -28,13 +29,23 @@ function FixedView(props: IProps) {
         </Button>
       )}
       {modeShow && (
-        <Switch
-          checked={sysInfo.mode === 'light'}
+        <CSwitch
+          size={{ width: 54 }}
           className='mode-switch'
-          checkedChildren={<div className='mode-switch-child'><Icon name="light" fill='#fff' /></div>}
-          unCheckedChildren={<div className='mode-switch-child'><Icon name="dark" fill='#fe1' /></div>}
+          checked={sysInfo.mode === 'light'}
+          checkCircle={<Icon name="light" fill='rgba(242, 230, 96, 1)' />}
+          uncheckedCircle={<Icon name="dark" fill='rgba(146, 196, 255, 1)' />}
+          checkedBg='rgba(204, 236, 244, 1)'
+          uncheckedBg='rgba(68, 87, 129, 1)'
+          checkedCircleBg='rgba(180, 200, 222, 1)'
+          uncheckedCircleBg='rgba(26, 39, 68, 1)'
           onChange={(e) => {
+            Loading.show()
             dispatch(sysAction.setMode(e ? 'light' : 'dark'))
+            timer = setTimeout(() => {
+              Loading.hide()
+              clearTimeout(timer)
+            }, 500);
           }}
         />
       )}

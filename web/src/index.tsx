@@ -11,6 +11,7 @@ import start, { microAction } from '@/micro';
 
 import '@/styles/global.scss';
 import { APPNAME } from './constants';
+import { Loading } from './components';
 
 // svg配置
 // import all svg
@@ -49,6 +50,7 @@ const Apps = () => {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <Roots />
+            <Loading ref={c => Loading.setRef(c)} />
           </PersistGate>
         </Provider>
       </ConfigProvider>

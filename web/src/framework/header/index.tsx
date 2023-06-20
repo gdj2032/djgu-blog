@@ -31,7 +31,7 @@ const CustomHeader = () => {
             {username || 'admin'}
           </span>
         </div>
-        <div className="u-item u-logout" onClick={doLogout}>
+        <div className="u-item u-logout" onClick={() => doLogout()}>
           <PoweroffOutlined className="u-icon" />
           <span className="u-text">
             退出

@@ -26,14 +26,17 @@
     }
 
     .login-form {
-      width: 280px;
-      height: 390px;
+      width: 400px;
+      height: 320px;
       margin: 0 auto;
+      background-color: var(--login-form-bg);
+      border-radius: 20px;
+      padding: 20px 60px;
 
       .login-title {
         font-size: 20px;
         font-weight: 500;
-        color: var(--theme-title-color);
+        color: var(--login-title-color);
         letter-spacing: 0;
         box-sizing: border-box;
         text-align: center;
