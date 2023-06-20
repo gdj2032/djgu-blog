@@ -1,7 +1,6 @@
 /**
  * 文档列表
  */
-import { CSwitch } from '@/components';
 import React from 'react';
 import './index.scss';
 

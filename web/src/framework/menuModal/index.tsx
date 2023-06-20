@@ -2,13 +2,13 @@
  * 左侧目录弹窗
  */
 import { INavFormat } from '@/constants';
-import pageRoutes from '@/pages/pageRoutes';
 import { useAppSelector, userAction } from '@/stores';
 import { doLogout } from '@/utils';
 import { CloseOutlined, HomeOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Drawer, Row } from 'antd';
 import React from 'react';
 import { useNavigate } from 'react-router';
+import { PathConfig } from '../routes/routes';
 import './index.scss';
 
 interface IItem extends INavFormat {
@@ -29,12 +29,12 @@ function MenuModal(props: IProps) {
     const items: IItem[] = [
       {
         label: '首页',
-        key: pageRoutes.home,
+        key: PathConfig.home,
         icon: <HomeOutlined />
       },
       {
         label: '管理',
-        key: user.id ? pageRoutes.user : pageRoutes.login,
+        key: user.id ? PathConfig.user : PathConfig.login,
         icon: <UserOutlined />
       },
     ]
@@ -42,7 +42,7 @@ function MenuModal(props: IProps) {
       items.push(
         {
           label: '退出登录',
-          key: pageRoutes.login,
+          key: PathConfig.login,
           click: () => doLogout(),
           icon: <LogoutOutlined />
         }
@@ -50,10 +50,14 @@ function MenuModal(props: IProps) {
     }
     return items;
   }
+
+  const menus: IItem[] = [
+    { label: '最近更新', key: PathConfig.latest },
+    { label: '所有文档', key: PathConfig.document },
+  ]
   return (
     <Drawer
       open={visible}
-      // open
       onClose={onClose}
       placement='left'
       closable={false}
@@ -65,7 +69,30 @@ function MenuModal(props: IProps) {
       )}
       className="g-menu-drawer"
     >
-      <div className='m-menu-body'>MenuModal</div>
+      <div className='m-menu-body'>
+        {
+          menus.map(e => (
+            <div
+              key={e.label}
+            >
+              <span
+                className='p-mbd-item'
+                key={e.label}
+                onClick={() => {
+                  if (e.click) {
+                    e.click();
+                  } else {
+                    navigate(e.key)
+                  }
+                  onClose?.()
+                }}
+              >
+                {e.label}
+              </span>
+            </div>
+          ))
+        }
+      </div>
       <div className='m-menu-bottom'>
         {
           bottomMenu().map(e => (

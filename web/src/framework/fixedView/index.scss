@@ -5,8 +5,8 @@ $zIndex: 999;
 
   .menu-button {
     position: fixed;
-    top: 12px;
-    left: 12px;
+    top: 8px;
+    left: 8px;
     font-size: 16px;
     padding: 4px 8px;
     height: auto;
@@ -16,8 +16,8 @@ $zIndex: 999;
 
   .mode-switch {
     position: fixed;
-    top: 12px;
-    right: 12px;
+    top: 8px;
+    right: 8px;
     z-index: $zIndex;
   }
 }

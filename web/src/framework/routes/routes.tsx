@@ -1,9 +1,9 @@
 import pageRoutes from '@/pages/pageRoutes'
 import {
-  Home, Login, User, Document, DocumentDetail, DocumentCreate,
+  Home, Login, User, Document, DocumentDetail, DocumentCreate, Latest,
 } from '@/pages';
 import { RouteObject } from 'react-router/dist/lib/context';
-import React, { useEffect } from 'react';
+import React from 'react';
 // import { useNavigate } from 'react-router-dom';
 import NotFound from '../404';
 
@@ -43,6 +43,10 @@ export const pageRoute = (): RouteObject[] => [
   {
     path: PathConfig.login,
     element: <Login />,
+  },
+  {
+    path: PathConfig.latest,
+    element: <Latest />,
   },
   {
     path: PathConfig.user,

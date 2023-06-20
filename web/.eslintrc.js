@@ -40,5 +40,6 @@ module.exports = {
     "react/require-default-props": [0],
     "max-len": [0],
     "object-curly-newline": [0],
+    "react-hooks/exhaustive-deps": [0]
   }
 };
