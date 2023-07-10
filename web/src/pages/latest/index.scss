@@ -8,8 +8,7 @@
 
   .m-document-container {
     position: relative;
-    width: 1000px;
-    min-width: 1000px;
+    width: 100%;
     height: 100%;
     border-radius: 12px;
     padding: 12px;
@@ -28,7 +27,12 @@
 
     .p-doc-list {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
+      margin-top: 48px;
+
+      &>:nth-child(2n) {
+        margin-right: 0;
+      }
     }
 
     .p-scroll-bottom {
