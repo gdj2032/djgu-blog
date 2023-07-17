@@ -1,6 +1,6 @@
 import pageRoutes from '@/pages/pageRoutes'
 import {
-  Home, Login, User, Document, DocumentDetail, DocumentCreate, Latest,
+  Home, Login, User, Document, DocumentDetail, DocumentCreate,
 } from '@/pages';
 import { RouteObject } from 'react-router/dist/lib/context';
 import React from 'react';
@@ -43,10 +43,6 @@ export const pageRoute = (): RouteObject[] => [
   {
     path: PathConfig.login,
     element: <Login />,
-  },
-  {
-    path: PathConfig.latest,
-    element: <Latest />,
   },
   {
     path: PathConfig.user,

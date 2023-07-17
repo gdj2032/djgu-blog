@@ -52,7 +52,6 @@ function MenuModal(props: IProps) {
   }
 
   const menus: IItem[] = [
-    { label: '最近更新', key: PathConfig.latest },
     { label: '所有文档', key: PathConfig.document },
   ]
   return (
