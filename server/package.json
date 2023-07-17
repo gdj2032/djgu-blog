@@ -1,6 +1,6 @@
 {
   "name": "node-blog",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "#### 介绍 node连接数据库和前端页面接口",
   "main": "index.js",
   "scripts": {
