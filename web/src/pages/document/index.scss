@@ -63,7 +63,9 @@
     }
 
     .p-doc-list {
+      width: 100vw;
       display: flex;
+      flex-wrap: wrap;
     }
 
     .p-scroll-bottom {
