@@ -50,7 +50,9 @@ function Version() {
       onOk: async () => {
         const res = await versionService.setUsedVersion(id);
         if (res?.code === 200) {
-          window.location.reload()
+          setTimeout(() => {
+            window.location.reload()
+          }, 2000);
         }
         debounceRefresh()
       }

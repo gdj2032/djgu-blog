@@ -133,9 +133,10 @@ class VersionService {
     if (d[0].used) {
       return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.versionIsUsed })
     }
-    const { error, data } = await DataBase.sql(VERSION_SQL.deleteById, [id])
-    console.log("🚀 ~ file: service.ts:90 ~ DocumentTypeService ~ delete ~ error, data:", error, data)
+    const { error } = await DataBase.sql(VERSION_SQL.deleteById, [id])
     if (!error) {
+      // 删除压缩包
+      fs.unlinkSync(d[0].zipPath)
       return RESPONSE_TYPE.commonSuccess({ res })
     }
     return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
@@ -182,7 +183,7 @@ class VersionService {
           if (webAble) {
             exec('cd /usr/sbin ./nginx -s reload')
           } else {
-            exec(`pm2 ${NGINX_FILE_PATH_CFG.server}`)
+            exec(`pm2 restart ${NGINX_FILE_PATH_CFG.server}/index.js`)
           }
         }
       }).catch(() => {
