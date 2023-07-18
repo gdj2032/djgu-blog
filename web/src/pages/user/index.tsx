@@ -6,6 +6,7 @@ import DocumentType from './comps/DocumentType';
 import { Tabs } from 'antd';
 import Document from './comps/Document';
 import { useQuery } from '@djgu/react-comps';
+import Version from './comps/Version';
 
 function User() {
   const { current: cur = USER_TAB.user } = useQuery()
@@ -14,6 +15,7 @@ function User() {
     { key: USER_TAB.user, label: '用户列表', children: <UserList /> },
     { key: USER_TAB.documentType, label: '文档类型', children: <DocumentType /> },
     { key: USER_TAB.document, label: '文档列表', children: <Document /> },
+    { key: USER_TAB.nginx, label: '版本配置', children: <Version /> },
   ]
 
   if (!USER_ROLE.isAdminForSelf()) {

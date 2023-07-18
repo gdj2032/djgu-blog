@@ -12,12 +12,8 @@ export default class File {
   content(...args) {
     return fileService.getFile(...args)
   }
-  // @Put('/')
-  // put() {
-  //   return 'put'
-  // }
-  // @Delete('/')
-  // delete() {
-  //   return 'delete'
+  // @UploadDirectory('/upload/directory', true)
+  // uploadDirectory(...args) {
+  //   return fileService.uploadDirectory(...args)
   // }
 }

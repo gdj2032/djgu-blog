@@ -49,6 +49,13 @@ export const documentTypeUuid = () => {
   return s;
 }
 
+export const versionUuid = () => {
+  const time1 = moment().valueOf().toString()
+  const time2 = process.hrtime.bigint().toString().slice(6)
+  const s = `${time1}${time2}`
+  return s;
+}
+
 export const commonUuid = () => {
   const time1 = moment().valueOf().toString()
   const time2 = process.hrtime.bigint().toString().slice(8)

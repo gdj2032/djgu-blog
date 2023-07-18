@@ -41,7 +41,9 @@ export const RESPONSE_CODE_MSG = {
   documentInsertError: { status: 400, code: 1014, msg: '新增文档失败' },
   uploadFileError: { status: 400, code: 1015, msg: '文件上传失败' },
   fileNotEmpty: { status: 400, code: 1016, msg: '文件不能为空' },
-  fileContentError: { status: 400, code: 1016, msg: '获取文件内容失败' },
+  fileContentError: { status: 400, code: 1017, msg: '获取文件内容失败' },
+  pathNotEmpty: { status: 400, code: 1018, msg: '路径不能为空' },
+  versionIsUsed: { status: 400, code: 1018, msg: '该版本正在被使用,删除失败!' },
 }
 
 export const RESPONSE_TYPE = {

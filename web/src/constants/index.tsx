@@ -4,3 +4,4 @@ export * from './menuConfig';
 export * from './user';
 export * from './document';
 export * from './format';
+export * from './version';

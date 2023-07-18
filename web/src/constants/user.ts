@@ -17,4 +17,5 @@ export const USER_TAB = {
   user: '1',
   documentType: '2',
   document: '3',
+  nginx: '4',
 }

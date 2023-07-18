@@ -38,10 +38,6 @@ class FileService {
   // mv: [Function: mv]
   async upload(...args) {
     const [req, res] = args;
-    if (req.body) {
-      // 上传文本
-      return this.uploadContent(req, res)
-    }
     if (req.files?.file) {
       const { name, tempFilePath } = req.files.file;
       const url = await this.aliUpload({
@@ -50,6 +46,13 @@ class FileService {
       })
 
       return RESPONSE_TYPE.commonSuccess({ res, data: { url } })
+    }
+    if (req.files?.zip) {
+      return this.uploadZip(req, res)
+    }
+    if (req.body?.content) {
+      // 上传文本
+      return this.uploadContent(req, res)
     }
     return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.uploadFileError })
   }
@@ -117,6 +120,20 @@ class FileService {
       if (!error) {
         return RESPONSE_TYPE.commonSuccess({ res, data: { id: fileId, url } })
       }
+    }
+    return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.uploadFileError })
+  }
+
+  private uploadZip = async (...args) => {
+    const [req, res] = args;
+    console.info('--- uploadDirectory req.files --->', req.files);
+    const { name, tempFilePath, mimetype } = req.files.zip;
+    if (mimetype === 'application/zip') {
+      const fileId = fileUuid()
+      const filename = `${fileId}_${name.split('.')?.[0] || name}.zip`;
+      const filepath = `${FILE_PATH}/${filename}`;
+      fs.renameSync(tempFilePath, filepath)
+      return RESPONSE_TYPE.commonSuccess({ res, data: { id: fileId, url: filepath } })
     }
     return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.uploadFileError })
   }

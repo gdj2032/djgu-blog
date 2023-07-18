@@ -7,10 +7,27 @@ import DataBase from "@/db";
 import { USER_SQL } from "@/sql";
 import moment from "moment";
 import { SESSION_TIME } from "@/constants";
+// import multer from 'multer'
 
 const mApp = App.instance.app
 
 const allowSession = 'session可用'
+
+// const headerConfig = multer.diskStorage({
+//   // destination 上传目的地文件夹 （必需）
+//   destination: (req, file, callback) => {
+//     // FILE_PATH 为目录绝对路径(用户选择目录的绝对路径)
+//     callback(null, FILE_PATH)
+//   },
+//   // 拿到所上传文件的 filename处理，我是处理成原来的名称（可以打印出 file 的各个属性看看）
+//   filename: (req, file, callback) => {
+//     callback(null, file.originalname);
+//   }
+// })
+// const uploadConfig = multer({
+//   // storage: headerConfig,
+//   // dest: FILE_PATH,
+// })
 
 export const CheckSession = async (req: core.Request, res: core.Response) => new Promise<string>(async (resolve, reject) => {
   const reqSession = req.headers?.session as string;
@@ -51,13 +68,13 @@ const check = async (req: core.Request, res: core.Response) => {
   return allow
 }
 
-const common = async ({ value, target, path, sessionAble, method, isUpload }: {
+const common = async ({ value, target, path, sessionAble, method, uploadType }: {
   value: any,
   target: any,
   path: string;
   sessionAble?: boolean;
   method: 'get' | 'post' | 'delete' | 'put' | 'patch',
-  isUpload?: boolean;
+  uploadType?: 'file' | 'directory';
 }) => {
   /*
   **
@@ -80,7 +97,8 @@ const common = async ({ value, target, path, sessionAble, method, isUpload }: {
       // 拿到url，拼接上之后直接放到express之中即可
       const mUrl = mProto.url + (path === '/' ? '' : path)
       console.info('--- common url --->', mUrl);
-      mApp[method](mUrl, async (req, res) => {
+
+      const appFunc = async (req, res) => {
         if (sessionAble) {
           const sessionRes = await check(req, res);
           if (sessionRes) {
@@ -97,7 +115,13 @@ const common = async ({ value, target, path, sessionAble, method, isUpload }: {
           res.write(JSON.stringify(mData))
         }
         res.end();
-      })
+      }
+      // if (uploadType) {
+      //   mApp[method](mUrl, uploadType === 'file' ? uploadConfig.single('file') : uploadConfig.array('file', null), appFunc)
+      // } else {
+      //   mApp[method](mUrl, appFunc)
+      // }
+      mApp[method](mUrl, appFunc)
       clearInterval(mTime)
     }
   }, 5)
@@ -137,6 +161,19 @@ export const Patch = (path: string, sessionAble?: boolean): MethodDecorator => {
     common({ target, value, path, sessionAble, method: 'patch' })
   }
 }
+
+// export const UploadFile = (path: string, sessionAble?: boolean): MethodDecorator => {
+//   return (target, key, { value }) => {
+//     common({ target, value, path, sessionAble, method: 'post', uploadType: 'file' })
+//   }
+// }
+
+// export const UploadDirectory = (path: string, sessionAble?: boolean): MethodDecorator => {
+//   return (target, key, { value }) => {
+//     common({ target, value, path, sessionAble, method: 'post', uploadType: 'directory' })
+//   }
+// }
+
 
 export {
   RequestMapping,
