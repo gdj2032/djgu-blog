@@ -3,8 +3,9 @@ import { VERSION_SQL } from "@/sql";
 import { RESPONSE_TYPE, RESPONSE_CODE_MSG, versionUuid } from "@/utils";
 import moment from 'moment';
 import compressing from 'compressing'
-import { FILE_PATH, NGINX_FILE_PATH_CFG, VERSION_TYPE } from "@/constants";
+import { FILE_PATH, isDev, NGINX_FILE_PATH_CFG, VERSION_TYPE } from "@/constants";
 import fs from 'fs'
+import { exec } from 'child_process'
 
 class VersionService {
   async list(...args) {
@@ -167,7 +168,8 @@ class VersionService {
     if (!error) {
       // 更新文件...
       const zipPath = d0[0].zipPath
-      const actualFolderPath = d0[0].type === VERSION_TYPE.web ? NGINX_FILE_PATH_CFG.web : NGINX_FILE_PATH_CFG.server
+      const webAble = VERSION_TYPE.isWeb(d0[0].type)
+      const actualFolderPath = webAble ? NGINX_FILE_PATH_CFG.web : NGINX_FILE_PATH_CFG.server
       try {
         fs.rmdirSync(actualFolderPath)
       } catch (error) {
@@ -175,6 +177,15 @@ class VersionService {
       }
       compressing.zip.uncompress(zipPath, actualFolderPath, { ignoreBase: true }).then(() => {
         console.log('解压完成')
+        // 执行脚本...
+        if (!isDev) {
+          if (webAble) {
+            exec('cd /usr/sbin')
+            exec('./nginx -s reload')
+          } else {
+            exec(`pm2 ${NGINX_FILE_PATH_CFG.server}`)
+          }
+        }
       }).catch(() => {
         console.log('解压失败')
       })
