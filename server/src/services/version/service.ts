@@ -180,8 +180,7 @@ class VersionService {
         // 执行脚本...
         if (!isDev) {
           if (webAble) {
-            exec('cd /usr/sbin')
-            exec('./nginx -s reload')
+            exec('cd /usr/sbin ./nginx -s reload')
           } else {
             exec(`pm2 ${NGINX_FILE_PATH_CFG.server}`)
           }
