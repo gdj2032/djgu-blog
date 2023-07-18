@@ -44,6 +44,7 @@ export const RESPONSE_CODE_MSG = {
   fileContentError: { status: 400, code: 1017, msg: '获取文件内容失败' },
   pathNotEmpty: { status: 400, code: 1018, msg: '路径不能为空' },
   versionIsUsed: { status: 400, code: 1018, msg: '该版本正在被使用,删除失败!' },
+  versionNotExist: { status: 400, code: 1018, msg: '版本不存在!' },
 }
 
 export const RESPONSE_TYPE = {

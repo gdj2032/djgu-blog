@@ -2,6 +2,9 @@ import DataBase from "@/db";
 import { VERSION_SQL } from "@/sql";
 import { RESPONSE_TYPE, RESPONSE_CODE_MSG, versionUuid } from "@/utils";
 import moment from 'moment';
+import compressing from 'compressing'
+import { FILE_PATH, NGINX_FILE_PATH_CFG, VERSION_TYPE } from "@/constants";
+import fs from 'fs'
 
 class VersionService {
   async list(...args) {
@@ -42,12 +45,13 @@ class VersionService {
 
   async create(...args) {
     const [req, res] = args;
-    const { name, zipPath } = req.body as any;
+    const { name, zipPath, type } = req.body as any;
     const errorAble = await RESPONSE_TYPE.commonErrors({
       res,
       errs: [
         { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
         { func: () => !zipPath, ...RESPONSE_CODE_MSG.pathNotEmpty },
+        { func: () => typeof type !== 'number', ...RESPONSE_CODE_MSG.typeNotEmpty },
         {
           func: async () => {
             const { data: d1 } = await DataBase.sql(VERSION_SQL.queryByName, [name])
@@ -63,7 +67,7 @@ class VersionService {
     if (errorAble) return errorAble;
     const tId = versionUuid()
     const time = moment().valueOf();
-    await DataBase.sql(VERSION_SQL.insert, [tId, name, 0, time, zipPath])
+    await DataBase.sql(VERSION_SQL.insert, [tId, name, 0, time, zipPath, type])
     const { data } = await DataBase.sql(VERSION_SQL.queryByName, [name]);
     return RESPONSE_TYPE.commonSuccess({ res, data: data[0] })
   }
@@ -91,6 +95,13 @@ class VersionService {
           },
           ...RESPONSE_CODE_MSG.nameExist,
         },
+        {
+          func: async () => {
+            const { data: d1 } = await DataBase.sql(VERSION_SQL.queryById, [id])
+            return !d1?.length;
+          },
+          ...RESPONSE_CODE_MSG.versionNotExist,
+        },
       ]
     })
     if (errorAble) return errorAble;
@@ -107,6 +118,13 @@ class VersionService {
       res,
       errs: [
         { func: () => !id, ...RESPONSE_CODE_MSG.idNotEmpty },
+        {
+          func: async () => {
+            const { data: d1 } = await DataBase.sql(VERSION_SQL.queryById, [id])
+            return !d1?.length;
+          },
+          ...RESPONSE_CODE_MSG.versionNotExist,
+        },
       ]
     })
     if (errorAble) return errorAble;
@@ -129,17 +147,37 @@ class VersionService {
       res,
       errs: [
         { func: () => !id, ...RESPONSE_CODE_MSG.idNotEmpty },
+        {
+          func: async () => {
+            const { data: d1 } = await DataBase.sql(VERSION_SQL.queryById, [id])
+            return !d1?.length;
+          },
+          ...RESPONSE_CODE_MSG.versionNotExist,
+        },
       ]
     })
     if (errorAble) return errorAble;
+    // 要执行的文件信息
     const d0 = await this.versionById(id)
     const d1 = await this.versionByUsedType(1, d0[0].type)
-    if (d1[0]?.id) {
+    if (d1?.[0]?.id) {
       await DataBase.sql(VERSION_SQL.update, [{ used: 0 }, d1[0]?.id])
     }
     const { error } = await DataBase.sql(VERSION_SQL.update, [{ used: 1 }, id])
     if (!error) {
-      // 执行更新文件...
+      // 更新文件...
+      const zipPath = d0[0].zipPath
+      const actualFolderPath = d0[0].type === VERSION_TYPE.web ? NGINX_FILE_PATH_CFG.web : NGINX_FILE_PATH_CFG.server
+      try {
+        fs.rmdirSync(actualFolderPath)
+      } catch (error) {
+        console.info('--- rmdirSync error --->', error);
+      }
+      compressing.zip.uncompress(zipPath, actualFolderPath, { ignoreBase: true }).then(() => {
+        console.log('解压完成')
+      }).catch(() => {
+        console.log('解压失败')
+      })
       return RESPONSE_TYPE.commonSuccess({ res })
     }
     return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
