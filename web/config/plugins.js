@@ -52,7 +52,6 @@ const commonPlugin = [
   //   onPrebuild && onPrebuild(stats)
   //   callback();
   // }, ['run', 'watch-run', 'done']),
-  !disableESLintPlugin &&
   new ESLintPlugin({
     // Plugin options
     extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
@@ -127,6 +126,48 @@ exports.optimization = function () {
     ],
     splitChunks: {
       automaticNameDelimiter: '-',
+      chunks: 'async',//三选一："initial" 初始化，"all"(默认就是all)，"async"（动态加载）
+      minSize: 20000,//当导入的模块最小是多少字节才会进行代码分割
+      minRemainingSize: 0,//解析见代码下面的文字说明，不用设置
+      minChunks: 1,//当一个模块被导入(引用)至少多少次才对该模块进行代码分割
+      maxAsyncRequests: 30,//按需加载时的最大并行请求数
+      maxInitialRequests: 30,//入口点的最大并行请求数
+      enforceSizeThreshold: 50000,//解析见代码下面的文字说明，不用设置
+      cacheGroups: {//缓存组，这里是我们表演的舞台，抽取公共模块什么的，都在这个地方
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,//优先级
+          reuseExistingChunk: true,
+        },
+        vconsole: {
+          name: "vconsole",
+          priority: 7,
+          test: /[\\/]node_modules[\\/]_?vconsole(.*)/,
+          chunks: "all",
+          minSize: 0,
+        },
+        common: {
+          //src下同步引入的模块，全部放到common.js中
+          name: "common",
+          test: /[\\/]src[\\/]/,
+          minSize: 1024,
+          chunks: "initial",
+          priority: 5
+        },
+        defaultVendors: {
+          //第三方依赖库,全部放到venders.js中
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10, // 优先级
+          name: 'vendors',
+          chunks: 'initial',
+          reuseExistingChunk: true, // 如果一个模块已经被打包过了，那么这个模块也不会被打包
+        },
+        default: {//分包的基本配置
+          minChunks: 2, // 被超过两个模块引用，才会被打包（可以去掉）
+          priority: -20, // 优先级
+          reuseExistingChunk: true, // 如果一个模块已经被打包过了，那么这个模块也不会被打包
+        },
+      },
     },
     concatenateModules: false
   };
