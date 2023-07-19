@@ -193,6 +193,7 @@ function Create() {
               ref={c => editorRef.current = c}
               addImg={addImg}
               placeholder="请输入正文"
+              subfield
             />
           </Form.Item>
         </Form>

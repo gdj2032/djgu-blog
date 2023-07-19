@@ -5,5 +5,6 @@ const pageRoutes = {
   document: '/document',
   documentDetail: '/document/detail',
   documentCreate: '/document/create',
+  knowledge: '/knowledge',
 };
 export default pageRoutes;

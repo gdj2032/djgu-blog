@@ -52,7 +52,8 @@ function MenuModal(props: IProps) {
   }
 
   const menus: IItem[] = [
-    { label: '所有文档', key: PathConfig.document },
+    // { label: '前端大纲', key: PathConfig.knowledge },
+    { label: '开发相关问题', key: PathConfig.document },
   ]
   return (
     <Drawer
