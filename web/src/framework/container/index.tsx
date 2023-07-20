@@ -25,7 +25,7 @@ function ContainerPage(props: IContainerProps) {
   }, [pathname])
   return (
     <PageFrame className={sys.mode} hideTitleBar={!isElectron}>
-      <FixedView menuShow={isElectron ? !!user?.id : true} modeShow={!local.includes(PathConfig.documentCreate)} />
+      <FixedView menuShow={isElectron ? !!user?.id : true} modeShow={!local.includes(PathConfig.documentCreate) && !local.includes(PathConfig.knowledge)} />
       <Layout className="g-container">
         <Routes>
           {routeList(routes)}

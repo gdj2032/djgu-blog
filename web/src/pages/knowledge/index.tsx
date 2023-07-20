@@ -1,8 +1,10 @@
 /**
  * 知识点
  */
+import { GithubOutlined } from '@ant-design/icons';
 import G6 from '@antv/g6';
 import React, { useEffect } from 'react';
+import { GITHUB_KNOWLEDGE_URL } from './constants';
 import './index.scss';
 import { TREE_DATA } from './treeData';
 
@@ -84,6 +86,17 @@ function Knowledge() {
     graph.render();
     graph.fitView();
 
+
+    // // 单击节点
+    // graph.on('node:click', (e) => {
+    //   const nodeItem = e.item // 获取被点击的节点元素对象
+    //   console.log('单击', nodeItem._cfg)
+    //   const mode = nodeItem._cfg?.model?.mode
+    //   if (mode) {
+    //     // mode
+    //   }
+    // })
+
     if (typeof window !== 'undefined') {
       window.onresize = () => {
         if (!graph || graph.get('destroyed')) return;
@@ -96,7 +109,12 @@ function Knowledge() {
     init()
   }, [])
   return (
-    <div id='knowledge-container'></div>
+    <div id='knowledge-container'>
+
+      <a className='kc-github' href={GITHUB_KNOWLEDGE_URL} target='_blank' rel="noreferrer">
+        <GithubOutlined className='kc-github-icon' />
+      </a>
+    </div>
   )
 }
 
