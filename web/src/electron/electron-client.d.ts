@@ -119,6 +119,7 @@ declare class ElectronClient {
   hookWindowMessage(message: number, cb: () => void): void;
   unhookWindowMessage(message: number, cb: () => void): void;
   getSysInfo(): any;
+  openUrl(url: string): void;
 }
 declare global {
   interface Window {

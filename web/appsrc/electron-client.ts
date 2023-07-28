@@ -408,24 +408,8 @@ class ElectronClient {
     return sysInfo;
   }
 
-  realmCreate(data: { name: string; params: any }) {
-    this.sendMessageToApp('realm-create', data);
-  }
-
-  realmFind(name: string) {
-    return this.sendMessageToApp('realm-find', name);
-  }
-
-  realmFindKey(data: { name: string; key: any }) {
-    this.sendMessageToApp('realm-findKey', data);
-  }
-
-  realmModify(data: { name: string; key: any; params: any }) {
-    this.sendMessageToApp('realm-modify', data);
-  }
-
-  realmDelete(data: { name: string; key: any }) {
-    this.sendMessageToApp('realm-delete', data);
+  openUrl(url: string) {
+    this.sendMessageToApp('open-url', { url });
   }
 }
 

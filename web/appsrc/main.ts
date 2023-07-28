@@ -8,7 +8,7 @@ import { CreateWindowParam } from './electron-client';
 require('@electron/remote/main').initialize();
 export default class MyApp extends App {
   onAppStartup() {
-    LoginWindow.create();
+    HomeWindow.create();
   }
 
   public onCreateWindow(data?: CreateWindowParam, parent?: BrowserWindow): BaseWindow | null {

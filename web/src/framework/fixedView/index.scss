@@ -21,3 +21,15 @@ $zIndex: 999;
     z-index: $zIndex;
   }
 }
+
+.page-frame-ele {
+  .g-fixed-view {
+    .menu-button {
+      top: 48px;
+    }
+
+    .mode-switch {
+      top: 48px;
+    }
+  }
+}

@@ -28,3 +28,11 @@
     }
   }
 }
+
+.page-frame-ele {
+  #knowledge-container {
+    .kc-github {
+      top: $page-frame-header-height;
+    }
+  }
+}

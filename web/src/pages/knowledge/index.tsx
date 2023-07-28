@@ -1,6 +1,7 @@
 /**
  * 知识点
  */
+import { isElectron } from '@/constants';
 import { GithubOutlined } from '@ant-design/icons';
 import G6 from '@antv/g6';
 import React, { useEffect } from 'react';
@@ -108,12 +109,21 @@ function Knowledge() {
   useEffect(() => {
     init()
   }, [])
+
+  const Comp: any = isElectron ? 'div' : 'a'
+
+  const handleGithub = () => {
+    if (isElectron) {
+      window.app.openUrl(GITHUB_KNOWLEDGE_URL)
+    }
+  }
+
   return (
     <div id='knowledge-container'>
 
-      <a className='kc-github' href={GITHUB_KNOWLEDGE_URL} target='_blank' rel="noreferrer">
+      <Comp className='kc-github' href={GITHUB_KNOWLEDGE_URL} target='_blank' rel="noreferrer" onClick={handleGithub}>
         <GithubOutlined className='kc-github-icon' />
-      </a>
+      </Comp>
     </div>
   )
 }

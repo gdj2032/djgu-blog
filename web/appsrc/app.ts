@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, globalShortcut } from 'electron';
+import { app, BrowserWindow, dialog, globalShortcut, shell } from 'electron';
 import MessageQueue from './mq';
 import BaseWindow from './baseWindow';
 import { CreateWindowParam } from './electron-client';
@@ -180,6 +180,10 @@ export default class App {
         return null;
       }
       // app.exit(0);
+    })
+
+    MessageQueue.registerMessage('open-url', 0, (data: { url: string }) => {
+      shell.openExternal(data.url);
     })
   }
   public getSysInfo() {

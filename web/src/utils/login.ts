@@ -23,17 +23,18 @@ export const doLogin = (params: any) => new Promise(async (resolve, reject) => {
     Setting.session = res.data.session
     store.dispatch(setUserInfo({ ...data, isLogin: true }));
     message.success('登录成功')
-    if (isElectron) {
-      window.app.createWindowByName({ name: 'home' });
-      timer = setTimeout(() => {
-        window.location.hash = PathConfig.home;
-        window.app.closeWindow();
-        timer = null;
-        resolve(true)
-      }, 1);
-    } else {
-      window.location.hash = PathConfig.home;
-    }
+    window.location.hash = PathConfig.home;
+    // if (isElectron) {
+    //   window.app.createWindowByName({ name: 'home' });
+    //   timer = setTimeout(() => {
+    //     window.location.hash = PathConfig.home;
+    //     window.app.closeWindow();
+    //     timer = null;
+    //     resolve(true)
+    //   }, 1);
+    // } else {
+    //   window.location.hash = PathConfig.home;
+    // }
   } else {
     reject(res?.message || '服务器错误')
   }
@@ -51,22 +52,23 @@ export const doLogout = (info?: { tip?: string | boolean, type?: 'success' | 'er
       message.error(msg)
     }
   }
-  if (!isElectron) {
-    window.location.hash = PathConfig.home
-  } else {
-    window.app.setWindowVisible(false);
-    const createParams: CreateWindowParam = {
-      name: 'login',
-      intent: {
-        data: {
-          islogout: true,
-        }
-      },
-    }
-    window.app.createWindowByName(createParams);
-    timer = setTimeout(() => {
-      window.app.closeWindow(null, true);
-      timer = null;
-    }, 500);
-  }
+  window.location.hash = PathConfig.home
+  // if (!isElectron) {
+  //   window.location.hash = PathConfig.home
+  // } else {
+  //   window.app.setWindowVisible(false);
+  //   const createParams: CreateWindowParam = {
+  //     name: 'login',
+  //     intent: {
+  //       data: {
+  //         islogout: true,
+  //       }
+  //     },
+  //   }
+  //   window.app.createWindowByName(createParams);
+  //   timer = setTimeout(() => {
+  //     window.app.closeWindow(null, true);
+  //     timer = null;
+  //   }, 500);
+  // }
 }
