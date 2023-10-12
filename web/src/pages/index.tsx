@@ -5,3 +5,6 @@ export { default as Document } from './document';
 export { default as DocumentCreate } from './document/create';
 export { default as DocumentDetail } from './document/detail';
 export { default as Knowledge } from './knowledge';
+export { default as Test } from './test';
+export { default as Tools } from './tools';
+export { default as ToolsCrawlers } from './tools/crawlers';

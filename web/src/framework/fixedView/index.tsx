@@ -1,7 +1,11 @@
-/**
- * fix ui
+/*
+ * @Author: djgu djgu@tmindtech.com
+ * @Date: 2023-07-20 14:24:19
+ * @LastEditors: djgu djgu@tmindtech.com
+ * @LastEditTime: 2023-10-12 14:03:20
+ * @Description: 
+ * Copyright (c) 2023 by ${git_name} email: ${git_email}, All Rights Reserved.
  */
-import { CSwitch, Icon, Loading } from '@/components';
 import { useAppSelector, sysAction } from '@/stores';
 import { MenuOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
@@ -17,10 +21,10 @@ interface IProps {
 
 function FixedView(props: IProps) {
   const { menuShow = true, modeShow = true } = props;
-  const dispatch = useDispatch()
-  const sysInfo = useAppSelector(sysAction.sysInfo)
+  // const dispatch = useDispatch()
+  // const sysInfo = useAppSelector(sysAction.sysInfo)
   const [visible, setVisible] = useState<boolean>(false)
-  let timer
+  // let timer
   return (
     <div className='g-fixed-view'>
       {menuShow && (
@@ -28,7 +32,7 @@ function FixedView(props: IProps) {
           <MenuOutlined />
         </Button>
       )}
-      {modeShow && (
+      {/* {modeShow && (
         <CSwitch
           size={{ width: 54 }}
           className='mode-switch'
@@ -48,7 +52,7 @@ function FixedView(props: IProps) {
             }, 500);
           }}
         />
-      )}
+      )} */}
       <MenuModal
         visible={visible}
         onClose={() => setVisible(false)}

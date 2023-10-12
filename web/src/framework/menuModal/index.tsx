@@ -54,6 +54,7 @@ function MenuModal(props: IProps) {
   const menus: IItem[] = [
     { label: '前端大纲', key: PathConfig.knowledge },
     { label: '开发相关问题', key: PathConfig.document },
+    { label: '工具', key: PathConfig.tools },
   ]
   return (
     <Drawer

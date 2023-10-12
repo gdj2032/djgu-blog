@@ -30,6 +30,7 @@ interface IRequestOptions {
   upload?: boolean;
   download?: boolean;
   timeout?: number;
+  responseType?: string;
 }
 
 interface menuOption {

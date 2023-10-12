@@ -32,13 +32,9 @@ const allowSession = 'session可用'
 export const CheckSession = async (req: core.Request, res: core.Response) => new Promise<string>(async (resolve, reject) => {
   const reqSession = req.headers?.session as string;
   if (reqSession) {
-    // console.log("DBUtil ~ checkSession= ~ reqSession: ", reqSession)
     const userInfo = getUserIdNameBySession(reqSession);
-    // console.log("🚀 ~ file: DBUtil.ts ~ line 30 ~ DBUtil ~ checkSession= ~ userInfo", userInfo)
-    // console.log("🚀 ~ file: DBUtil.ts ~ line 18 ~ DBUtil ~ checkSession= ~ data", data)
     if (userInfo?.id) {
       const { data } = await DataBase.sql(USER_SQL.queryById, [userInfo.id])
-      // console.log("🚀 ~ file: index.ts:25 ~ CheckSession ~ data:", data)
       if (data.length > 0) {
         const { session, loginTime } = data[0]
         const cueTimer = moment().valueOf()

@@ -1,15 +1,18 @@
+/*
+ * @Author: djgu djgu@tmindtech.com
+ * @Date: 2023-07-20 14:24:19
+ * @LastEditors: djgu djgu@tmindtech.com
+ * @LastEditTime: 2023-10-12 14:02:57
+ * @Description: 
+ * Copyright (c) 2023 by ${git_name} email: ${git_email}, All Rights Reserved.
+ */
 import { PathConfig } from './../framework/routes/routes';
 import { store } from '@/stores'
 import * as sha1 from 'sha1';
 import { clearUserInfo, setUserInfo } from '@/stores/user'
-import { isElectron } from '@/constants';
 import { userService } from '@/services';
-import { CreateWindowParam } from '@/electron/electron-client';
 import Setting from './setting';
 import { message } from 'antd';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-let timer: any;
 
 export const doLogin = (params: any) => new Promise(async (resolve, reject) => {
   const res = await userService.login({

@@ -1,3 +1,11 @@
+/*
+ * @Author: djgu djgu@tmindtech.com
+ * @Date: 2023-05-22 17:50:29
+ * @LastEditors: djgu djgu@tmindtech.com
+ * @LastEditTime: 2023-10-12 14:02:44
+ * @Description: 
+ * Copyright (c) 2023 by ${git_name} email: ${git_email}, All Rights Reserved.
+ */
 /**
  * 用户列表
  */
@@ -9,10 +17,7 @@ import { USER_ROLE, DATE_FORMAT } from '@/constants';
 import moment from 'moment'
 import { UserService } from '@/typings/user';
 
-interface IProps {
-}
-
-function UserList(props: IProps) {
+function UserList() {
   const { tableProps, paginationProps } = usePagination<UserService.IListData>(async ({ limit, offset }) => {
     const res = await userService.users({ limit, offset })
     return {
