@@ -2,7 +2,7 @@ import { RequestMapping, Get, Post } from "@/request"
 import CrawlersService from "./service"
 
 @RequestMapping('/crawlers')
-export default class User {
+export default class Crawlers {
 
   @Get('/list')
   list(...args) {

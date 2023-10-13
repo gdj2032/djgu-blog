@@ -22,7 +22,6 @@ class CrawlersUtil {
     this.props = props;
     this.dirPath = path.resolve('tmp');
     const isDir = fs.statSync(this.dirPath).isDirectory()
-    console.log("🚀 ~ file: CrawlersUtil.ts:24 ~ CrawlersUtil ~ constructor ~ isDir:", isDir)
     if (isDir) {
       this.emptyDir(this.dirPath);
     } else {
@@ -32,7 +31,6 @@ class CrawlersUtil {
   init = async () => {
     const { id, url, firstPage, lastPage } = this.props;
     const { error, data } = await DataBase.sql(CRAWLERS_SQL.queryById, [id])
-    console.log("🚀 ~ file: CrawlersUtil.ts:27 ~ CrawlersUtil ~ init= ~ error, data:", error, data)
     if (!error && data?.[0]) {
       const item = data[0]
       if (item.id === '1697092786363466467') {

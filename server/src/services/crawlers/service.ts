@@ -1,10 +1,9 @@
 import DataBase from "@/db";
 import { CRAWLERS_SQL } from "@/sql";
 import { RESPONSE_CODE_MSG, RESPONSE_TYPE } from "@/utils";
-import { CrawlersUtil, ICrawlersUtilProps } from "./CrawlersUtil";
+import { CrawlersUtil } from "./CrawlersUtil";
 import * as fs from 'fs'
 import * as path from 'path'
-import { Blob } from "buffer";
 
 class CrawlersService {
   async list(...args) {
