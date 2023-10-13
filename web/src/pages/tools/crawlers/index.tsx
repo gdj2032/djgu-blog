@@ -10,6 +10,7 @@ import './index.scss';
 function Crawlers() {
   const [data, setData] = useState<CrawlersService.IListData[]>([])
   const formRef = useRef<FormInstance>(null);
+  const [loading, setLoading] = useState(false)
   const route = [
     { name: '首页', url: PathConfig.home },
     { name: '工具', url: PathConfig.tools },
@@ -58,6 +59,7 @@ function Crawlers() {
   }
 
   const handleFinish = async (values) => {
+    setLoading(true)
     const res = await crawlersService.download(values)
     console.log("🚀 ~ file: index.tsx:62 ~ handleFinish ~ res:", res)
     if (res.buffer) {
@@ -69,6 +71,7 @@ function Crawlers() {
       link.click();
       window.URL.revokeObjectURL(link.href);
     }
+    setLoading(false)
   }
   return (
     <div className='g-crawlers'>
@@ -108,7 +111,7 @@ function Crawlers() {
             </Space.Compact>
           </Form.Item>
           <Form.Item wrapperCol={{ span: 2, offset: 2 }}>
-            <Button type="primary" htmlType="submit">下载</Button>
+            <Button type="primary" htmlType="submit" loading={loading}>下载</Button>
           </Form.Item>
         </Form>
       </Card>
