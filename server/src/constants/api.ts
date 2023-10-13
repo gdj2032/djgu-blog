@@ -15,7 +15,7 @@ export const FILE_PATH = `${HOME_PATH}/testImage`
 export const isDev = process.env.NODE_ENV === 'development'
 
 export const NGINX_FILE_PATH_CFG = {
-  web: isDev ? `${FILE_PATH}/blog` : '/usr/share/nginx/html/blog',
-  server: isDev ? `${FILE_PATH}/dist` : '/usr/share/node/blog/dist',
+  web: isDev ? `${FILE_PATH}/blog` : '/usr/share/nginx/html',
+  server: isDev ? `${FILE_PATH}/dist` : '/usr/share/nginx/html/dist',
 }
 
