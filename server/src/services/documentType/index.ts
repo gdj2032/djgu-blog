@@ -1,4 +1,4 @@
-import { RequestMapping, Get, Post, Put, Delete } from "@/request"
+import { RequestMapping, Get, Post, Put, Delete } from "@/requests"
 import documentTypeService from "./service"
 
 @RequestMapping('/document/type')

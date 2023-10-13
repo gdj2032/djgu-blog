@@ -6,6 +6,7 @@ import request from 'request'
 import { CRAWLERS_SQL } from '@/sql'
 import DataBase from '@/db'
 import compressing from 'compressing'
+import { NGINX_FILE_PATH_CFG } from '@/constants'
 
 interface ICrawlersUtilProps {
   id: string;
@@ -20,7 +21,7 @@ class CrawlersUtil {
 
   constructor(props: ICrawlersUtilProps) {
     this.props = props;
-    this.dirPath = path.resolve('tmp');
+    this.dirPath = NGINX_FILE_PATH_CFG.tmp;
     try {
       const isDir = fs.statSync(this.dirPath).isDirectory()
       if (isDir) {

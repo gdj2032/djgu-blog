@@ -1,4 +1,4 @@
-import { RequestMapping, Get, Post } from "@/request"
+import { RequestMapping, Get, Post } from "@/requests"
 import CrawlersService from "./service"
 
 @RequestMapping('/crawlers')
