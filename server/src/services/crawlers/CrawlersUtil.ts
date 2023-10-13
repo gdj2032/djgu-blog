@@ -2,6 +2,7 @@ import * as https from 'https'
 import * as cheerio from 'cheerio'
 import * as fs from 'fs'
 import * as path from 'path'
+import request from 'request'
 import { CRAWLERS_SQL } from '@/sql'
 import DataBase from '@/db'
 import compressing from 'compressing'
@@ -98,8 +99,8 @@ class CrawlersUtil {
     return new Promise((resolve, reject) => {
       const localPath = fs.createWriteStream(filepath);
       setTimeout(() => {
-        https.get({
-          path: url,
+        request({
+          uri: url,
           headers: {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
             Referer: host,
