@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --watch 'src/' -e ts --exec 'ts-node' ./src/index.ts  --files",
-    "build": "tsc && tsc-alias"
+    "build": "rm -rf ./dist && tsc && tsc-alias"
   },
   "repository": {
     "type": "git",

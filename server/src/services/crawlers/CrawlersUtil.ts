@@ -21,10 +21,14 @@ class CrawlersUtil {
   constructor(props: ICrawlersUtilProps) {
     this.props = props;
     this.dirPath = path.resolve('tmp');
-    const isDir = fs.statSync(this.dirPath).isDirectory()
-    if (isDir) {
-      this.emptyDir(this.dirPath);
-    } else {
+    try {
+      const isDir = fs.statSync(this.dirPath).isDirectory()
+      if (isDir) {
+        this.emptyDir(this.dirPath);
+      } else {
+        fs.mkdirSync(this.dirPath);
+      }
+    } catch (error) {
       fs.mkdirSync(this.dirPath);
     }
   }
