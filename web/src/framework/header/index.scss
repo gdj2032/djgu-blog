@@ -6,9 +6,9 @@
   align-items: flex-start;
   height: $header_height;
   padding: 0 20px;
-  color: $header-font-color !important;
+  color: var(--theme-font);
   user-select: none;
-  background: $theme-color;
+  background: var(--theme-bg);
   line-height: $header_height;
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
 
@@ -54,7 +54,7 @@
 
       &-icon {
         font-size: 16px;
-        color: #000;
+        color: var(--theme-font);
       }
 
       &:hover {}

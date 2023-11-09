@@ -4,19 +4,24 @@ import { GithubOutlined, LoginOutlined, LogoutOutlined, UserOutlined } from '@an
 import { APPNAME, isElectron } from '@/constants'
 import './index.scss'
 import { doLogout } from '@/utils'
-import { useAppSelector } from '@/stores'
+import { sysAction, useAppSelector } from '@/stores'
 import { userInfo } from '@/stores/user'
 import { GITHUB_KNOWLEDGE_URL } from '@/pages/knowledge/constants'
 import { useNavigate } from 'react-router'
 import { PathConfig } from '../routes/routes'
+import { CSwitch, Icon, Loading } from '@/components'
+import { useDispatch } from 'react-redux'
 
 const { Header } = Layout
 
 const CustomHeader = () => {
-  const { username, role } = useAppSelector(userInfo);
+  const { username } = useAppSelector(userInfo);
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const sysInfo = useAppSelector(sysAction.sysInfo)
 
   const Comp: any = isElectron ? 'div' : 'a'
+  let timer
 
   const handleGithub = () => {
     if (isElectron) {
@@ -32,6 +37,27 @@ const CustomHeader = () => {
         </span>
       </div>
       <div className="u-right-menu">
+        <div className='u-item'>
+          <CSwitch
+            size={{ width: 54 }}
+            className='mode-switch'
+            checked={sysInfo.mode === 'light'}
+            checkCircle={<Icon name="light" fill='rgba(242, 230, 96, 1)' />}
+            uncheckedCircle={<Icon name="dark" fill='rgba(146, 196, 255, 1)' />}
+            checkedBg='rgba(188, 236, 244, 1)'
+            uncheckedBg='rgba(68, 87, 129, 1)'
+            checkedCircleBg='rgba(180, 200, 222, 1)'
+            uncheckedCircleBg='rgba(26, 39, 68, 1)'
+            onChange={(e) => {
+              Loading.show()
+              dispatch(sysAction.setMode(e ? 'light' : 'dark'))
+              timer = setTimeout(() => {
+                Loading.hide()
+                clearTimeout(timer)
+              }, 500);
+            }}
+          />
+        </div>
         {
           username && (
             <div className="u-item">

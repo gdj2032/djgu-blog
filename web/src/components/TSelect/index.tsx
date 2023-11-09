@@ -273,6 +273,7 @@ export default class SelectEx<T = any> extends React.Component<ISelectProp<T>, I
     const searchProp = this.getSearchProps();
     return (
       <AntSelect
+        popupMatchSelectWidth={false}
         {...resetProps}
         {...searchProp}
         onPopupScroll={loadMore ? this.onPopupScroll : undefined}

@@ -17,5 +17,6 @@ const pageRoutes = {
   test: '/test',
   tools: '/tools',
   toolsCrawlers: '/tools/crawlers',
+  content: '/content'
 };
 export default pageRoutes;

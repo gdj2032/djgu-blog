@@ -2,15 +2,13 @@
  * 左侧导航栏
  */
 import { USER_ROLE } from '@/constants';
-import { Layout, Menu, Tooltip } from 'antd';
+import { Layout, Menu } from 'antd';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import './index.scss';
-import { PathConfig } from '../routes/routes';
-import { MenuUnfoldOutlined, MenuFoldOutlined, LogoutOutlined } from '@ant-design/icons';
 import { RouteService } from '@/typings/route';
-import { tabRouteAction, useAppSelector } from '@/stores';
+import { routeAction, sysAction, useAppSelector } from '@/stores';
 import { useDispatch } from 'react-redux';
 
 const { Sider } = Layout;
@@ -50,7 +48,7 @@ const findSubMenuPath = (key: string, config: IMenu[] = []) => {
 }
 
 const findSelectedKey = (key: string, config: IMenu[] = []) => {
-  let result = ''
+  let result: IMenu;
   for (let i = 0, len = config.length; i < len; i++) {
     const menu = config[i]
     if (menu.children) {
@@ -59,7 +57,7 @@ const findSelectedKey = (key: string, config: IMenu[] = []) => {
         break
       }
     } else if (key.startsWith(menu.key)) {
-      result = menu.key
+      result = menu
       break
     }
   }
@@ -73,11 +71,12 @@ function Aside(props: IProps) {
 
   const history = useNavigate()
   const location = useLocation()
-  const { routes } = useAppSelector(tabRouteAction.tabRouteInfo)
+  const { routes } = useAppSelector(routeAction.routeInfo)
   const [selectedKey, changeSelectedKeys] = useState(location.pathname)
   const [inlineCollapsed, setInlineCollapsed] = useState(false)
   const [menus, setMenus] = useState<IMenu[]>(df(routes))
   const dispatch = useDispatch()
+  const sysInfo = useAppSelector(sysAction.sysInfo)
 
   useEffect(() => {
     const newRoutes2 = routes.filter((e) => !USER_ROLE.isAdmin(e.role));
@@ -91,10 +90,9 @@ function Aside(props: IProps) {
   const [defaultOpenKeys] = useState(findSubMenuPath(location.pathname, menus))
 
   useEffect(() => {
-    const currentSelectedKey = findSelectedKey(location.pathname, menus)
-    const curMenu = menus.find(e => e.key === currentSelectedKey)
-    dispatch(tabRouteAction.setCurrentRoute(curMenu))
-    changeSelectedKeys(currentSelectedKey)
+    const currentSelectedMenu = findSelectedKey(location.pathname, menus)
+    dispatch(routeAction.setCurrentRoute(currentSelectedMenu))
+    changeSelectedKeys(currentSelectedMenu?.key)
   }, [location.pathname, menus])
 
   const changeRouteHandle = ({ key }) => {
@@ -112,13 +110,13 @@ function Aside(props: IProps) {
         </a>
       </Tooltip> */}
       <Menu
-        theme="light"
+        theme={sysInfo.mode}
         mode="inline"
         selectedKeys={[selectedKey]}
         defaultOpenKeys={defaultOpenKeys}
         onClick={(changeRouteHandle)}
         items={menus}
-        inlineCollapsed={inlineCollapsed}
+      // inlineCollapsed={inlineCollapsed}
       />
     </Sider>
   )

@@ -1,11 +1,9 @@
-$menu-nor-color: rgb(85, 68, 90);
-
 .layout-aside {
   position: relative;
   z-index: 99;
   left: 0;
   bottom: 0;
-  background: $theme-color !important;
+  background: var(--theme-bg) !important;
   transform: translateZ(0);
   font-size: 18px;
   color: #000;
@@ -19,14 +17,12 @@ $menu-nor-color: rgb(85, 68, 90);
     position: absolute;
     right: 10px;
     bottom: 40px;
-    color: #000;
   }
 
   .aside-logout {
     position: absolute;
     right: 10px;
     bottom: 10px;
-    color: #fff;
 
     &:hover {
       cursor: pointer;
@@ -36,7 +32,6 @@ $menu-nor-color: rgb(85, 68, 90);
 
   .aside-logo {
     margin-bottom: 10px;
-    color: #fff;
     line-height: 40px;
     padding-left: 12px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -53,15 +48,14 @@ $menu-nor-color: rgb(85, 68, 90);
 
   .ant-menu {
     border: none;
-    background: $theme-color;
-    color: $menu-nor-color;
+    background: var(--theme-bg);
     font-size: 14px;
 
     .ant-menu-submenu-arrow {
 
       &::before,
       &::after {
-        background: $menu-nor-color;
+        // background: $menu-nor-color;
         background-image: none;
       }
     }
@@ -113,29 +107,29 @@ $menu-nor-color: rgb(85, 68, 90);
       }
     }
 
-    .ant-menu-submenu .ant-menu-item,
-    .ant-menu-item {
+    // .ant-menu-submenu .ant-menu-item,
+    // .ant-menu-item {
 
-      &.ant-menu-item-selected {
-        color: #ffffff !important;
-        background: #4D8BED;
-      }
+    //   &.ant-menu-item-selected {
+    //     color: #ffffff !important;
+    //     background: #4D8BED;
+    //   }
 
-      &:hover {
-        opacity: 0.8;
-      }
-    }
+    //   &:hover {
+    //     opacity: 0.8;
+    //   }
+    // }
 
-    .ant-menu-submenu-selected,
-    .ant-menu-submenu-selected .ant-menu-submenu-title:hover {
-      color: #fff;
-    }
+    // .ant-menu-submenu-selected,
+    // .ant-menu-submenu-selected .ant-menu-submenu-title:hover {
+    //   color: #fff;
+    // }
 
-    .ant-menu-submenu-title {
-      &:hover {
-        color: #4D8BED;
-      }
-    }
+    // .ant-menu-submenu-title {
+    //   &:hover {
+    //     color: #4D8BED;
+    //   }
+    // }
   }
 }
 

@@ -36,9 +36,3 @@ $dark-danger-clr-active: #F9431980;
 $dark-normal-clr: #B8C1E0;
 $dark-normal-clr-hover: #B8C1E0;
 $dark-normal-clr-active: #B8C1E080;
-
-@mixin theme-bg {
-  background-image: var(--theme-bg-img);
-  background-size: 100vw 100vh;
-  background-repeat: no-repeat;
-}

@@ -18,11 +18,12 @@ import {
   Test,
   Tools,
   ToolsCrawlers,
+  Content,
 } from '@/pages';
 import { RouteObject } from 'react-router/dist/lib/context';
 import React from 'react';
 // import { useNavigate } from 'react-router-dom';
-import NotFound from '../404';
+// import NotFound from '../404';
 
 export const PathConfig = {
   index: '/',
@@ -95,6 +96,6 @@ export const pageRoute = (): RouteObject[] => [
   },
   {
     path: '*',
-    element: <NotFound />
+    element: <Content />
   }
 ];

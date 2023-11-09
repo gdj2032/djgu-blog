@@ -1,21 +1,13 @@
 .light {
-  --theme-bg-img: url('../images/home_bg_light.jpeg');
   --login-title-color: #2e1a52;
   --login-form-bg: #cddbeb;
-  --theme-bg-1: #f4f8f8;
-  --theme-bg-2: #f3f3f3;
-  --theme-bg-3: #eaf5f3;
-  --theme-bg-4: #fff;
-  --theme-font-1: #000;
+  --theme-bg: #f4f8f8;
+  --theme-font: #000;
 }
 
 .dark {
-  --theme-bg-img: url('../images/home_bg_dark.jpeg');
   --login-title-color: #82e1de;
   --login-form-bg: #721ec6;
-  --theme-bg-1: #2a2940;
-  --theme-bg-2: #030a0f;
-  --theme-bg-3: #075371;
-  --theme-bg-4: #fff;
-  --theme-font-1: #fff;
+  --theme-bg: #001529;
+  --theme-font: #fff;
 }

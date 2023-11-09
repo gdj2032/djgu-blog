@@ -1,7 +1,7 @@
 import { RequestMapping, Get, Post, Put, Delete } from "@/requests"
 import documentService from "./service"
 
-@RequestMapping('/tabRoute')
+@RequestMapping('/route')
 export default class TabRoute {
 
   @Get('/list')

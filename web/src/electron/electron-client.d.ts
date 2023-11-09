@@ -13,7 +13,7 @@ export declare type CreateWindowParam = {
   isModal?: boolean;
   intent?: Intent;
   userParam?: any;
-  parentId?: number;
+  father_id?: number;
   /**
    * Web模式下，是否打开新标签: target='_blank'
    */
