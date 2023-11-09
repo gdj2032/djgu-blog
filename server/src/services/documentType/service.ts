@@ -1,7 +1,7 @@
 import { DOCUMENT_TYPE_SQL } from './../../sql/documentType';
 import DataBase from "@/db";
 import { USER_SQL } from "@/sql";
-import { RESPONSE_TYPE, documentTypeUuid, getUserIdNameBySession, RESPONSE_CODE_MSG } from "@/utils";
+import { RESPONSE_TYPE, commonUuid, getUserIdNameBySession, RESPONSE_CODE_MSG } from "@/utils";
 import userService from '../user/service';
 import moment from 'moment';
 
@@ -60,7 +60,7 @@ class DocumentTypeService {
     if (errorAble) return errorAble;
     const reqSession = req.headers?.session as string;
     const userInfo = getUserIdNameBySession(reqSession)
-    const tId = documentTypeUuid()
+    const tId = commonUuid()
     const time = moment().valueOf();
     await DataBase.sql(DOCUMENT_TYPE_SQL.insert, [tId, name, description, time, time, userInfo.id, imageUrl])
     const { data } = await DataBase.sql(DOCUMENT_TYPE_SQL.queryByName, [name]);

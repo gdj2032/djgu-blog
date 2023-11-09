@@ -9,7 +9,7 @@
 const pageRoutes = {
   home: '/home',
   login: '/login',
-  user: '/user',
+  admin: '/admin',
   document: '/document',
   documentDetail: '/document/detail',
   documentCreate: '/document/create',

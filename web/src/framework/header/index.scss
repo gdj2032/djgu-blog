@@ -4,12 +4,13 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  height: 64px;
+  height: $header_height;
   padding: 0 20px;
   color: $header-font-color !important;
   user-select: none;
   background: $theme-color;
   line-height: $header_height;
+  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
 
   .u-left-menu {
     flex: 1;
@@ -22,7 +23,6 @@
 
   .u-right-menu {
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
@@ -41,12 +41,23 @@
       }
     }
 
-    .u-logout {
+    .u-login {
       cursor: pointer;
     }
 
     .u-item+.u-item {
       margin-left: 24px;
+    }
+
+    .m-github {
+      cursor: pointer;
+
+      &-icon {
+        font-size: 16px;
+        color: #000;
+      }
+
+      &:hover {}
     }
   }
 }

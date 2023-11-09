@@ -24,7 +24,7 @@ export const menuConfig: INavFormat[] = [
   },
   {
     label: '管理',
-    key: pageRoutes.user,
+    key: pageRoutes.admin,
     admin: true,
     icon: <Icon name="admin" fill="#fff" />
   },

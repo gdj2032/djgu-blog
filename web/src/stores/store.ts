@@ -15,17 +15,19 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage';
 import { sysReducer } from './sys';
+import { tabRouteReducer } from './tabRoute';
 
 const persistConfig = {
   key: 'root',
   storage: storage, //指定存储位置，一定要写
-  whitelist: ['user', 'sys']
+  whitelist: ['user', 'sys', 'tabRoute']
 }
 
 const allReducers = combineReducers({
   counter: counterReducer,
   user: userReducer,
   sys: sysReducer,
+  tabRoute: tabRouteReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, allReducers)

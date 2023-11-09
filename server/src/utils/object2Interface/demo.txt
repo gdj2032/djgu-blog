@@ -1,0 +1,345 @@
+{
+  "type": "collection",
+  "links": {
+    "self": "https://rancher.int.tmindtech.com/k8s/clusters/c-m-fxnjb5gn/v1/metrics.k8s.io.nodes"
+  },
+  "actions": {},
+  "resourceType": "metrics.k8s.io.nodemetrics",
+  "data": [
+    {
+      "id": "bsc-k8s-cluster-server-01",
+      "type": "metrics.k8s.io.nodemetrics",
+      "links": {
+        "self": "https://rancher.int.tmindtech.com/k8s/clusters/c-m-fxnjb5gn/v1/metrics.k8s.io.nodes/bsc-k8s-cluster-server-01",
+        "view": "https://rancher.int.tmindtech.com/k8s/clusters/c-m-fxnjb5gn/apis/metrics.k8s.io/v1beta1/nodes/bsc-k8s-cluster-server-01"
+      },
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "NodeMetrics",
+      "metadata": {
+        "creationTimestamp": "2023-10-18T10:11:03Z",
+        "fields": [
+          "bsc-k8s-cluster-server-01",
+          "1322297763n",
+          "10074812Ki",
+          "10.149s"
+        ],
+        "labels": {
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/instance-type": "rke2",
+          "beta.kubernetes.io/os": "linux",
+          "cattle.io/os": "linux",
+          "egress.rke2.io/cluster": "true",
+          "kubernetes.io/arch": "amd64",
+          "kubernetes.io/hostname": "bsc-k8s-cluster-server-01",
+          "kubernetes.io/os": "linux",
+          "node-role.kubernetes.io/control-plane": "true",
+          "node-role.kubernetes.io/etcd": "true",
+          "node-role.kubernetes.io/master": "true",
+          "node.kubernetes.io/instance-type": "rke2",
+          "plan.upgrade.cattle.io/system-agent-upgrader": "abc8595409465d9d45d86fca29d77876a043ec1bba52890358d06ab8",
+          "rke.cattle.io/machine": "0b810c19-179a-42a4-93b4-328d76c31b8f"
+        },
+        "name": "bsc-k8s-cluster-server-01",
+        "relationships": null,
+        "state": {
+          "error": false,
+          "message": "Resource is current",
+          "name": "active",
+          "transitioning": false
+        }
+      },
+      "timestamp": "2023-10-18T10:10:53Z",
+      "usage": {
+        "cpu": "1322297763n",
+        "memory": "10074812Ki"
+      },
+      "window": "10.149s"
+    },
+    {
+      "id": "bsc-k8s-cluster-server-02",
+      "type": "metrics.k8s.io.nodemetrics",
+      "links": {
+        "self": "https://rancher.int.tmindtech.com/k8s/clusters/c-m-fxnjb5gn/v1/metrics.k8s.io.nodes/bsc-k8s-cluster-server-02",
+        "view": "https://rancher.int.tmindtech.com/k8s/clusters/c-m-fxnjb5gn/apis/metrics.k8s.io/v1beta1/nodes/bsc-k8s-cluster-server-02"
+      },
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "NodeMetrics",
+      "metadata": {
+        "creationTimestamp": "2023-10-18T10:11:03Z",
+        "fields": [
+          "bsc-k8s-cluster-server-02",
+          "909001184n",
+          "9283596Ki",
+          "20.264s"
+        ],
+        "labels": {
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/instance-type": "rke2",
+          "beta.kubernetes.io/os": "linux",
+          "cattle.io/os": "linux",
+          "egress.rke2.io/cluster": "true",
+          "kubernetes.io/arch": "amd64",
+          "kubernetes.io/hostname": "bsc-k8s-cluster-server-02",
+          "kubernetes.io/os": "linux",
+          "node-role.kubernetes.io/control-plane": "true",
+          "node-role.kubernetes.io/etcd": "true",
+          "node-role.kubernetes.io/master": "true",
+          "node.kubernetes.io/instance-type": "rke2",
+          "plan.upgrade.cattle.io/system-agent-upgrader": "abc8595409465d9d45d86fca29d77876a043ec1bba52890358d06ab8",
+          "rke.cattle.io/machine": "d6fd3644-b172-4c74-9aad-8d660bdfe33b"
+        },
+        "name": "bsc-k8s-cluster-server-02",
+        "relationships": null,
+        "state": {
+          "error": false,
+          "message": "Resource is current",
+          "name": "active",
+          "transitioning": false
+        }
+      },
+      "timestamp": "2023-10-18T10:10:59Z",
+      "usage": {
+        "cpu": "909001184n",
+        "memory": "9283596Ki"
+      },
+      "window": "20.264s"
+    },
+    {
+      "id": "bsc-k8s-cluster-server-03",
+      "type": "metrics.k8s.io.nodemetrics",
+      "links": {
+        "self": "https://rancher.int.tmindtech.com/k8s/clusters/c-m-fxnjb5gn/v1/metrics.k8s.io.nodes/bsc-k8s-cluster-server-03",
+        "view": "https://rancher.int.tmindtech.com/k8s/clusters/c-m-fxnjb5gn/apis/metrics.k8s.io/v1beta1/nodes/bsc-k8s-cluster-server-03"
+      },
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "NodeMetrics",
+      "metadata": {
+        "creationTimestamp": "2023-10-18T10:11:03Z",
+        "fields": [
+          "bsc-k8s-cluster-server-03",
+          "1401508801n",
+          "9992692Ki",
+          "20.281s"
+        ],
+        "labels": {
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/instance-type": "rke2",
+          "beta.kubernetes.io/os": "linux",
+          "cattle.io/os": "linux",
+          "egress.rke2.io/cluster": "true",
+          "kubernetes.io/arch": "amd64",
+          "kubernetes.io/hostname": "bsc-k8s-cluster-server-03",
+          "kubernetes.io/os": "linux",
+          "node-role.kubernetes.io/control-plane": "true",
+          "node-role.kubernetes.io/etcd": "true",
+          "node-role.kubernetes.io/master": "true",
+          "node.kubernetes.io/instance-type": "rke2",
+          "plan.upgrade.cattle.io/system-agent-upgrader": "abc8595409465d9d45d86fca29d77876a043ec1bba52890358d06ab8",
+          "rke.cattle.io/machine": "9235a738-af5e-4ce4-a270-12ed6e2dfa72"
+        },
+        "name": "bsc-k8s-cluster-server-03",
+        "relationships": null,
+        "state": {
+          "error": false,
+          "message": "Resource is current",
+          "name": "active",
+          "transitioning": false
+        }
+      },
+      "timestamp": "2023-10-18T10:10:57Z",
+      "usage": {
+        "cpu": "1401508801n",
+        "memory": "9992692Ki"
+      },
+      "window": "20.281s"
+    },
+    {
+      "id": "bsc-k8s-cluster-worker-01",
+      "type": "metrics.k8s.io.nodemetrics",
+      "links": {
+        "self": "https://rancher.int.tmindtech.com/k8s/clusters/c-m-fxnjb5gn/v1/metrics.k8s.io.nodes/bsc-k8s-cluster-worker-01",
+        "view": "https://rancher.int.tmindtech.com/k8s/clusters/c-m-fxnjb5gn/apis/metrics.k8s.io/v1beta1/nodes/bsc-k8s-cluster-worker-01"
+      },
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "NodeMetrics",
+      "metadata": {
+        "creationTimestamp": "2023-10-18T10:11:03Z",
+        "fields": [
+          "bsc-k8s-cluster-worker-01",
+          "4394883568n",
+          "24309868Ki",
+          "21.343s"
+        ],
+        "labels": {
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/instance-type": "rke2",
+          "beta.kubernetes.io/os": "linux",
+          "cattle.io/os": "linux",
+          "egress.rke2.io/cluster": "true",
+          "kubernetes.io/arch": "amd64",
+          "kubernetes.io/hostname": "bsc-k8s-cluster-worker-01",
+          "kubernetes.io/os": "linux",
+          "node-role.kubernetes.io/worker": "true",
+          "node.kubernetes.io/instance-type": "rke2",
+          "plan.upgrade.cattle.io/system-agent-upgrader": "abc8595409465d9d45d86fca29d77876a043ec1bba52890358d06ab8",
+          "rke.cattle.io/machine": "01223c87-eb45-4549-ade1-2098968de881"
+        },
+        "name": "bsc-k8s-cluster-worker-01",
+        "relationships": null,
+        "state": {
+          "error": false,
+          "message": "Resource is current",
+          "name": "active",
+          "transitioning": false
+        }
+      },
+      "timestamp": "2023-10-18T10:10:57Z",
+      "usage": {
+        "cpu": "4394883568n",
+        "memory": "24309868Ki"
+      },
+      "window": "21.343s"
+    },
+    {
+      "id": "bsc-k8s-cluster-worker-02",
+      "type": "metrics.k8s.io.nodemetrics",
+      "links": {
+        "self": "https://rancher.int.tmindtech.com/k8s/clusters/c-m-fxnjb5gn/v1/metrics.k8s.io.nodes/bsc-k8s-cluster-worker-02",
+        "view": "https://rancher.int.tmindtech.com/k8s/clusters/c-m-fxnjb5gn/apis/metrics.k8s.io/v1beta1/nodes/bsc-k8s-cluster-worker-02"
+      },
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "NodeMetrics",
+      "metadata": {
+        "creationTimestamp": "2023-10-18T10:11:03Z",
+        "fields": [
+          "bsc-k8s-cluster-worker-02",
+          "4312210471n",
+          "21380144Ki",
+          "11.441s"
+        ],
+        "labels": {
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/instance-type": "rke2",
+          "beta.kubernetes.io/os": "linux",
+          "cattle.io/os": "linux",
+          "egress.rke2.io/cluster": "true",
+          "kubernetes.io/arch": "amd64",
+          "kubernetes.io/hostname": "bsc-k8s-cluster-worker-02",
+          "kubernetes.io/os": "linux",
+          "node-role.kubernetes.io/worker": "true",
+          "node.kubernetes.io/instance-type": "rke2",
+          "plan.upgrade.cattle.io/system-agent-upgrader": "abc8595409465d9d45d86fca29d77876a043ec1bba52890358d06ab8",
+          "rke.cattle.io/machine": "2f260779-be26-48f5-8174-42ca91e16faf"
+        },
+        "name": "bsc-k8s-cluster-worker-02",
+        "relationships": null,
+        "state": {
+          "error": false,
+          "message": "Resource is current",
+          "name": "active",
+          "transitioning": false
+        }
+      },
+      "timestamp": "2023-10-18T10:10:55Z",
+      "usage": {
+        "cpu": "4312210471n",
+        "memory": "21380144Ki"
+      },
+      "window": "11.441s"
+    },
+    {
+      "id": "bsc-k8s-cluster-worker-04",
+      "type": "metrics.k8s.io.nodemetrics",
+      "links": {
+        "self": "https://rancher.int.tmindtech.com/k8s/clusters/c-m-fxnjb5gn/v1/metrics.k8s.io.nodes/bsc-k8s-cluster-worker-04",
+        "view": "https://rancher.int.tmindtech.com/k8s/clusters/c-m-fxnjb5gn/apis/metrics.k8s.io/v1beta1/nodes/bsc-k8s-cluster-worker-04"
+      },
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "NodeMetrics",
+      "metadata": {
+        "creationTimestamp": "2023-10-18T10:11:03Z",
+        "fields": [
+          "bsc-k8s-cluster-worker-04",
+          "4445242360n",
+          "23020276Ki",
+          "10.547s"
+        ],
+        "labels": {
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/instance-type": "rke2",
+          "beta.kubernetes.io/os": "linux",
+          "cattle.io/os": "linux",
+          "egress.rke2.io/cluster": "true",
+          "kubernetes.io/arch": "amd64",
+          "kubernetes.io/hostname": "bsc-k8s-cluster-worker-04",
+          "kubernetes.io/os": "linux",
+          "node-role.kubernetes.io/worker": "true",
+          "node.kubernetes.io/instance-type": "rke2",
+          "plan.upgrade.cattle.io/system-agent-upgrader": "abc8595409465d9d45d86fca29d77876a043ec1bba52890358d06ab8",
+          "rke.cattle.io/machine": "5bcedfe1-dfa2-434d-95a2-835ff30b2499"
+        },
+        "name": "bsc-k8s-cluster-worker-04",
+        "relationships": null,
+        "state": {
+          "error": false,
+          "message": "Resource is current",
+          "name": "active",
+          "transitioning": false
+        }
+      },
+      "timestamp": "2023-10-18T10:10:50Z",
+      "usage": {
+        "cpu": "4445242360n",
+        "memory": "23020276Ki"
+      },
+      "window": "10.547s"
+    },
+    {
+      "id": "bsc-k8s-cluster-worker-05",
+      "type": "metrics.k8s.io.nodemetrics",
+      "links": {
+        "self": "https://rancher.int.tmindtech.com/k8s/clusters/c-m-fxnjb5gn/v1/metrics.k8s.io.nodes/bsc-k8s-cluster-worker-05",
+        "view": "https://rancher.int.tmindtech.com/k8s/clusters/c-m-fxnjb5gn/apis/metrics.k8s.io/v1beta1/nodes/bsc-k8s-cluster-worker-05"
+      },
+      "apiVersion": "metrics.k8s.io/v1beta1",
+      "kind": "NodeMetrics",
+      "metadata": {
+        "creationTimestamp": "2023-10-18T10:11:03Z",
+        "fields": [
+          "bsc-k8s-cluster-worker-05",
+          "1286283097n",
+          "13651060Ki",
+          "20.092s"
+        ],
+        "labels": {
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/instance-type": "rke2",
+          "beta.kubernetes.io/os": "linux",
+          "cattle.io/os": "linux",
+          "egress.rke2.io/cluster": "true",
+          "kubernetes.io/arch": "amd64",
+          "kubernetes.io/hostname": "bsc-k8s-cluster-worker-05",
+          "kubernetes.io/os": "linux",
+          "node-role.kubernetes.io/worker": "true",
+          "node.kubernetes.io/instance-type": "rke2",
+          "plan.upgrade.cattle.io/system-agent-upgrader": "abc8595409465d9d45d86fca29d77876a043ec1bba52890358d06ab8",
+          "rke.cattle.io/machine": "bce53f9c-2388-442a-8148-59a3a409f179"
+        },
+        "name": "bsc-k8s-cluster-worker-05",
+        "relationships": null,
+        "state": {
+          "error": false,
+          "message": "Resource is current",
+          "name": "active",
+          "transitioning": false
+        }
+      },
+      "timestamp": "2023-10-18T10:10:59Z",
+      "usage": {
+        "cpu": "1286283097n",
+        "memory": "13651060Ki"
+      },
+      "window": "20.092s"
+    }
+  ]
+}

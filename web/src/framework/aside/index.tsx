@@ -1,7 +1,7 @@
 /**
  * 左侧导航栏
  */
-import { INavFormat, menuConfig, USER_ROLE } from '@/constants';
+import { USER_ROLE } from '@/constants';
 import { Layout, Menu, Tooltip } from 'antd';
 import React from 'react';
 import { useEffect, useState } from 'react';
@@ -9,14 +9,22 @@ import { useLocation, useNavigate } from 'react-router';
 import './index.scss';
 import { PathConfig } from '../routes/routes';
 import { MenuUnfoldOutlined, MenuFoldOutlined, LogoutOutlined } from '@ant-design/icons';
-import { doLogout } from '@/utils';
+import { RouteService } from '@/typings/route';
+import { tabRouteAction, useAppSelector } from '@/stores';
+import { useDispatch } from 'react-redux';
 
 const { Sider } = Layout;
+
+interface IMenu extends RouteService.IListData {
+  label: string;
+  key: string;
+  children: IMenu[]
+}
 
 interface IProps {
 }
 
-const isAncestorNode = (key: string, config: INavFormat[] = []) => {
+const isAncestorNode = (key: string, config: IMenu[] = []) => {
   if (!key || !config.length) {
     return false
   }
@@ -29,7 +37,7 @@ const isAncestorNode = (key: string, config: INavFormat[] = []) => {
   return false
 }
 
-const findSubMenuPath = (key: string, config: INavFormat[] = []) => {
+const findSubMenuPath = (key: string, config: IMenu[] = []) => {
   let result: string[] = []
   for (let i = 0, len = config.length; i < len; i++) {
     const menu = config[i]
@@ -41,7 +49,7 @@ const findSubMenuPath = (key: string, config: INavFormat[] = []) => {
   return result
 }
 
-const findSelectedKey = (key: string, config: INavFormat[] = []) => {
+const findSelectedKey = (key: string, config: IMenu[] = []) => {
   let result = ''
   for (let i = 0, len = config.length; i < len; i++) {
     const menu = config[i]
@@ -59,17 +67,33 @@ const findSelectedKey = (key: string, config: INavFormat[] = []) => {
 }
 
 function Aside(props: IProps) {
+  const df = (list: RouteService.IListData[]) => {
+    return list?.map(e => ({ ...e, label: e.name, key: e.path, children: df(e.children) }))
+  }
+
   const history = useNavigate()
   const location = useLocation()
+  const { routes } = useAppSelector(tabRouteAction.tabRouteInfo)
   const [selectedKey, changeSelectedKeys] = useState(location.pathname)
-  const [inlineCollapsed, setInlineCollapsed] = useState(true)
+  const [inlineCollapsed, setInlineCollapsed] = useState(false)
+  const [menus, setMenus] = useState<IMenu[]>(df(routes))
+  const dispatch = useDispatch()
 
-  const menus = menuConfig.filter((e) => e.admin ? USER_ROLE.isAdminForSelf() && e.admin : true).map((e) => ({ ...e, admin: undefined }))
+  useEffect(() => {
+    const newRoutes2 = routes.filter((e) => !USER_ROLE.isAdmin(e.role));
+    let newMenus = newRoutes2;
+    if (USER_ROLE.isAdminForSelf()) {
+      newMenus = routes
+    }
+    setMenus(df(newMenus))
+  }, [routes])
 
   const [defaultOpenKeys] = useState(findSubMenuPath(location.pathname, menus))
 
   useEffect(() => {
     const currentSelectedKey = findSelectedKey(location.pathname, menus)
+    const curMenu = menus.find(e => e.key === currentSelectedKey)
+    dispatch(tabRouteAction.setCurrentRoute(curMenu))
     changeSelectedKeys(currentSelectedKey)
   }, [location.pathname, menus])
 
@@ -82,23 +106,11 @@ function Aside(props: IProps) {
       width={inlineCollapsed ? 54 : 200}
       className="layout-aside"
     >
-      <div className='aside-logo' onClick={() => {
-        history(PathConfig.home)
-      }}>
-        GDJ
-      </div>
-      {USER_ROLE.isAdminForSelf() && (
-        <Tooltip title="登出" placement="right">
-          <div className="aside-logout" onClick={() => doLogout()}>
-            <LogoutOutlined />
-          </div>
-        </Tooltip>
-      )}
-      <Tooltip title="收缩" placement="right">
+      {/* <Tooltip title="收缩" placement="right">
         <a className="layout-aside-collapsed" onClick={() => setInlineCollapsed(!inlineCollapsed)} >
           {inlineCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         </a>
-      </Tooltip>
+      </Tooltip> */}
       <Menu
         theme="light"
         mode="inline"

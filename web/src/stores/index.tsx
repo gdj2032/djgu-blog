@@ -1,8 +1,12 @@
 import * as counterAction from './counter';
 import * as userAction from './user';
 import * as sysAction from './sys';
-export { sysAction };
-export { counterAction };
-export { userAction };
+import * as tabRouteAction from './tabRoute';
+export {
+  sysAction,
+  counterAction,
+  userAction,
+  tabRouteAction,
+};
 export * from './store';
 export * from './hooks';

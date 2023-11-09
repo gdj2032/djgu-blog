@@ -1,6 +1,6 @@
 import DataBase from "@/db";
 import { FILE_SQL } from "@/sql";
-import { RESPONSE_TYPE, RESPONSE_CODE_MSG, fileUuid } from "@/utils";
+import { RESPONSE_TYPE, RESPONSE_CODE_MSG, commonUuid } from "@/utils";
 import moment from "moment";
 import fs from 'fs'
 import co from 'co';
@@ -107,7 +107,7 @@ class FileService {
     const { content, type } = req.body
     if (!content) return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.contentNotEmpty });
     if (type === FILE_TYPE.content) {
-      const fileId = fileUuid()
+      const fileId = commonUuid()
       const filename = `${fileId}.txt`;
       const filepath = `${FILE_PATH}/${filename}`;
       // 创建文件
@@ -129,7 +129,7 @@ class FileService {
     console.info('--- uploadDirectory req.files --->', req.files);
     const { name, tempFilePath, mimetype } = req.files.zip;
     if (mimetype === 'application/zip') {
-      const fileId = fileUuid()
+      const fileId = commonUuid()
       const filename = `${fileId}_${name.split('.')?.[0] || name}.zip`;
       const filepath = `${FILE_PATH}/${filename}`;
       fs.renameSync(tempFilePath, filepath)

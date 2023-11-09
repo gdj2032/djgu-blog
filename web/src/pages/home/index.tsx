@@ -8,9 +8,7 @@ function Home() {
 
   return (
     <div className='g-home'>
-      <div className='m-img-bg'>
-        <div style={{ paddingTop: 200 }}></div>
-      </div>
+      显示最新的文档
     </div>
   )
 }

@@ -62,7 +62,7 @@ export const pageRoute = (): RouteObject[] => [
     element: <Login />,
   },
   {
-    path: PathConfig.user,
+    path: PathConfig.admin,
     element: <User />,
   },
   {

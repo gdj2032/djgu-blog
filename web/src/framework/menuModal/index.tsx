@@ -34,7 +34,7 @@ function MenuModal(props: IProps) {
       },
       {
         label: '管理',
-        key: user.id ? PathConfig.user : PathConfig.login,
+        key: user.id ? PathConfig.admin : PathConfig.login,
         icon: <UserOutlined />
       },
     ]

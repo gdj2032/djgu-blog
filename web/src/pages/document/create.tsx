@@ -23,7 +23,7 @@ function Create() {
   const [, setData] = useState<DocumentService.IListData>()
 
   const routes = [
-    { name: '管理员', url: `${PathConfig.user}?current=${USER_TAB.document}` },
+    { name: '管理员', url: `${PathConfig.admin}?current=${USER_TAB.document}` },
     { name: id ? '编辑文档' : '新增文档' },
   ]
 
@@ -42,7 +42,7 @@ function Create() {
         })
         if (res.code === 200) {
           message.success('编辑文档成功')
-          navigate(`${PathConfig.user}?current=${USER_TAB.document}`)
+          navigate(`${PathConfig.admin}?current=${USER_TAB.document}`)
         }
       } else {
         const res = await documentService.dCreate({
@@ -53,7 +53,7 @@ function Create() {
         })
         if (res.code === 200) {
           message.success('新增文档成功')
-          navigate(`${PathConfig.user}?current=${USER_TAB.document}`)
+          navigate(`${PathConfig.admin}?current=${USER_TAB.document}`)
         }
       }
     } catch (error) {

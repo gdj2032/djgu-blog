@@ -1,6 +1,6 @@
 import DataBase from "@/db";
 import { VERSION_SQL } from "@/sql";
-import { RESPONSE_TYPE, RESPONSE_CODE_MSG, versionUuid } from "@/utils";
+import { RESPONSE_TYPE, RESPONSE_CODE_MSG, commonUuid } from "@/utils";
 import moment from 'moment';
 import compressing from 'compressing'
 import { FILE_PATH, isDev, NGINX_FILE_PATH_CFG, VERSION_TYPE } from "@/constants";
@@ -66,7 +66,7 @@ class VersionService {
       ]
     })
     if (errorAble) return errorAble;
-    const tId = versionUuid()
+    const tId = commonUuid()
     const time = moment().valueOf();
     await DataBase.sql(VERSION_SQL.insert, [tId, name, 0, time, zipPath, type])
     const { data } = await DataBase.sql(VERSION_SQL.queryByName, [name]);

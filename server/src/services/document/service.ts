@@ -1,7 +1,6 @@
-import { documentUuid } from './../../utils/util';
 import DataBase from "@/db";
 import { DOCUMENT_SQL, FILE_SQL } from "@/sql";
-import { RESPONSE_TYPE, RESPONSE_CODE_MSG } from "@/utils";
+import { RESPONSE_TYPE, RESPONSE_CODE_MSG, commonUuid } from "@/utils";
 import moment from 'moment';
 import documentTypeService from '../documentType/service';
 
@@ -87,7 +86,7 @@ class DocumentService {
       ]
     })
     if (errorAble) return errorAble;
-    const dId = documentUuid()
+    const dId = commonUuid()
     const time = moment().valueOf();
     const { error } = await DataBase.sql(DOCUMENT_SQL.insert, [dId, name, description, fileId, content, types.join(','), time, time, 0])
     if (error) {

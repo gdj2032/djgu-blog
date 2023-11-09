@@ -4,7 +4,7 @@ import { message } from 'antd';
 import { store } from '@/stores';
 import { doLogout } from '@/utils';
 
-const methods = ['GET', 'POST', 'PUT', 'DELETE'];
+const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
 function checkStatus(response: any, download?: boolean) {
   switch (response.status) {

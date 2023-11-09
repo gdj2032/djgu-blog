@@ -53,10 +53,10 @@ function FixedView(props: IProps) {
           }}
         />
       )} */}
-      <MenuModal
+      {/* <MenuModal
         visible={visible}
         onClose={() => setVisible(false)}
-      />
+      /> */}
     </div>
   )
 }

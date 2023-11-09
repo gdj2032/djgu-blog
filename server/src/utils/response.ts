@@ -46,6 +46,7 @@ export const RESPONSE_CODE_MSG = {
   versionIsUsed: { status: 400, code: 1018, msg: '该版本正在被使用,删除失败!' },
   versionNotExist: { status: 400, code: 1018, msg: '版本不存在!' },
   downloadError: { status: 400, code: 1019, msg: '文件下载失败,请联系管理员!' },
+  tabRouteInsertError: { status: 400, code: 1014, msg: '新增路由失败' },
 }
 
 export const RESPONSE_TYPE = {

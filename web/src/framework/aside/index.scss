@@ -1,4 +1,4 @@
-$menu-nor-color: #B5BBD1;
+$menu-nor-color: rgb(85, 68, 90);
 
 .layout-aside {
   position: relative;
@@ -13,12 +13,13 @@ $menu-nor-color: #B5BBD1;
   overflow: hidden;
   height: 100%;
   user-select: none;
+  box-shadow: 1px 0px 0px rgba(0, 0, 0, 0.2);
 
   .layout-aside-collapsed {
     position: absolute;
     right: 10px;
     bottom: 40px;
-    color: #fff;
+    color: #000;
   }
 
   .aside-logout {
@@ -115,10 +116,13 @@ $menu-nor-color: #B5BBD1;
     .ant-menu-submenu .ant-menu-item,
     .ant-menu-item {
 
-      &.ant-menu-item-selected,
-      &:hover {
-        color: #fff !important;
+      &.ant-menu-item-selected {
+        color: #ffffff !important;
         background: #4D8BED;
+      }
+
+      &:hover {
+        opacity: 0.8;
       }
     }
 

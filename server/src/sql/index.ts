@@ -4,6 +4,7 @@ import { DOCUMENT_SQL } from './document';
 import { FILE_SQL } from './file';
 import { VERSION_SQL } from './version'
 import { CRAWLERS_SQL } from './crawlers';
+import { TAB_ROUTE_SQL } from './tabRoute';
 
 export {
   USER_SQL,
@@ -12,4 +13,5 @@ export {
   FILE_SQL,
   VERSION_SQL,
   CRAWLERS_SQL,
+  TAB_ROUTE_SQL,
 }

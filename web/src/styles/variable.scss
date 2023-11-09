@@ -4,11 +4,11 @@
  **/
 
 // 颜色定义
-$theme-color: #3E3E42;
+$theme-color: rgb(255, 255, 255);
 $theme-btn-color: #4D8BED;
 $content-bg: #FFFFFF;
 $white: #FFFFFF;
-$dark-background-topbar: #4c2c9c; //顶部条颜色
+$dark-background-topbar: rgb(27, 17, 53); //顶部条颜色
 
 $primary-btn-color: $theme-btn-color;
 
@@ -19,12 +19,13 @@ $login-label-color: #81868C;
 
 $nav-white: #FFFFFF;
 $menu-nor-color: #FFFFFF;
-$header-font-color: #FFFFFF;
+$header-font-color: #0f0e0e;
 
 // 布局定义
 $page-min-width: 1280px;
 $side-menu-width: 200px;
 $page-frame-header-height: 36px;
+$header_height: 48px;
 
 //危险操作
 $dark-danger-clr: #F94319;

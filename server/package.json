@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --watch 'src/' -e ts --exec 'ts-node' ./src/index.ts  --files",
+    "obj": "'ts-node' ./src/utils/object2interface/index.ts",
     "build": "rm -rf ./dist && tsc && tsc-alias"
   },
   "repository": {
