@@ -1,6 +1,7 @@
 import moment from "moment";
 import { fileService, routeService } from "@/services";
 import { store, routeAction } from "@/stores";
+import { DEFAULT_ROUTE } from "@/constants";
 
 export const noop = () => { }
 
@@ -45,5 +46,5 @@ export const uploadFile = async ({ content }) => {
 
 export const initRoutes = async () => {
   const res = await routeService.dList({ limit: 10000, offset: 0 })
-  store.dispatch(routeAction.setrouteInfo({ routes: res.data.data, currentRoute: res.data.data?.[0] }))
+  store.dispatch(routeAction.setrouteInfo({ routes: [DEFAULT_ROUTE, ...res.data.data], currentRoute: res.data.data?.[0] }))
 }

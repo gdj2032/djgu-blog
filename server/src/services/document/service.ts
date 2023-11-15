@@ -2,7 +2,7 @@ import DataBase from "@/db";
 import { DOCUMENT_SQL, FILE_SQL } from "@/sql";
 import { RESPONSE_TYPE, RESPONSE_CODE_MSG, commonUuid } from "@/utils";
 import moment from 'moment';
-import documentTypeService from '../documentType/service';
+import routeService from "../route/service";
 
 class DocumentService {
   async list(...args) {
@@ -23,15 +23,15 @@ class DocumentService {
     if (error0) {
       return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
     }
-    const allTypes = (await documentTypeService.allTypes()).map((e) => ({ id: e.id, name: e.name }))
+    const allRoutes = await routeService.all()
     const newData = data0?.map((e) => {
       const cTypes = e.types.split(',')
       return {
         ...e,
-        types: allTypes.filter((v) => cTypes.includes(v.id)),
+        types: allRoutes.filter((v) => cTypes.includes(v.id)),
       }
     })
-    const { data: allData } = await DataBase.sql(DOCUMENT_SQL.queryAll)
+    const allData = await this.all()
     return RESPONSE_TYPE.commonSuccess2List({
       res, data: newData,
       limit: _limit,
@@ -39,6 +39,12 @@ class DocumentService {
       total: allData.length,
     })
   }
+
+  async all() {
+    const { data } = await DataBase.sql(DOCUMENT_SQL.queryAll)
+    return data || []
+  }
+
 
   async detail(...args) {
     const [req, res] = args;
@@ -52,7 +58,7 @@ class DocumentService {
     if (errorAble) return errorAble;
     const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryById, [id])
     if (!error) {
-      const types = (await documentTypeService.typeByIds(data[0].types.split(','))).map((e) => ({ id: e.id, name: e.name }))
+      const types = (await routeService.typeByIds(data[0].types.split(','))).map((e) => ({ id: e.id, name: e.name }))
       return RESPONSE_TYPE.commonSuccess({
         res,
         data: {
@@ -66,7 +72,7 @@ class DocumentService {
 
   async create(...args) {
     const [req, res] = args;
-    const { name, description, fileId, types, content = '' } = req.body as any;
+    const { name, description, fileId, types } = req.body as any;
     const errorAble = await RESPONSE_TYPE.commonErrors({
       res,
       errs: [
@@ -88,7 +94,7 @@ class DocumentService {
     if (errorAble) return errorAble;
     const dId = commonUuid()
     const time = moment().valueOf();
-    const { error } = await DataBase.sql(DOCUMENT_SQL.insert, [dId, name, description, fileId, content, types.join(','), time, time, 0])
+    const { error } = await DataBase.sql(DOCUMENT_SQL.insert, [dId, name, description, fileId, types.join(','), time, time, 0])
     if (error) {
       return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.documentInsertError })
     }

@@ -11,6 +11,7 @@
   background: var(--theme-bg);
   line-height: $header_height;
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid var(--theme-border-color);
 
   .u-left-menu {
     flex: 1;
@@ -43,6 +44,7 @@
 
     .u-login {
       cursor: pointer;
+      font-size: 18px;
     }
 
     .u-item+.u-item {

@@ -1,25 +1,25 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { TBreadcrumb } from '@/components';
+import React, { useState, useEffect } from 'react';
+import { QuillEditor, TBreadcrumb } from '@/components';
 import './index.scss';
 import { PathConfig } from '@/framework/routes/routes';
 import { USER_ROLE, USER_TAB } from '@/constants';
 import { Card, Form, Input, Select, message, Space, Button } from 'antd';
-import { documentTypeService, documentService, fileService } from '@/services';
-import Editor from 'for-editor'
+import { routeService, documentService, fileService } from '@/services';
 import { IRowItem } from '@/components/ItemsRow';
 import { useNavigate } from 'react-router';
 import { useQuery, openModal2 } from '@djgu/react-comps';
 import { DocumentService } from '@/typings/document';
-import UpdateDocTypeModal from '../user/comps/UpdateDocTypeModal';
-import { uploadFile } from '@/utils';
+import { initRoutes, uploadFile } from '@/utils';
+import UpdateRouteModal from '../user/comps/UpdateRouteModal';
+import { RouteService } from '@/typings/route';
+import { useForm } from "antd/es/form/Form";
 
 function Create() {
   const { id } = useQuery()
   const navigate = useNavigate()
   const [types, setTypes] = useState<IIdName[]>([])
   const [loading, setLoading] = useState(false)
-  const editorRef = useRef<any>();
-  const formRef = useRef<any>();
+  const [form] = useForm();
   const [, setData] = useState<DocumentService.IListData>()
 
   const routes = [
@@ -28,7 +28,7 @@ function Create() {
   ]
 
   const handleSubmit = async () => {
-    const params = await formRef.current.validateFields();
+    const params = await form.validateFields();
     try {
       setLoading(true)
       const { data } = await uploadFile({ content: params.content })
@@ -73,9 +73,21 @@ function Create() {
     }
   ]
 
+  const dfRoutes = (r: RouteService.IListData[]) => {
+    let rs: RouteService.IListData[] = []
+    for (const item of r) {
+      rs.push(item)
+      if (item.children?.length) {
+        const r2 = dfRoutes(item.children);
+        rs = rs.concat(r2);
+      }
+    }
+    return rs
+  }
+
   const initTypes = async () => {
-    const res = await documentTypeService.dtList({ limit: 10000, offset: 0 });
-    setTypes(res.data.data)
+    const res = await routeService.dList({ limit: 10000, offset: 0 });
+    setTypes(dfRoutes(res.data.data))
   }
 
   const initDoc = async () => {
@@ -87,10 +99,10 @@ function Create() {
       // console.log("🚀 ~ file: detail.tsx:37 ~ init ~ res1:", res1)
       const fr = new FileReader()
       fr.addEventListener('loadend', (e: any) => {
-        formRef.current?.setFieldsValue({ content: e.target.result })
+        form?.setFieldsValue({ content: e.target.result })
       })
       fr.readAsText(res1)
-      formRef.current?.setFieldsValue({
+      form?.setFieldsValue({
         name: res.data.name,
         description: res.data.description,
         types: res.data.types.map((e) => e.id),
@@ -115,14 +127,15 @@ function Create() {
     formData.set('type', file.type)
     const res = await fileService.upload(formData);
     if (res.code === 200) {
-      editorRef.current.$img2Url(file.name, res.data.url)
+      // editorRef.current.$img2Url(file.name, res.data.url)
     }
   }
 
   const handleAddType = () => {
-    const { destroy } = openModal2(UpdateDocTypeModal, {
+    const { destroy } = openModal2(UpdateRouteModal, {
       afterClose: () => {
         initTypes()
+        initRoutes()
         destroy()
       }
     })
@@ -136,7 +149,7 @@ function Create() {
         <Form
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 8 }}
-          ref={c => formRef.current = c}
+          form={form}
         >
           <Form.Item
             name="name"
@@ -189,11 +202,15 @@ function Create() {
               { required: true, message: '请输入正文' }
             ]}
           >
-            <Editor
+            {/* <Editor
               ref={c => editorRef.current = c}
               addImg={addImg}
               placeholder="请输入正文"
               subfield
+            /> */}
+            <QuillEditor
+              showToolbar
+              syntax
             />
           </Form.Item>
         </Form>

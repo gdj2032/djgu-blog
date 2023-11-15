@@ -13,6 +13,7 @@ import { clearUserInfo, setUserInfo } from '@/stores/user'
 import { userService } from '@/services';
 import Setting from './setting';
 import { message } from 'antd';
+import { initRoutes } from './util';
 
 export const doLogin = (params: any) => new Promise(async (resolve, reject) => {
   const res = await userService.login({
@@ -27,6 +28,7 @@ export const doLogin = (params: any) => new Promise(async (resolve, reject) => {
     store.dispatch(setUserInfo({ ...data, isLogin: true }));
     message.success('登录成功')
     window.location.hash = PathConfig.home;
+    initRoutes()
     // if (isElectron) {
     //   window.app.createWindowByName({ name: 'home' });
     //   timer = setTimeout(() => {

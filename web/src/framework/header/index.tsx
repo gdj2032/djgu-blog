@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout, Tooltip } from 'antd'
-import { GithubOutlined, LoginOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
-import { APPNAME, isElectron } from '@/constants'
+import { GithubOutlined, LoginOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons'
+import { APPNAME, isElectron, USER_ROLE } from '@/constants'
 import './index.scss'
 import { doLogout } from '@/utils'
 import { sysAction, useAppSelector } from '@/stores'
@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux'
 const { Header } = Layout
 
 const CustomHeader = () => {
-  const { username } = useAppSelector(userInfo);
+  const { username, role } = useAppSelector(userInfo);
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const sysInfo = useAppSelector(sysAction.sysInfo)
@@ -76,6 +76,15 @@ const CustomHeader = () => {
             }
           </Tooltip>
         </div>
+        {
+          USER_ROLE.isAdmin(role) && (
+            <div className="u-item u-login">
+              <Tooltip title='管理员'>
+                <SettingOutlined onClick={() => navigate(PathConfig.admin)} />
+              </Tooltip>
+            </div>
+          )
+        }
         <div className="u-item u-logout" onClick={() => doLogout()}>
           <Tooltip title='github'>
             <Comp className='m-github' href={GITHUB_KNOWLEDGE_URL} target='_blank' rel="noreferrer" onClick={handleGithub}>

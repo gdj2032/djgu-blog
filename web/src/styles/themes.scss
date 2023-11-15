@@ -1,8 +1,9 @@
 .light {
   --login-title-color: #2e1a52;
   --login-form-bg: #cddbeb;
-  --theme-bg: #f4f8f8;
+  --theme-bg: #f8f7f7;
   --theme-font: #000;
+  --theme-border-color: #CCCCCC;
 }
 
 .dark {
@@ -10,4 +11,5 @@
   --login-form-bg: #721ec6;
   --theme-bg: #001529;
   --theme-font: #fff;
+  --theme-border-color: #676767;
 }

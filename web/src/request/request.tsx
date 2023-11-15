@@ -2,7 +2,7 @@ import { API_HOST, Credentials, isElectron } from '@/constants';
 import { genQuery, abortablePromise } from './helper';
 import { message } from 'antd';
 import { store } from '@/stores';
-import { doLogout } from '@/utils';
+import { doLogout, initRoutes } from '@/utils';
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
@@ -17,6 +17,7 @@ function checkStatus(response: any, download?: boolean) {
       return response.text().then((text: string) => Promise.resolve(text ? JSON.parse(text) : {}));
     case 401:
       doLogout({ tip: '登录已失效', type: 'error' });
+      initRoutes()
       break;
     default:
       return (response.json()).then((json: any) => {

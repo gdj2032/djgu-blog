@@ -4,7 +4,7 @@ import { ROUTE_SQL } from "@/sql";
 import { RESPONSE_TYPE, RESPONSE_CODE_MSG, commonUuid } from "@/utils";
 import moment from 'moment';
 
-class TabRouteService {
+class RouteService {
   async list(...args) {
     const [req, res] = args;
     const { limit = 10, offset = 0, onlyParent = false } = req.query as any;
@@ -42,9 +42,22 @@ class TabRouteService {
     return r;
   }
 
-  all() {
-    return DataBase.sql(ROUTE_SQL.queryAll)
+  async all() {
+    const { data } = await DataBase.sql(ROUTE_SQL.queryAll)
+    return data || []
   }
+
+
+  async typeById(id) {
+    const { data } = await DataBase.sql(ROUTE_SQL.queryById, [id])
+    return data
+  }
+
+  async typeByIds(ids) {
+    const { data } = await DataBase.sql(ROUTE_SQL.queryByIds, [ids])
+    return data
+  }
+
 
   async detail(...args) {
     const [req, res] = args;
@@ -151,6 +164,6 @@ class TabRouteService {
   }
 }
 
-const tabRouteService = new TabRouteService()
+const routeService = new RouteService()
 
-export default tabRouteService
+export default routeService

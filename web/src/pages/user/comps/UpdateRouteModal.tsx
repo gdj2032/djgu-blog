@@ -12,7 +12,7 @@ interface IProps extends IModalProps {
   data?: RouteService.IListData;
 }
 
-function UpdateDocTypeModal(props: IProps) {
+function UpdateRouteModal(props: IProps) {
   const { visible, close, data, ...arg } = props;
   const [loading, setLoading] = useState(false)
   const [form] = useForm()
@@ -45,7 +45,7 @@ function UpdateDocTypeModal(props: IProps) {
         }
       }
     } catch (error) {
-      console.log("🚀 ~ file: UpdateDocTypeModal.tsx:49 ~ handleOk ~ error:", error)
+      console.log("🚀 ~ file: UpdateRouteModal.tsx:49 ~ handleOk ~ error:", error)
     }
     setLoading(false)
   }
@@ -99,6 +99,6 @@ function UpdateDocTypeModal(props: IProps) {
   )
 }
 
-UpdateDocTypeModal.displayName = 'UpdateDocTypeModal';
+UpdateRouteModal.displayName = 'UpdateRouteModal';
 
-export default UpdateDocTypeModal;
+export default UpdateRouteModal;
