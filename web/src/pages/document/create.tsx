@@ -126,9 +126,10 @@ function Create() {
     formData.set('name', file.name)
     formData.set('type', file.type)
     const res = await fileService.upload(formData);
-    if (res.code === 200) {
-      // editorRef.current.$img2Url(file.name, res.data.url)
+    if (+res?.code === 200) {
+      return { name: file.name, ...res.data }
     }
+    return null;
   }
 
   const handleAddType = () => {
@@ -211,6 +212,16 @@ function Create() {
             <QuillEditor
               showToolbar
               syntax
+              onUploadFile={async (files: any[], type) => {
+                const arr: { url: string, name: string }[] = []
+                for (const file of files) {
+                  const res = await addImg(file)
+                  if (res) {
+                    arr.push(res)
+                  }
+                }
+                return arr;
+              }}
             />
           </Form.Item>
         </Form>

@@ -3,12 +3,12 @@ import { useQuery } from '@djgu/react-comps';
 import './index.scss';
 import { DocumentService } from '@/typings/document';
 import { documentService, fileService } from '@/services';
-import { Spin, Tag } from 'antd';
+import { Card, Spin, Tag } from 'antd';
 import { HistoryOutlined, EyeOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { DATE_FORMAT } from '@/constants';
 import moment from 'moment';
 import { PathConfig } from '@/framework/routes/routes';
-import { TBreadcrumb } from '@/components';
+import { QuillEditor, TBreadcrumb } from '@/components';
 import Editor from 'for-editor'
 
 function Detail() {
@@ -73,17 +73,10 @@ function Detail() {
         <div className="global-description">{data.description}</div>
       </div>
       <div className="global-mgt-8">
-        <Editor
+        <QuillEditor
           value={content}
-          preview
-          disabled
-          toolbar={{}}
-          style={{
-            border: 'none',
-            boxShadow: 'none',
-            background: '#fff',
-            height: '100%'
-          }}
+          syntax
+          readOnly
         />
       </div>
     </>
@@ -92,13 +85,13 @@ function Detail() {
   return (
     <div className={`g-document-detail ${spinning && 'g-document-detail-spin'}`}>
       <TBreadcrumb route={routes} />
-      <div className="m-document-content">
+      <Card className="m-document-content">
         {
           data ?
             renderContent()
             : <Spin />
         }
-      </div>
+      </Card>
     </div>
   )
 }

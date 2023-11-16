@@ -3,7 +3,7 @@
 
 .g-quill-editor {
   position: relative;
-  height: 500px;
+  height: 600px;
   display: flex;
   padding-bottom: 20px;
 
@@ -20,15 +20,40 @@
 
   }
 
+  .ql-audio,
   .ql-preview {
     padding: 3px 5px !important;
     display: flex !important;
     align-items: center !important;
 
+    .ql-audio-icon,
     .ql-preview-icon {
       width: 18px;
       height: 18px;
     }
+  }
+
+  .g-quill-toast {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: rgb(203, 203, 203);
+    z-index: 99999;
+  }
+
+  .g-quill-toast-success {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .g-quill-toast-error {
+    background-color: #FF6363;
+  }
+
+  .g-quill-toast-warning {
+    background-color: #FFCA63;
   }
 }
 
@@ -64,7 +89,7 @@
 
     .p-quill-preview {
       flex: 1;
-      padding: 16px;
+      padding: 0 0;
       overflow-y: auto;
     }
 

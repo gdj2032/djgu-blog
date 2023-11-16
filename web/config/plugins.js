@@ -76,6 +76,9 @@ const commonPlugin = [
       },
     },
   }),
+  new webpack.ProvidePlugin({
+    'window.Quill': 'Quill',
+  }),
 ]
 
 exports.devPlugins = function () {

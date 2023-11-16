@@ -4,12 +4,11 @@
 import Quill from 'quill';
 import React, { useEffect } from 'react';
 import './index.scss';
-import Delta from "quill-delta";
 import { CloseOutlined } from '@ant-design/icons';
 import hljs from 'highlight.js';
 
 interface IProps {
-  contents: Delta;
+  contents: string;
   close: () => void;
   syntax: boolean;
 }
@@ -34,7 +33,7 @@ function QuillPreview(props: IProps) {
         toolbar: false,
       }
     })
-    quill.setContents(contents)
+    quill?.clipboard.dangerouslyPasteHTML(0, contents)
   }
   return (
     <div className='g-quill-preview'>
