@@ -86,7 +86,7 @@ function Create() {
   }
 
   const initTypes = async () => {
-    const res = await routeService.dList({ limit: 10000, offset: 0 });
+    const res = await routeService.dList({ limit: 10000, offset: 0, onlyChildren: true });
     setTypes(dfRoutes(res.data.data))
   }
 
@@ -212,7 +212,7 @@ function Create() {
             <QuillEditor
               showToolbar
               syntax
-              onUploadFile={async (files: any[], type) => {
+              onUploadFile={async (files: any) => {
                 const arr: { url: string, name: string }[] = []
                 for (const file of files) {
                   const res = await addImg(file)

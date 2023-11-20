@@ -47,6 +47,9 @@ export const RESPONSE_CODE_MSG = {
   versionNotExist: { status: 400, code: 1018, msg: '版本不存在!' },
   downloadError: { status: 400, code: 1019, msg: '文件下载失败,请联系管理员!' },
   tabRouteInsertError: { status: 400, code: 1014, msg: '新增路由失败' },
+  routeUsedNotDelete: { status: 400, code: 1014, msg: '路由已使用,无法删除!' },
+  routeNotExist: { status: 400, code: 1014, msg: '路由不存在!' },
+  fatherRouteNotDeleteForChild: { status: 400, code: 1014, msg: '存在子路由, 无法删除根路由!' },
 }
 
 export const RESPONSE_TYPE = {

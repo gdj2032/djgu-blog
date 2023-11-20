@@ -9,16 +9,17 @@ import { DATE_FORMAT } from '@/constants';
 import moment from 'moment';
 import { PathConfig } from '@/framework/routes/routes';
 import { QuillEditor, TBreadcrumb } from '@/components';
-import Editor from 'for-editor'
+import { useNavigate } from 'react-router';
 
 function Detail() {
   const { id } = useQuery()
   const [data, setData] = useState<DocumentService.IListData>()
   const [content, setContent] = useState<string>('')
   const [spinning, setSpinning] = useState(false)
+  const navigate = useNavigate()
 
   const routes = [
-    { name: '文档列表', url: PathConfig.document },
+    { name: '返回', click: () => navigate(-1) },
     { name: '详情' },
   ]
 

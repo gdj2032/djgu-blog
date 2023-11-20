@@ -7,12 +7,10 @@ import { Button, message, Modal, Table } from 'antd';
 import React from 'react';
 import { openModal2, usePagination } from '@djgu/react-comps';
 import { RouteService } from '@/typings/route';
-import { useNavigate } from 'react-router';
 import UpdateRouteModal from './UpdateRouteModal';
 import { initRoutes } from '@/utils';
 
 function RouteView() {
-  const navigate = useNavigate()
   const { tableProps, paginationProps, debounceRefresh } = usePagination<RouteService.IListData>(async ({ limit, offset }) => {
     const res = await routeService.dList({ limit, offset })
     if (res?.code === 200) {
@@ -49,7 +47,7 @@ function RouteView() {
   }
 
   const columns = () => [
-    { title: '名称', dataIndex: 'name', key: 'name', render: (t, r) => <Button type="link" onClick={() => navigate(r.path)}>{t}</Button> },
+    { title: '名称', dataIndex: 'name', key: 'name', render: (t, r) => t },
     { title: '路径', dataIndex: 'path', key: 'path' },
     { title: '描述', dataIndex: 'description', key: 'description' },
     {

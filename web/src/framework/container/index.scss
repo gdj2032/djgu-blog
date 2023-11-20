@@ -4,4 +4,8 @@
   min-width: $page-min-width;
   overflow-x: hidden;
   overflow-y: auto;
+
+  .layout-content {
+    background: var(--theme-bg-container)
+  }
 }

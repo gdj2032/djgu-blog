@@ -106,13 +106,13 @@ interface IProps {
    *
    * @memberof IProps
    */
-  onUploadFile?: (files: FileList, type: T_UPLOAD_FILE) => Promise<[{ name: string; url: string }]>;
+  onUploadFile?: (files: FileList, type: T_UPLOAD_FILE) => Promise<{ name: string; url: string }[]>;
   /**
    * 自定义点击图片/视频/音频
    *
    * @memberof IProps
    */
-  onCustomFile?: (type: T_UPLOAD_FILE) => Promise<[{ name: string; url: string }]>;
+  onCustomFile?: (type: T_UPLOAD_FILE) => Promise<{ name: string; url: string }[]>;
   /**
    * 自定义预览功能
    *

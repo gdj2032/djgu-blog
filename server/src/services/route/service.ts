@@ -1,13 +1,13 @@
 import { USER_ROLE } from "@/constants";
 import DataBase from "@/db";
-import { ROUTE_SQL } from "@/sql";
+import { DOCUMENT_SQL, ROUTE_SQL } from "@/sql";
 import { RESPONSE_TYPE, RESPONSE_CODE_MSG, commonUuid } from "@/utils";
 import moment from 'moment';
 
 class RouteService {
   async list(...args) {
     const [req, res] = args;
-    const { limit = 10, offset = 0, onlyParent = false } = req.query as any;
+    const { limit = 10, offset = 0, onlyParent = false, onlyChildren = false } = req.query as any;
     const _limit = +limit;
     const _offset = +offset;
     const { error, data } = await DataBase.sql(ROUTE_SQL.queryLimitOffset, [_offset, _limit])
@@ -19,9 +19,15 @@ class RouteService {
         if (USER_ROLE.isAdmin(e.role)) return false;
         return !e.father_id
       }
+      if (onlyChildren) {
+        return !!e.father_id
+      }
       return true;
     })
-    const data2 = this.handleRoutes(data1)
+    let data2 = data1
+    if (!onlyChildren) {
+      data2 = this.handleRoutes(data1)
+    }
     return RESPONSE_TYPE.commonSuccess2List({
       res, data: data2,
       limit: _limit,
@@ -103,12 +109,17 @@ class RouteService {
     })
     if (errorAble) return errorAble;
     const dId = commonUuid()
-    const time = moment().valueOf();
     const { error } = await DataBase.sql(ROUTE_SQL.insert, [dId, name, description, father_id, path, role])
     if (error) {
       return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.tabRouteInsertError })
     }
     const { data } = await DataBase.sql(ROUTE_SQL.queryById, [dId]);
+
+    if (!father_id) {
+      // 需要自动新增一个子级
+      const dId2 = commonUuid()
+      await DataBase.sql(ROUTE_SQL.insert, [dId2, name, '', dId, path + path, role])
+    }
     return RESPONSE_TYPE.commonSuccess({
       res, data,
     })
@@ -149,15 +160,44 @@ class RouteService {
   async delete(...args) {
     const [req, res] = args;
     const { id } = req.params;
+    const par = await DataBase.sql(ROUTE_SQL.queryById, [id])
+    const fatherId = par.data?.[0]?.father_id
     const errorAble = await RESPONSE_TYPE.commonErrors({
       res,
       errs: [
         { func: () => !id, ...RESPONSE_CODE_MSG.idNotEmpty },
+        {
+          func: async () => {
+            return !par.data?.[0]
+          },
+          ...RESPONSE_CODE_MSG.routeNotExist
+        },
+        {
+          func: async () => {
+            if (!fatherId) {
+              const par1 = await DataBase.sql(ROUTE_SQL.queryByFatherId, [id])
+              if (par1.data?.length) {
+                return true
+              }
+            }
+            return false
+          },
+          ...RESPONSE_CODE_MSG.fatherRouteNotDeleteForChild
+        },
+        {
+          func: async () => {
+            const par1 = await DataBase.sql(DOCUMENT_SQL.queryByTypes, [id])
+            return !!par1.data?.length
+          },
+          ...RESPONSE_CODE_MSG.routeUsedNotDelete
+        },
       ]
     })
     if (errorAble) return errorAble;
     const { error } = await DataBase.sql(ROUTE_SQL.deleteById, [id])
     if (!error) {
+      // 如果根路由只存在当前一个子路由,则同步删除根路由
+      await DataBase.sql(ROUTE_SQL.deleteById, [fatherId])
       return RESPONSE_TYPE.commonSuccess({ res })
     }
     return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)

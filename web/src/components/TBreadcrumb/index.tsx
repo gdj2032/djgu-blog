@@ -8,7 +8,7 @@ import { getClassName } from '../util';
 import { isElectron } from '@/constants';
 
 interface IBreadcrumbProps {
-  route?: Array<{ name: string; url?: string }>;
+  route?: Array<{ name: string; url?: string, click?: () => void }>;
   customItems?: IRowItem[];
   style?: React.CSSProperties;
   className?: string;
@@ -69,14 +69,14 @@ export default class TBreadcrumb extends React.Component<IBreadcrumbProps, any> 
           <div className={`${classname('container')} ${this.state.fixed ? classname('container-fixed') : ''}`}>
             <AntBreadcrumb className={classname('inner-breadcrumb')} style={{ fontSize: '18px' }}>
               {
-                this.props.route && this.props.route.map((v: { name: string; url?: string }) => {
+                this.props.route && this.props.route.map((v) => {
                   return v.url
                     ? (
                       <AntBreadcrumb.Item key={v.url}>
                         <a href={`#/${this.getUrl(v.url)}`}>{v.name}</a>
                       </AntBreadcrumb.Item>
                     )
-                    : <AntBreadcrumb.Item key={v.name}>{v.name}</AntBreadcrumb.Item>
+                    : <AntBreadcrumb.Item key={v.name} className={v.click ? classname('click') : ''} onClick={v.click}>{v.name}</AntBreadcrumb.Item>
                 })
               }
             </AntBreadcrumb>

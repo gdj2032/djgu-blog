@@ -4,6 +4,8 @@
   --theme-bg: #f8f7f7;
   --theme-font: #000;
   --theme-border-color: #CCCCCC;
+  --theme-bg-doc-bg: #fff;
+  --theme-bg-container: #f4f4f4;
 }
 
 .dark {
@@ -12,4 +14,6 @@
   --theme-bg: #001529;
   --theme-font: #fff;
   --theme-border-color: #676767;
+  --theme-bg-doc-bg: #012343;
+  --theme-bg-container: rgb(24, 28, 57);
 }

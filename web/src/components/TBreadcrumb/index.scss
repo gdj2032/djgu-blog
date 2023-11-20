@@ -62,4 +62,12 @@ $comp-name: 't-breadcrumb';
     display: flex;
     align-items: center;
   }
+
+  &-click {
+    cursor: pointer;
+
+    &:hover {
+      background-color: #cccccc20;
+    }
+  }
 }

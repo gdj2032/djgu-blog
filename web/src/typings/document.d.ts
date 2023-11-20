@@ -19,7 +19,7 @@ export declare namespace DocumentService {
 
   interface IQueryInfo extends ILimitOffset {
     name?: string;
-    types?: string;
+    type?: string;
     latest?: boolean;
   }
 }

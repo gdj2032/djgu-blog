@@ -14,7 +14,6 @@ const pageRoutes = {
   documentDetail: '/document/detail',
   documentCreate: '/document/create',
   knowledge: '/knowledge',
-  test: '/test',
   tools: '/tools',
   toolsCrawlers: '/tools/crawlers',
   content: '/content'

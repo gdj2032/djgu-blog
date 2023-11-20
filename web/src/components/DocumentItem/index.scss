@@ -1,16 +1,26 @@
 .g-document-item {
-  width: calc((100vw - 40px) / 2);
-  margin-right: 20px;
+  position: relative;
+  width: 100%;
   padding: 12px;
-  // background-color: var(--theme-bg-3);
+  background-color: var(--theme-bg-doc-bg);
   margin-bottom: 20px;
   border-radius: 4px;
-  // border: 1px solid var(--theme-bg-3);
-  min-height: 200px;
-  // color: var(--theme-font-1);
+  border: 1px solid rgba(164, 164, 164, .01);
+  min-height: 100px;
+  color: var(--theme-font);
 
   &:hover {
     cursor: pointer;
-    border: 1px solid rgba(164, 164, 164, .5);
+    border: 1px solid var(--theme-border-color);
+  }
+
+  &:after {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 0;
+    height: 1px;
+    background-color: var(--theme-border-color);
+    content: '',
   }
 }

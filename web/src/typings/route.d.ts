@@ -22,5 +22,6 @@ export declare namespace RouteService {
   interface IQueryInfo extends ILimitOffset {
     name?: string;
     onlyParent?: boolean;
+    onlyChildren?: boolean;
   }
 }

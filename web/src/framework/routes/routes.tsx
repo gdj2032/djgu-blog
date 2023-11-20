@@ -15,7 +15,6 @@ import {
   DocumentDetail,
   DocumentCreate,
   Knowledge,
-  Test,
   Tools,
   ToolsCrawlers,
   Content,
@@ -83,10 +82,6 @@ export const pageRoute = (): RouteObject[] => [
     element: <Knowledge />,
   },
   {
-    path: PathConfig.test,
-    element: <Test />,
-  },
-  {
     path: PathConfig.tools,
     element: <Tools />,
   },
@@ -97,5 +92,9 @@ export const pageRoute = (): RouteObject[] => [
   {
     path: '*',
     element: <Content />
-  }
+  },
+  {
+    path: '*/*',
+    element: <Content />
+  },
 ];

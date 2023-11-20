@@ -12,7 +12,7 @@ export default class DataBase {
   // query('UPDATE users SET ? WHERE UserID = ?', [{Name: name}, userId], );
 
   static sql(sql: string, params?: any): any {
-    return new Promise((res) => {
+    return new Promise<{ data: any, error: any, fields: any }>((res) => {
       this.database.pool.query(sql, params, (error, data, fields) => {
         if (error) {
           console.info('--- DataBase.sql error --->', JSON.stringify({ error, sql, params }));

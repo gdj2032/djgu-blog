@@ -7,24 +7,27 @@ import routeService from "../route/service";
 class DocumentService {
   async list(...args) {
     const [req, res] = args;
-    const { limit = 10, offset = 0, name = '', latest = false } = req.query as any;
+    // types只有一个
+    const { limit = 10, offset = 0, name = '', latest = false, type } = req.query as any;
     const _limit = +limit;
     const _offset = +offset;
-    let error0, data0;
-    if (!latest) {
-      const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryLimitOffset2, [`%${name}%`, `%${name}%`, _offset, _limit])
-      error0 = error;
-      data0 = data
-    } else {
-      const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryLimitOffset, [_offset, _limit])
-      error0 = error;
-      data0 = data
-    }
-    if (error0) {
+    const sqlOpt = DOCUMENT_SQL.queryLimitOffsetFn({ limit: _limit, offset: _offset, name, type, orderType: latest ? 'createTime' : 'see' })
+    console.log("🚀 ~ file: service.ts:15 ~ DocumentService ~ list ~ sqlOpt:", sqlOpt)
+    const { error, data } = await DataBase.sql(sqlOpt.sql, sqlOpt.data)
+    // if (!latest) {
+    //   const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryLimitOffset2, [`%${name}%`, `%${name}%`, type, _offset, _limit])
+    //   error0 = error;
+    //   data0 = data
+    // } else {
+    //   const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryLimitOffset, [_offset, _limit])
+    //   error0 = error;
+    //   data0 = data
+    // }
+    if (error) {
       return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
     }
     const allRoutes = await routeService.all()
-    const newData = data0?.map((e) => {
+    const newData = data?.map((e) => {
       const cTypes = e.types.split(',')
       return {
         ...e,
