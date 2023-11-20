@@ -52,7 +52,7 @@ class VersionService {
       errs: [
         { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
         { func: () => !zipPath, ...RESPONSE_CODE_MSG.pathNotEmpty },
-        { func: () => typeof type !== 'number', ...RESPONSE_CODE_MSG.typeNotEmpty },
+        { func: () => typeof type !== 'number', ...RESPONSE_CODE_MSG.versionTypeNotEmpty },
         {
           func: async () => {
             const { data: d1 } = await DataBase.sql(VERSION_SQL.queryByName, [name])

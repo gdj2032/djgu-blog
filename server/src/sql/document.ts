@@ -1,6 +1,6 @@
 interface IQueryParams {
   name?: string;
-  type?: string;
+  routeId?: string;
   orderType?: 'see' | 'createTime'
   orderBy?: 'ASC' | 'DESC'
   limit?: number;
@@ -10,7 +10,7 @@ interface IQueryParams {
 export const DOCUMENT_SQL = {
   queryAll: 'SELECT * FROM document',
   queryLimitOffsetFn: (query?: IQueryParams) => {
-    const { name, type, orderBy = 'DESC', orderType = 'createTime', limit, offset } = query || {};
+    const { name, routeId, orderBy = 'DESC', orderType = 'createTime', limit, offset } = query || {};
     let info = 'SELECT * FROM document'
     let data: any[] = []
     const where = ' WHERE'
@@ -19,14 +19,14 @@ export const DOCUMENT_SQL = {
       info += ' name LIKE ? OR description LIKE ?'
       data = [`%${name}%`, `%${name}%`]
     }
-    if (type) {
+    if (routeId) {
       if (name) {
         info += ' AND'
       } else {
         info += where;
       }
-      info += ` FIND_IN_SET(?, types)`
-      data.push(type)
+      info += ` routeId=?`
+      data.push(routeId)
     }
     const lim = ` ORDER BY ${orderType} ${orderBy} LIMIT ?, ?`
     info += lim;
@@ -37,8 +37,9 @@ export const DOCUMENT_SQL = {
   queryLimitOffset2: 'SELECT * FROM document WHERE name LIKE ? OR description LIKE ? AND types HAVING ? ORDER BY see DESC LIMIT ?, ?',
   queryById: 'SELECT * FROM document WHERE id=?',
   queryByName: 'SELECT * FROM document WHERE name=?',
-  queryByTypes: 'SELECT * FROM document WHERE FIND_IN_SET(?, types)',
-  insert: 'INSERT INTO document (id, name, description, fileId, types, createTime, updateTime, see) VALUES(?,?,?,?,?,?,?,?)',
+  queryByRouteId: 'SELECT * FROM document WHERE routeId=?',
+  queryByTagId: 'SELECT * FROM document WHERE tagIds in (?)',
+  insert: 'INSERT INTO document (id, name, description, fileId, routeId, createTime, updateTime, see, tagIds) VALUES(?,?,?,?,?,?,?,?,?)',
   update: 'UPDATE document SET ? WHERE id = ?',
   deleteById: 'DELETE FROM document where id=?',
 }

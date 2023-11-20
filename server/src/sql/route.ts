@@ -5,8 +5,8 @@ export const ROUTE_SQL = {
   queryById: 'SELECT * FROM route WHERE id=?',
   queryByIds: 'SELECT * FROM route WHERE id in (?)',
   queryByName: 'SELECT * FROM route WHERE name=?',
-  queryByFatherId: 'SELECT * FROM route WHERE father_id=?',
-  insert: 'INSERT INTO route (id, name, description, father_id, path, role) VALUES(?,?,?,?,?,?)',
+  queryByPath: 'SELECT * FROM route WHERE path=?',
+  insert: 'INSERT INTO route (id, name, description, path, role) VALUES(?,?,?,?,?)',
   update: 'UPDATE route SET ? WHERE id = ?',
   deleteById: 'DELETE FROM route where id=?',
 }

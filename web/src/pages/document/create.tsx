@@ -4,23 +4,27 @@ import './index.scss';
 import { PathConfig } from '@/framework/routes/routes';
 import { USER_ROLE, USER_TAB } from '@/constants';
 import { Card, Form, Input, Select, message, Space, Button } from 'antd';
-import { routeService, documentService, fileService } from '@/services';
+import { documentService, fileService, tagService } from '@/services';
 import { IRowItem } from '@/components/ItemsRow';
 import { useNavigate } from 'react-router';
 import { useQuery, openModal2 } from '@djgu/react-comps';
 import { DocumentService } from '@/typings/document';
 import { initRoutes, uploadFile } from '@/utils';
 import UpdateRouteModal from '../user/comps/UpdateRouteModal';
-import { RouteService } from '@/typings/route';
 import { useForm } from "antd/es/form/Form";
+import { routeAction, useAppSelector } from '@/stores';
+import { TagService } from '@/typings/tag';
+import UpdateTagModal from '../user/comps/UpdateTagModal';
 
 function Create() {
   const { id } = useQuery()
   const navigate = useNavigate()
-  const [types, setTypes] = useState<IIdName[]>([])
+  const { routes: storeRoutes } = useAppSelector(routeAction.routeInfo)
   const [loading, setLoading] = useState(false)
   const [form] = useForm();
   const [, setData] = useState<DocumentService.IListData>()
+  const [tags, setTags] = useState<TagService.IListData[]>([])
+  const routeId = Form.useWatch('routeId', form)
 
   const routes = [
     { name: '管理员', url: `${PathConfig.admin}?current=${USER_TAB.document}` },
@@ -37,8 +41,9 @@ function Create() {
         const res = await documentService.dEdit(id, {
           name: params.name,
           description: params.description,
-          types: params.types,
+          routeId: params.routeId,
           fileId,
+          tagIds: params.tagIds,
         })
         if (res.code === 200) {
           message.success('编辑文档成功')
@@ -48,8 +53,9 @@ function Create() {
         const res = await documentService.dCreate({
           name: params.name,
           description: params.description,
-          types: params.types,
+          routeId: params.routeId,
           fileId,
+          tagIds: params.tagIds,
         })
         if (res.code === 200) {
           message.success('新增文档成功')
@@ -73,23 +79,6 @@ function Create() {
     }
   ]
 
-  const dfRoutes = (r: RouteService.IListData[]) => {
-    let rs: RouteService.IListData[] = []
-    for (const item of r) {
-      rs.push(item)
-      if (item.children?.length) {
-        const r2 = dfRoutes(item.children);
-        rs = rs.concat(r2);
-      }
-    }
-    return rs
-  }
-
-  const initTypes = async () => {
-    const res = await routeService.dList({ limit: 10000, offset: 0, onlyChildren: true });
-    setTypes(dfRoutes(res.data.data))
-  }
-
   const initDoc = async () => {
     if (id) {
       const res = await documentService.dDetail(id);
@@ -105,16 +94,28 @@ function Create() {
       form?.setFieldsValue({
         name: res.data.name,
         description: res.data.description,
-        types: res.data.types.map((e) => e.id),
+        routeId: res.data.route?.id,
         // content: res.data.content,
       })
     }
   }
 
+  const initTags = async () => {
+    if (!routeId) {
+      setTags([])
+      return
+    }
+    const res = await tagService.dList({ limit: 10000, offset: 0, routeId })
+    setTags(res.data.data)
+  }
+
   useEffect(() => {
     initDoc()
-    initTypes()
   }, [])
+
+  useEffect(() => {
+    initTags()
+  }, [routeId])
 
   if (!USER_ROLE.isAdminForSelf()) {
     return <div>暂无权限</div>
@@ -132,11 +133,19 @@ function Create() {
     return null;
   }
 
-  const handleAddType = () => {
+  const handleAddRoute = () => {
     const { destroy } = openModal2(UpdateRouteModal, {
       afterClose: () => {
-        initTypes()
         initRoutes()
+        destroy()
+      }
+    })
+  }
+
+  const handleAddTag = () => {
+    const { destroy } = openModal2(UpdateTagModal, {
+      afterClose: () => {
+        initTags()
         destroy()
       }
     })
@@ -156,7 +165,7 @@ function Create() {
             name="name"
             label="名称"
             rules={[
-              { required: true, message: '请输入名称' }
+              { required: true, message: '请输入名称', max: 30 }
             ]}
           >
             <Input placeholder="请输入名称" />
@@ -169,29 +178,54 @@ function Create() {
             <Input.TextArea placeholder="请输入描述" rows={5} maxLength={200} showCount />
           </Form.Item>
           <Form.Item
-            label="文档类型"
+            label="所属路由"
             className="ant-form-label-point-show"
           >
             <Space>
               <Form.Item
-                name="types"
+                name="routeId"
                 noStyle
                 rules={[
-                  { required: true, message: '请选择文档类型' }
+                  { required: true, message: '请选择所属路由' }
                 ]}
               >
                 <Select
                   style={{ width: 240 }}
-                  options={types}
-                  mode="multiple"
+                  options={storeRoutes}
                   fieldNames={{ label: 'name', value: 'id' }}
                   optionFilterProp="name"
                   allowClear
                   showSearch
-                  placeholder="请选择文档类型"
+                  placeholder="请选择所属路由"
                 />
               </Form.Item>
-              <Button type="link" onClick={handleAddType}>新增类型</Button>
+              <Button type="link" onClick={handleAddRoute}>新增路由</Button>
+            </Space>
+          </Form.Item>
+          <Form.Item
+            label="标签"
+            className="ant-form-label-point-show"
+          >
+            <Space>
+              <Form.Item
+                name="tagIds"
+                noStyle
+                rules={[
+                  { required: true, message: '请选择标签' }
+                ]}
+              >
+                <Select
+                  style={{ width: 240 }}
+                  options={tags}
+                  mode='multiple'
+                  fieldNames={{ label: 'name', value: 'id' }}
+                  optionFilterProp="name"
+                  allowClear
+                  showSearch
+                  placeholder="请选择标签"
+                />
+              </Form.Item>
+              <Button type="link" onClick={handleAddTag}>新增标签</Button>
             </Space>
           </Form.Item>
           <Form.Item

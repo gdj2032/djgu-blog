@@ -93,8 +93,4 @@ export const pageRoute = (): RouteObject[] => [
     path: '*',
     element: <Content />
   },
-  {
-    path: '*/*',
-    element: <Content />
-  },
 ];

@@ -7,7 +7,6 @@ import { Card, Spin, Tag } from 'antd';
 import { HistoryOutlined, EyeOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { DATE_FORMAT } from '@/constants';
 import moment from 'moment';
-import { PathConfig } from '@/framework/routes/routes';
 import { QuillEditor, TBreadcrumb } from '@/components';
 import { useNavigate } from 'react-router';
 
@@ -67,7 +66,7 @@ function Detail() {
         </Tag>
         <Tag color="cyan" className="global-mgl-12">
           <AppstoreOutlined />
-          <span className="global-mgl-12">{data?.types.map((e) => e.name).join(' ')}</span>
+          <span className="global-mgl-12">{`${data?.route?.name}(${data?.route?.path})`}</span>
         </Tag>
       </div>
       <div className="global-mgt-8">

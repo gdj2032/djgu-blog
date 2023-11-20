@@ -90,7 +90,7 @@ const CustomHeader = () => {
             <Icon name='outline' onClick={() => navigate(PathConfig.knowledge)} />
           </Tooltip>
         </div>
-        <div className="u-item u-logout" onClick={() => doLogout()}>
+        <div className="u-item u-logout">
           <Tooltip title='github'>
             <Comp className='m-github' href={GITHUB_KNOWLEDGE_URL} target='_blank' rel="noreferrer" onClick={handleGithub}>
               <GithubOutlined className='m-github-icon' />

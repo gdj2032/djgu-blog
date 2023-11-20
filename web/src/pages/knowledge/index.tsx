@@ -1,11 +1,11 @@
 /**
  * 知识点
  */
-import { isElectron } from '@/constants';
-import { GithubOutlined } from '@ant-design/icons';
+// import { isElectron } from '@/constants';
+// import { GithubOutlined } from '@ant-design/icons';
 import G6 from '@antv/g6';
 import React, { useEffect } from 'react';
-import { GITHUB_KNOWLEDGE_URL } from './constants';
+// import { GITHUB_KNOWLEDGE_URL } from './constants';
 import './index.scss';
 import { TREE_DATA } from './treeData';
 
@@ -110,20 +110,20 @@ function Knowledge() {
     init()
   }, [])
 
-  const Comp: any = isElectron ? 'div' : 'a'
+  // const Comp: any = isElectron ? 'div' : 'a'
 
-  const handleGithub = () => {
-    if (isElectron) {
-      window.app.openUrl(GITHUB_KNOWLEDGE_URL)
-    }
-  }
+  // const handleGithub = () => {
+  //   if (isElectron) {
+  //     window.app.openUrl(GITHUB_KNOWLEDGE_URL)
+  //   }
+  // }
 
   return (
     <div id='knowledge-container'>
 
-      <Comp className='kc-github' href={GITHUB_KNOWLEDGE_URL} target='_blank' rel="noreferrer" onClick={handleGithub}>
+      {/* <Comp className='kc-github' href={GITHUB_KNOWLEDGE_URL} target='_blank' rel="noreferrer" onClick={handleGithub}>
         <GithubOutlined className='kc-github-icon' />
-      </Comp>
+      </Comp> */}
     </div>
   )
 }

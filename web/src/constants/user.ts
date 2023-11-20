@@ -18,4 +18,5 @@ export const USER_TAB = {
   route: '2',
   document: '3',
   nginx: '4',
+  tag: '5',
 }

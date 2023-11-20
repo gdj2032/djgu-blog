@@ -20,17 +20,15 @@ function Contents() {
   const [loadingMore, setLoadingMore] = useState(false)
   const [value, setValue] = useState('')
 
-  if (!currentRoute?.id) {
-    return <NotFound />;
-  }
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { dataSource, debounceRefresh, loading, paginationProps } = useVirtualList<DocumentService.IListData>(async ({ limit, offset }) => {
+    if (!currentRoute) {
+      return { dataSource: [], total: 0 }
+    }
     const res = await documentService.dList({
       limit,
       offset,
       name: value,
-      type: currentRoute.id,
+      routeId: currentRoute.id,
     })
     setLoadingMore(false)
     if (res?.code === 200) {
@@ -38,6 +36,10 @@ function Contents() {
     }
     return { dataSource: [], total: 0 }
   }, [value, currentRoute])
+
+  if (!currentRoute?.id) {
+    return <NotFound />;
+  }
 
   const handleScroll = (e) => {
     if (e.target.clientHeight + e.target.scrollTop === e.target.scrollHeight) {

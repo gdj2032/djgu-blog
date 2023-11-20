@@ -3,35 +3,26 @@ import { DOCUMENT_SQL, FILE_SQL } from "@/sql";
 import { RESPONSE_TYPE, RESPONSE_CODE_MSG, commonUuid } from "@/utils";
 import moment from 'moment';
 import routeService from "../route/service";
+import tagService from "../tag/service";
 
 class DocumentService {
   async list(...args) {
     const [req, res] = args;
-    // types只有一个
-    const { limit = 10, offset = 0, name = '', latest = false, type } = req.query as any;
+    const { limit = 10, offset = 0, name = '', latest = false, routeId } = req.query as any;
     const _limit = +limit;
     const _offset = +offset;
-    const sqlOpt = DOCUMENT_SQL.queryLimitOffsetFn({ limit: _limit, offset: _offset, name, type, orderType: latest ? 'createTime' : 'see' })
-    console.log("🚀 ~ file: service.ts:15 ~ DocumentService ~ list ~ sqlOpt:", sqlOpt)
+    const sqlOpt = DOCUMENT_SQL.queryLimitOffsetFn({ limit: _limit, offset: _offset, name, routeId, orderType: latest ? 'createTime' : 'see' })
     const { error, data } = await DataBase.sql(sqlOpt.sql, sqlOpt.data)
-    // if (!latest) {
-    //   const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryLimitOffset2, [`%${name}%`, `%${name}%`, type, _offset, _limit])
-    //   error0 = error;
-    //   data0 = data
-    // } else {
-    //   const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryLimitOffset, [_offset, _limit])
-    //   error0 = error;
-    //   data0 = data
-    // }
     if (error) {
       return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
     }
     const allRoutes = await routeService.all()
+    const allTags = await tagService.all()
     const newData = data?.map((e) => {
-      const cTypes = e.types.split(',')
       return {
         ...e,
-        types: allRoutes.filter((v) => cTypes.includes(v.id)),
+        route: allRoutes.find((v) => v.id === e.routeId),
+        tags: allTags?.filter(v => e.tagIds?.includes(v.id))
       }
     })
     const allData = await this.all()
@@ -48,7 +39,6 @@ class DocumentService {
     return data || []
   }
 
-
   async detail(...args) {
     const [req, res] = args;
     const { id } = req.params as any;
@@ -61,12 +51,14 @@ class DocumentService {
     if (errorAble) return errorAble;
     const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryById, [id])
     if (!error) {
-      const types = (await routeService.typeByIds(data[0].types.split(','))).map((e) => ({ id: e.id, name: e.name }))
+      const route = await routeService.queryById(data[0].routeId)
+      const tags = await tagService.queryByIds(data[0].tagIds)
       return RESPONSE_TYPE.commonSuccess({
         res,
         data: {
           ...data[0],
-          types,
+          route,
+          tags,
         },
       })
     }
@@ -75,13 +67,14 @@ class DocumentService {
 
   async create(...args) {
     const [req, res] = args;
-    const { name, description, fileId, types } = req.body as any;
+    const { name, description, fileId, routeId, tagIds } = req.body as any;
     const errorAble = await RESPONSE_TYPE.commonErrors({
       res,
       errs: [
         { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
         { func: () => !fileId, ...RESPONSE_CODE_MSG.fileNotEmpty },
-        { func: () => !types?.length, ...RESPONSE_CODE_MSG.typeNotEmpty },
+        { func: () => !routeId, ...RESPONSE_CODE_MSG.routeIdNotEmpty },
+        { func: () => !tagIds?.length, ...RESPONSE_CODE_MSG.tagNotEmpty },
         {
           func: async () => {
             const { data: d1 } = await DataBase.sql(DOCUMENT_SQL.queryByName, [name])
@@ -97,7 +90,7 @@ class DocumentService {
     if (errorAble) return errorAble;
     const dId = commonUuid()
     const time = moment().valueOf();
-    const { error } = await DataBase.sql(DOCUMENT_SQL.insert, [dId, name, description, fileId, types.join(','), time, time, 0])
+    const { error } = await DataBase.sql(DOCUMENT_SQL.insert, [dId, name, description, fileId, routeId, time, time, 0, tagIds])
     if (error) {
       return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.documentInsertError })
     }
@@ -118,7 +111,7 @@ class DocumentService {
         { func: () => !id, ...RESPONSE_CODE_MSG.idNotEmpty },
         { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
         { func: () => !fileId, ...RESPONSE_CODE_MSG.fileNotEmpty },
-        { func: () => !types?.length, ...RESPONSE_CODE_MSG.typeNotEmpty },
+        { func: () => !types?.length, ...RESPONSE_CODE_MSG.pathNotEmpty },
         {
           func: async () => {
             const { data: d1 } = await DataBase.sql(DOCUMENT_SQL.queryByName, [name])

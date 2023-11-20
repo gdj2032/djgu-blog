@@ -6,7 +6,8 @@ export declare namespace DocumentService {
     fileId: string;
     createTime: string;
     updateTime: string;
-    types: IIdName[]
+    route: IIdNamePath
+    tags: IIdName[]
     see: number;
   }
 
@@ -14,12 +15,13 @@ export declare namespace DocumentService {
     name: string;
     description?: string;
     fileId: string;
-    types: string[];
+    routeId: string;
+    tagIds: string[];
   }
 
   interface IQueryInfo extends ILimitOffset {
     name?: string;
-    type?: string;
-    latest?: boolean;
+    routeId?: string;
+    tagIds?: string[];
   }
 }

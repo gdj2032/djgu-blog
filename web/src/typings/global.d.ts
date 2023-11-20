@@ -99,3 +99,7 @@ interface IIdName<T = string> {
   id: T;
   name: string;
 }
+
+interface IIdNamePath<T = string> extends IIdName<T> {
+  path: string;
+}

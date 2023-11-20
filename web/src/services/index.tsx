@@ -4,6 +4,7 @@ import * as fileService from './file';
 import * as versionService from './version';
 import * as crawlersService from './crawlers';
 import * as routeService from './route';
+import * as tagService from './tag';
 export {
   userService,
   documentService,
@@ -11,4 +12,5 @@ export {
   versionService,
   crawlersService,
   routeService,
+  tagService,
 }

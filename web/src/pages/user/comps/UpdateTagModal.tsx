@@ -1,42 +1,53 @@
 /**
- * 新增编辑路由
+ * 新增编辑标签
  */
-import { Form, Input, message, Modal } from 'antd';
-import React, { useState } from 'react';
+import { Form, Input, message, Modal, Select } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { IModalProps } from '@djgu/react-comps/dist/utils/openModal'
-import { routeService } from '@/services';
+import { routeService, tagService } from '@/services';
 import { useForm } from 'antd/es/form/Form';
-import { RouteService } from '@/typings/route';
-import pageRoutes from '@/pages/pageRoutes';
+import { TagService } from '@/typings/tag';
 
 interface IProps extends IModalProps {
-  data?: RouteService.IListData;
+  data?: TagService.IListData;
 }
 
-function UpdateRouteModal(props: IProps) {
+function UpdateTagModal(props: IProps) {
   const { visible, close, data, ...arg } = props;
   const [loading, setLoading] = useState(false)
   const [form] = useForm()
+
+  const [parRoutes, setParRoutes] = useState<TagService.IListData[]>([])
+
+  useEffect(() => {
+    init()
+  }, [])
+
+  const init = async () => {
+    const res = await routeService.dList({ limit: 10000, offset: 0 })
+    setParRoutes(res.data.data)
+  }
+
 
   const handleOk = async () => {
     const params = await form?.validateFields();
     setLoading(true)
     try {
       if (data) {
-        const res = await routeService.dEdit(data.id, params);
+        const res = await tagService.dEdit(data.id, params);
         if (res?.code === 200) {
           message.success('编辑成功')
           close?.(true)
         }
       } else {
-        const res = await routeService.dCreate(params);
+        const res = await tagService.dCreate(params);
         if (res?.code === 200) {
           message.success('新增成功')
           close?.(true)
         }
       }
     } catch (error) {
-      console.log("🚀 ~ file: UpdateRouteModal.tsx:49 ~ handleOk ~ error:", error)
+      console.log("🚀 ~ file: UpdateTagModal.tsx:49 ~ handleOk ~ error:", error)
     }
     setLoading(false)
   }
@@ -46,7 +57,7 @@ function UpdateRouteModal(props: IProps) {
       open={visible}
       onCancel={() => close()}
       onOk={handleOk}
-      title={data ? '编辑路由配置' : '新增路由配置'}
+      title={data ? '编辑标签配置' : '新增标签配置'}
       okText="确认"
       cancelText="取消"
       confirmLoading={loading}
@@ -66,22 +77,12 @@ function UpdateRouteModal(props: IProps) {
           <Input placeholder="请输入名称" />
         </Form.Item>
         <Form.Item
-          label="路径"
-          name="path"
-          rules={[
-            { required: true, message: '请输入路径' },
-            {
-              validator(_, value, _cb) {
-                if (Object.values(pageRoutes).includes(value)) {
-                  return Promise.reject('请重新输入路径')
-                }
-                return Promise.resolve()
-              },
-            }
-          ]}
+          label="路由"
+          name="routeId"
         >
-          <Input placeholder="请输入路由" />
+          <Select placeholder="请选择路由" popupMatchSelectWidth options={parRoutes} fieldNames={{ label: 'name', value: 'id' }} optionFilterProp='name' allowClear showSearch />
         </Form.Item>
+
         <Form.Item
           label="描述"
           name="description"
@@ -94,6 +95,6 @@ function UpdateRouteModal(props: IProps) {
   )
 }
 
-UpdateRouteModal.displayName = 'UpdateRouteModal';
+UpdateTagModal.displayName = 'UpdateTagModal';
 
-export default UpdateRouteModal;
+export default UpdateTagModal;

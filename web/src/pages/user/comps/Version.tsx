@@ -1,5 +1,5 @@
 /**
- * 文档类型
+ * 版本
  */
 import { USER_ROLE, VERSION_TYPE } from '@/constants';
 import { versionService } from '@/services';

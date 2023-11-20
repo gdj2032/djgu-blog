@@ -1,5 +1,5 @@
 /**
- * 文档类型
+ * 文档
  */
 import { USER_ROLE } from '@/constants';
 import { documentService } from '@/services';
@@ -40,7 +40,8 @@ function Document() {
 
   const columns = () => [
     { title: '名称', dataIndex: 'name', key: 'name', render: (t, r) => <Button type="link" onClick={() => navigate(`${PathConfig.documentDetail}?id=${r.id}`)}>{t}</Button> },
-    { title: '文档类型', dataIndex: 'types', key: 'types', render: (t) => t?.map((e) => e.name)?.join(',') },
+    { title: '所属路由', dataIndex: 'route', key: 'route', render: (_, r) => `${r.route?.name}(${r.route?.path})` },
+    { title: '标签', dataIndex: 'tags', key: 'tags', render: (_, r) => r.tags?.map(e => e.name)?.join(',') },
     { title: '描述', dataIndex: 'description', key: 'description' },
     {
       title: '操作', dataIndex: 'operation', key: 'operation', render: (_, record) => USER_ROLE.isAdminForSelf() && (

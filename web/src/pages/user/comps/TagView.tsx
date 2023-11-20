@@ -1,18 +1,18 @@
 /**
- * 路由
+ * 标签
  */
 import { USER_ROLE } from '@/constants';
-import { routeService } from '@/services';
+import { tagService } from '@/services';
 import { Button, message, Modal, Table } from 'antd';
 import React from 'react';
 import { openModal2, usePagination } from '@djgu/react-comps';
-import { RouteService } from '@/typings/route';
-import UpdateRouteModal from './UpdateRouteModal';
+import UpdateTagModal from './UpdateTagModal';
 import { initRoutes } from '@/utils';
+import { TagService } from '@/typings/tag';
 
-function RouteView() {
-  const { tableProps, paginationProps, debounceRefresh } = usePagination<RouteService.IListData>(async ({ limit, offset }) => {
-    const res = await routeService.dList({ limit, offset })
+function TagView() {
+  const { tableProps, paginationProps, debounceRefresh } = usePagination<TagService.IListData>(async ({ limit, offset }) => {
+    const res = await tagService.dList({ limit, offset })
     if (res?.code === 200) {
       return { dataSource: res.data.data, total: +res.data.total }
     }
@@ -21,20 +21,20 @@ function RouteView() {
 
   const handleDelete = (id) => {
     Modal.confirm({
-      title: '是否删除路由?',
+      title: '是否删除标签?',
       icon: null,
       onOk: async () => {
-        const res = await routeService.dDelete(id);
+        const res = await tagService.dDelete(id);
         if (res?.code === 200) {
-          message.success('删除路由成功')
+          message.success('删除标签成功')
         }
         debounceRefresh()
       }
     })
   }
 
-  const handleUpdate = (info?: RouteService.IListData) => {
-    const { destroy } = openModal2(UpdateRouteModal, {
+  const handleUpdate = (info?: TagService.IListData) => {
+    const { destroy } = openModal2(UpdateTagModal, {
       data: info,
       afterClose: (isOk) => {
         destroy()
@@ -47,8 +47,8 @@ function RouteView() {
   }
 
   const columns = () => [
-    { title: '名称', dataIndex: 'name', key: 'name', render: (t, r) => t },
-    { title: '路径', dataIndex: 'path', key: 'path' },
+    { title: '标签名称', dataIndex: 'name', key: 'name', render: (t, r) => t },
+    { title: '绑定路由', dataIndex: 'route', key: 'route', render: (t, r) => r.route?.name },
     { title: '描述', dataIndex: 'description', key: 'description' },
     {
       title: '操作', dataIndex: 'operation', key: 'operation', render: (_, record) => USER_ROLE.isAdminForSelf() && (
@@ -73,6 +73,6 @@ function RouteView() {
   )
 }
 
-RouteView.displayName = 'RouteView';
+TagView.displayName = 'TagView';
 
-export default RouteView;
+export default TagView;
