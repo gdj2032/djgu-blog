@@ -17,7 +17,7 @@ function Data2Interface() {
   ]
 
   const [value1, setValue1] = useState('')
-  const [value2, setValue2] = useState()
+  const [value2, setValue2] = useState('')
 
   const handleChange = async () => {
     try {
@@ -47,13 +47,19 @@ function Data2Interface() {
       message.success('复制成功')
     }
   }
+
+  const handleClear = () => {
+    setValue1('')
+    setValue2('')
+  }
   return (
     <div className='g-data2interface'>
       <TBreadcrumb
         route={route}
         customItems={[
           { label: '转换', onClick: handleChange },
-          { label: '复制', onClick: handleCopy }
+          { label: '复制', onClick: handleCopy },
+          { label: '清空', onClick: handleClear },
         ]}
       />
       <Card
@@ -63,7 +69,7 @@ function Data2Interface() {
         <CodeMirror id='code-mirror-1' value={value1} onChange={setValue1} />
       </Card>
       <Card title='接口' style={{ marginTop: 20 }}>
-        <CodeMirror id='code-mirror-2' value={value2} />
+        <CodeMirror id='code-mirror-2' value={value2} readOnly />
       </Card>
     </div>
   )

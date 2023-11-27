@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import os from 'os'
 
-const txtPath = 'src/services/tools/data2Interface/demo.ts'
+const txtPath = path.resolve(__dirname, './demo.ts')
 
 const commonBlack = 2
 
