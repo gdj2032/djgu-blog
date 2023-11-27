@@ -21,6 +21,7 @@ import {
 } from '@/pages';
 import { RouteObject } from 'react-router/dist/lib/context';
 import React from 'react';
+import { Redirect } from 'react-router';
 // import { useNavigate } from 'react-router-dom';
 // import NotFound from '../404';
 

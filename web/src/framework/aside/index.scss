@@ -8,10 +8,12 @@
   font-size: 18px;
   color: #000;
   box-sizing: border-box;
-  overflow: hidden;
-  height: 100%;
   user-select: none;
   box-shadow: 1px 0px 0px rgba(0, 0, 0, 0.2);
+
+  .ant-layout-sider-children {
+    // overflow-y: auto;
+  }
 
   .layout-aside-collapsed {
     position: absolute;

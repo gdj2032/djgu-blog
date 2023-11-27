@@ -23,7 +23,7 @@ const classname = (n: string = '') => {
 export default class TBreadcrumb extends React.Component<IBreadcrumbProps, any> {
 
   static defaultProps = {
-    offsetTop: isElectron ? 36 : 0,
+    offsetTop: isElectron ? 84 : 48,
   }
   affixRef?: AffixProps;
   item: HTMLElement | null;
