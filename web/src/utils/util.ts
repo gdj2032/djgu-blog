@@ -1,7 +1,7 @@
-import moment from "moment";
 import { fileService, routeService } from "@/services";
 import { store, routeAction } from "@/stores";
-import { DEFAULT_ROUTE } from "@/constants";
+import { DEFAULT_ROUTE_OPTION } from "@/constants";
+import dayjs from "dayjs";
 
 export const noop = () => { }
 
@@ -30,7 +30,7 @@ export const getQueryOption = (url: string) => {
 }
 
 export const fileUuid = () => {
-  const time1 = moment().valueOf().toString()
+  const time1 = dayjs().valueOf().toString()
   return time1;
 }
 
@@ -46,5 +46,5 @@ export const uploadFile = async ({ content }) => {
 
 export const initRoutes = async () => {
   const res = await routeService.dList({ limit: 10000, offset: 0 })
-  store.dispatch(routeAction.setrouteInfo({ routes: [DEFAULT_ROUTE, ...res.data.data], currentRoute: res.data.data?.[0] }))
+  store.dispatch(routeAction.setRouteInfo({ routes: [...DEFAULT_ROUTE_OPTION.routes, ...res.data.data], currentRoute: res.data.data?.[0] }))
 }

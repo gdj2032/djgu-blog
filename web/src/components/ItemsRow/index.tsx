@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Button, { ButtonType, ButtonProps } from 'antd/lib/button';
 import { getClassName } from '../util';
+import './index.scss'
 
 /**
  * 默认配置按钮，也可以通过render() 渲染其他组件

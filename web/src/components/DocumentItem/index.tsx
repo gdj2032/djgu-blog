@@ -2,9 +2,9 @@ import React from 'react';
 import { DocumentService } from '@/typings/document';
 import { Tag } from 'antd';
 import { HistoryOutlined, EyeOutlined, AppstoreOutlined } from '@ant-design/icons';
-import moment from 'moment';
 import { DATE_FORMAT } from '@/constants';
 import './index.scss';
+import dayjs from 'dayjs';
 
 interface IProps {
   data: DocumentService.IListData;
@@ -19,7 +19,7 @@ function DocumentItem(props: IProps) {
       <div className="global-mgt-8">
         <Tag color="blue">
           <HistoryOutlined />
-          <span className="global-mgl-12">{data.createTime ? moment(+data.createTime).format(DATE_FORMAT.YMD_Hms) : ''}</span>
+          <span className="global-mgl-12">{data.createTime ? dayjs(+data.createTime).format(DATE_FORMAT.YMD_Hms) : ''}</span>
         </Tag>
         <Tag color="volcano" className="global-mgl-12">
           <EyeOutlined />

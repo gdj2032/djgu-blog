@@ -5,6 +5,7 @@ import * as Version from './version'
 import * as Crawlers from './crawlers'
 import * as Route from './route'
 import * as Tag from './tag'
+import * as Tools from './tools'
 
 export {
   User,
@@ -14,4 +15,5 @@ export {
   Crawlers,
   Route,
   Tag,
+  Tools,
 }

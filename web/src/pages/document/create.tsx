@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { QuillEditor, TBreadcrumb } from '@/components';
 import './index.scss';
 import { PathConfig } from '@/framework/routes/routes';
-import { DEFAULT_ROUTE, USER_ROLE, USER_TAB } from '@/constants';
+import { DEFAULT_ROUTE_OPTION, USER_ROLE, USER_TAB } from '@/constants';
 import { Card, Form, Input, Select, message, Space, Button } from 'antd';
 import { documentService, fileService, tagService } from '@/services';
 import { IRowItem } from '@/components/ItemsRow';
@@ -151,7 +151,7 @@ function Create() {
     })
   }
 
-  const newRoutes = storeRoutes.filter(e => e.path !== DEFAULT_ROUTE.path)
+  const newRoutes = storeRoutes.filter(e => !DEFAULT_ROUTE_OPTION.routePaths().includes(e.path))
 
   return (
     <div className="g-document-create">

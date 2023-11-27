@@ -1,5 +1,5 @@
+import dayjs from 'dayjs';
 import EventEmitter from 'events';
-import moment from 'moment';
 import { EVENT_TYPE } from './event';
 
 //播放速度
@@ -67,7 +67,7 @@ class TimeController extends EventEmitter {
    * 获取当前时间戳
    */
   private getCurrentTimestamp = () => {
-    return moment().milliseconds(0).valueOf();
+    return dayjs().unix()
   }
 
   /**
@@ -75,7 +75,7 @@ class TimeController extends EventEmitter {
    * @param timestamp
    */
   private zeroMillisecond = (timestamp) => {
-    return moment(timestamp).milliseconds(0).valueOf();
+    return dayjs(timestamp).valueOf();
   }
 
   /**
@@ -138,7 +138,7 @@ class TimeController extends EventEmitter {
 
     if (!timestamp || timestamp === now) {
       this._startPlayTime = 0;
-    } else if (moment(timestamp).isAfter()) {
+    } else if (dayjs().isAfter(timestamp)) {
       //如果timestamp是未来时间
       this._startPlayTime = 0;
     } else {

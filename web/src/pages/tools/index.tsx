@@ -8,7 +8,7 @@
  */
 import { TBreadcrumb } from '@/components';
 import { PathConfig } from '@/framework/routes/routes';
-import { Card } from 'antd';
+import { Button, Card } from 'antd';
 import React from 'react';
 import { useNavigate } from 'react-router';
 import './index.scss';
@@ -24,7 +24,8 @@ function Tools() {
     <div className='g-tools'>
       <TBreadcrumb route={route} />
       <Card style={{ marginTop: 20 }}>
-        <a onClick={() => navigate(PathConfig.toolsCrawlers)}>爬虫</a>
+        {/* <a onClick={() => navigate(PathConfig.toolsCrawlers)}>爬虫</a> */}
+        <Button type='link' onClick={() => navigate(PathConfig.toolsData2Interface)}>数据转接口</Button>
       </Card>
     </div>
   )

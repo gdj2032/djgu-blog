@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import { message } from 'antd';
-import moment, { Moment } from 'moment'
 import { inertiaState, InertiaEvent } from './inertia'
 import { ScaleMode, ITimeScaleConfig, IScaleTimeMode } from './interface'
 import { formatTime, getElementLeft, getElementTop } from './utils'
@@ -8,6 +7,8 @@ import * as BarUtil from './BarUtil'
 import timeController from './timeController'
 import timePopover from './popover';
 import styleConfig from './style'
+import dayjs from 'dayjs';
+import { DATE_FORMAT } from '@/constants';
 
 const { eventBus, EVENT_TYPE } = BarUtil;
 const MIN_SCROLL_OFFSET = 10;
@@ -74,7 +75,7 @@ export default class TimeScale {
     this._ratio = devicePixelRatio / backingStoreRatio;
 
     // 设置初始位置
-    this._playableSeconds = this.getSeconds(moment())
+    this._playableSeconds = this.getSeconds(dayjs())
     this._currentPlayingSeconds = this._playableSeconds;
     this.seek(this._currentPlayingSeconds);
 
@@ -185,7 +186,7 @@ export default class TimeScale {
 
     // 保存当前播放时间戳
     if (this._playbackTime &&
-      (moment(this._playbackTime).format('YYYY-MM-DD') !== moment(playBackTime).format('YYYY-MM-DD'))) {
+      (dayjs(this._playbackTime).format('YYYY-MM-DD') !== dayjs(playBackTime).format('YYYY-MM-DD'))) {
       this._playbackTime = playBackTime;
 
       // 播放步进时，跨天重新seek
@@ -200,12 +201,12 @@ export default class TimeScale {
 
     // 根据是否为实时播放，计算当前可播放区域
     if (isRealTime || this.inTheDay(playBackTime)) {
-      this._playableSeconds = this.getSeconds(moment());
+      this._playableSeconds = this.getSeconds(dayjs());
     } else {
       this._playableSeconds = this._duration;
     }
 
-    this._currentPlayingSeconds = this.getSeconds(moment(playBackTime));
+    this._currentPlayingSeconds = this.getSeconds(dayjs(playBackTime));
 
     if (seekFlag) {
       this.seek(this._currentPlayingSeconds);
@@ -367,7 +368,8 @@ export default class TimeScale {
       this._currentPlayingSeconds = seconds;
 
       const hms = this.getHMS(seconds)
-      const newPlaybackTime = moment(timeController.getCurrentPlaybackTime()).hours(hms.hour).minutes(hms.minutes).seconds(hms.seconds).valueOf()
+      // const newPlaybackTime = dayjs(timeController.getCurrentPlaybackTime()).hours(hms.hour).minutes(hms.minutes).seconds(hms.seconds).valueOf()
+      const newPlaybackTime = dayjs(`${dayjs(timeController.getCurrentPlaybackTime()).format(DATE_FORMAT.YMD)} ${this.addZero(hms.hour)}:${this.addZero(hms.minutes)}:${this.addZero(hms.seconds)}`).valueOf()
       timeController.changePlaybackTime(newPlaybackTime, timeController.CONTROL_SOURCE.GLOBAL_BAR);
 
       this.dispatch(EVENT_TYPE.CONTOLER_CLICK, this._currentPlayingSeconds);
@@ -459,7 +461,7 @@ export default class TimeScale {
 
     const seconds = this.translateOffsetToSeconds(offsetX);
     timePopover.show({
-      content: `${moment(this._playbackTime).format('YYYY-MM-DD')} ${formatTime(seconds, true)}`,
+      content: `${dayjs(this._playbackTime).format('YYYY-MM-DD')} ${formatTime(seconds, true)}`,
       x: clientX,
       y: getElementTop(this._canvas)
     })
@@ -495,12 +497,12 @@ export default class TimeScale {
   }
 
   /**
-   * 读取moment对象的秒数
+   * 读取对象的秒数
    * @param m
    * @returns
    */
-  getSeconds = (m: Moment) => {
-    return moment.duration(m.format('HH:mm:ss')).as('seconds')
+  getSeconds = (m: dayjs.Dayjs) => {
+    return dayjs(m).second()
   }
 
   /**
@@ -564,13 +566,17 @@ export default class TimeScale {
     }
   }
 
+  addZero = (val: number) => {
+    return val > 9 ? val : `0${val}`
+  }
+
   /**
    * 判断该时间是否在当天
    * @param milliseconds
    * @returns
    */
   inTheDay = (milliseconds) => {
-    const m = moment(milliseconds);
-    return m.format('YYYY-MM-DD') === moment().format('YYYY-MM-DD')
+    const m = dayjs(milliseconds);
+    return m.format('YYYY-MM-DD') === dayjs().format('YYYY-MM-DD')
   }
 }

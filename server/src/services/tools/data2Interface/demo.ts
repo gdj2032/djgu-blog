@@ -1,0 +1,5 @@
+interface IDemo {
+ '': {
+   'a': number;
+ }[]
+}

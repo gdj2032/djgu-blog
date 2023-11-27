@@ -16,7 +16,7 @@ function Home() {
   const navigate = useNavigate()
   const [loadingMore, setLoadingMore] = useState(false)
   const [value, setValue] = useState('')
-  const [tags, setTags] = useState<TagService.IListData[]>([])
+  const [, setTags] = useState<TagService.IListData[]>([])
 
   const {
     dataSource, debounceRefresh, loading, paginationProps

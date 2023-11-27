@@ -392,6 +392,7 @@ function QuillEditor(props: IProps) {
     });
 
     quill.on('editor-change', (...arg) => {
+      // @ts-ignore
       onEditorChange?.(...arg);
       if (arg[0] === 'text-change') {
         setContent(quill.root.innerHTML)

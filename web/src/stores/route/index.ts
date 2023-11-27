@@ -17,7 +17,7 @@ const routeSlice = createSlice({
   name: 'route',
   initialState,
   reducers: {
-    setrouteInfo: (state, action: PayloadAction<IrouteState>) => {
+    setRouteInfo: (state, action: PayloadAction<IrouteState>) => {
       return {
         ...state,
         ...action.payload
@@ -34,13 +34,13 @@ const routeSlice = createSlice({
 
 const routeInfo = (state: RootState) => state.route;
 
-const { setrouteInfo, setCurrentRoute } = routeSlice.actions;
+const { setRouteInfo, setCurrentRoute } = routeSlice.actions;
 
 const routeReducer = routeSlice.reducer;
 
 export {
   routeReducer,
   routeInfo,
-  setrouteInfo,
+  setRouteInfo,
   setCurrentRoute,
 };

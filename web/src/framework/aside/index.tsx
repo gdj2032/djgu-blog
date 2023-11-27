@@ -16,7 +16,7 @@ const { Sider } = Layout;
 interface IMenu extends RouteService.IListData {
   label: string;
   key: string;
-  children: IMenu[]
+  children?: IMenu[]
 }
 
 interface IProps {
@@ -66,14 +66,15 @@ const findSelectedKey = (key: string, config: IMenu[] = []) => {
 
 function Aside(props: IProps) {
   const df = (list: RouteService.IListData[]) => {
-    return list?.map(e => ({ ...e, label: e.name, key: e.path, children: df(e.children) }))
+    return list?.map(e => ({ ...e, label: e.name, key: e.path }))
   }
 
   const history = useNavigate()
   const location = useLocation()
   const { routes } = useAppSelector(routeAction.routeInfo)
   const [selectedKey, changeSelectedKeys] = useState(location.pathname)
-  const [inlineCollapsed, setInlineCollapsed] = useState(false)
+  // const [inlineCollapsed, setInlineCollapsed] = useState(false)
+  const [inlineCollapsed] = useState(false)
   const [menus, setMenus] = useState<IMenu[]>(df(routes))
   const dispatch = useDispatch()
   const sysInfo = useAppSelector(sysAction.sysInfo)

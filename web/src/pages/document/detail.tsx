@@ -6,9 +6,9 @@ import { documentService, fileService } from '@/services';
 import { Card, Spin, Tag } from 'antd';
 import { HistoryOutlined, EyeOutlined, AppstoreOutlined } from '@ant-design/icons';
 import { DATE_FORMAT } from '@/constants';
-import moment from 'moment';
 import { QuillEditor, TBreadcrumb } from '@/components';
 import { useNavigate } from 'react-router';
+import dayjs from 'dayjs';
 
 function Detail() {
   const { id } = useQuery()
@@ -58,7 +58,7 @@ function Detail() {
       <div className="global-mgt-8">
         <Tag color="magenta">
           <HistoryOutlined />
-          <span className="global-mgl-12">{data?.createTime ? moment(+data.createTime).format(DATE_FORMAT.YMD_Hms) : ''}</span>
+          <span className="global-mgl-12">{data?.createTime ? dayjs(+data.createTime).format(DATE_FORMAT.YMD_Hms) : ''}</span>
         </Tag>
         <Tag color="volcano" className="global-mgl-12">
           <EyeOutlined />
