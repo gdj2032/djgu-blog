@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { QuillEditor, TBreadcrumb } from '@/components';
 import './index.scss';
 import { PathConfig } from '@/framework/routes/routes';
-import { USER_ROLE, USER_TAB } from '@/constants';
+import { DEFAULT_ROUTE, USER_ROLE, USER_TAB } from '@/constants';
 import { Card, Form, Input, Select, message, Space, Button } from 'antd';
 import { documentService, fileService, tagService } from '@/services';
 import { IRowItem } from '@/components/ItemsRow';
@@ -151,6 +151,8 @@ function Create() {
     })
   }
 
+  const newRoutes = storeRoutes.filter(e => e.path !== DEFAULT_ROUTE.path)
+
   return (
     <div className="g-document-create">
       <TBreadcrumb route={routes} customItems={customItems} />
@@ -191,7 +193,7 @@ function Create() {
               >
                 <Select
                   style={{ width: 240 }}
-                  options={storeRoutes}
+                  options={newRoutes}
                   fieldNames={{ label: 'name', value: 'id' }}
                   optionFilterProp="name"
                   allowClear

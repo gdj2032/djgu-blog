@@ -17,7 +17,7 @@ function DocumentItem(props: IProps) {
     <div className='g-document-item' onClick={() => onClick?.(data)}>
       <div className="global-h2">{data.name}</div>
       <div className="global-mgt-8">
-        <Tag color="magenta">
+        <Tag color="blue">
           <HistoryOutlined />
           <span className="global-mgl-12">{data.createTime ? moment(+data.createTime).format(DATE_FORMAT.YMD_Hms) : ''}</span>
         </Tag>
@@ -27,7 +27,11 @@ function DocumentItem(props: IProps) {
         </Tag>
         <Tag color="cyan" className="global-mgl-12">
           <AppstoreOutlined />
-          <span className="global-mgl-12">{data.types.map((e) => e.name).join(' ')}</span>
+          <span className="global-mgl-12">{data.route?.name}</span>
+        </Tag>
+        <Tag color="magenta" className="global-mgl-12">
+          <AppstoreOutlined />
+          <span className="global-mgl-12">{data.tags?.map(e => e.name).join(',')}</span>
         </Tag>
       </div>
       <div className="global-mgt-8">

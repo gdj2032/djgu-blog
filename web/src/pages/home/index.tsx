@@ -1,20 +1,23 @@
 /**
  * 文档列表
  */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './index.scss';
 import { useNavigate } from 'react-router';
 import { useVirtualList } from '@djgu/react-comps';
 import { DocumentService } from '@/typings/document';
-import { documentService } from '@/services';
+import { documentService, tagService } from '@/services';
 import { Input, Spin } from 'antd';
 import { DocumentItem } from '@/components';
 import { PathConfig } from '@/framework/routes/routes';
+import { TagService } from '@/typings/tag';
 
 function Home() {
   const navigate = useNavigate()
   const [loadingMore, setLoadingMore] = useState(false)
   const [value, setValue] = useState('')
+  const [tags, setTags] = useState<TagService.IListData[]>([])
+
   const {
     dataSource, debounceRefresh, loading, paginationProps
   } = useVirtualList<DocumentService.IListData>(async ({ limit, offset }) => {
@@ -29,6 +32,15 @@ function Home() {
     }
     return { dataSource: [], total: 0 }
   }, [value])
+
+  useEffect(() => {
+    initTags()
+  }, [])
+
+  const initTags = async () => {
+    const res = await tagService.dList({ limit: 10000, offset: 0 });
+    setTags(res?.data?.data || [])
+  }
 
   const handleScroll = (e) => {
     if (e.target.clientHeight + e.target.scrollTop === e.target.scrollHeight) {
