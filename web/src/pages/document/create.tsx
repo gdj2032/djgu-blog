@@ -167,7 +167,7 @@ function Create() {
             name="name"
             label="名称"
             rules={[
-              { required: true, message: '请输入名称', max: 30 }
+              { required: true, message: '请输入名称, 字数不能超过30字', max: 30 }
             ]}
           >
             <Input placeholder="请输入名称" />

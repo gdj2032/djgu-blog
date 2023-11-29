@@ -289,8 +289,10 @@ function QuillEditor(props: IProps) {
 
   const setValue = (val) => {
     if (val && val !== getValue()) {
+      const length = quillEditor.getLength();
+      quillEditor.deleteText(0, length)
       const delta = quillEditor?.clipboard.convert(val);
-      quillEditor?.updateContents(delta)
+      quillEditor?.setContents(delta)
     }
 
     if (onHref && quillEditor) {

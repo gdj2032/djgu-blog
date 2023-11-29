@@ -104,14 +104,15 @@ class DocumentService {
   async edit(...args) {
     const [req, res] = args;
     const { id } = req.params;
-    const { name, description, fileId, types } = req.body as any;
+    const { name, description, routeId, fileId, tagIds = [] } = req.body as any;
     const errorAble = await RESPONSE_TYPE.commonErrors({
       res,
       errs: [
         { func: () => !id, ...RESPONSE_CODE_MSG.idNotEmpty },
         { func: () => !name, ...RESPONSE_CODE_MSG.nameNotEmpty },
         { func: () => !fileId, ...RESPONSE_CODE_MSG.fileNotEmpty },
-        { func: () => !types?.length, ...RESPONSE_CODE_MSG.pathNotEmpty },
+        { func: () => !routeId, ...RESPONSE_CODE_MSG.routeIdNotEmpty },
+        { func: () => !tagIds?.length, ...RESPONSE_CODE_MSG.tagNotEmpty },
         {
           func: async () => {
             const { data: d1 } = await DataBase.sql(DOCUMENT_SQL.queryByName, [name])
@@ -129,7 +130,7 @@ class DocumentService {
     })
     if (errorAble) return errorAble;
     const time = moment().valueOf();
-    await DataBase.sql(DOCUMENT_SQL.update, [{ name, description, fileId, types: types.join(','), updateTime: time }, id])
+    await DataBase.sql(DOCUMENT_SQL.update, [{ name, description, routeId, fileId, tagIds: tagIds.join(','), updateTime: time }, id])
     const { data } = await DataBase.sql(DOCUMENT_SQL.queryById, [id]);
     DataBase.sql(FILE_SQL.update, [{ used: 1 }, fileId])
     return RESPONSE_TYPE.commonSuccess({
