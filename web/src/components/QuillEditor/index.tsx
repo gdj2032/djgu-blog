@@ -19,7 +19,7 @@ import { ImageDrop } from 'quill-image-drop-module';
 import QuillToast from './QuillToast';
 import QuillVideo from './QuillVideo';
 import QuillAudio from './QuillAudio';
-import Delta from "quill-delta";
+// import Delta from "quill-delta";
 
 type T_UPLOAD_FILE = 'image' | 'video' | 'audio';
 
@@ -119,6 +119,7 @@ interface IProps {
    * @memberof IProps
    */
   onPreview?: (html: string) => void
+  onHref?: (e) => void
 }
 
 Quill.register({ 'formats/video': QuillVideo }, true);
@@ -146,6 +147,7 @@ function QuillEditor(props: IProps) {
     onCustomFile,
     quillRef,
     onPreview,
+    onHref,
   } = props;
   const [quillEditor, setQuillEditor] = useState<Quill>()
   const [content, setContent] = useState(value)
@@ -286,10 +288,19 @@ function QuillEditor(props: IProps) {
   }
 
   const setValue = (val) => {
-    if (val !== getValue()) {
-      const delta = new Delta()
+    if (val && val !== getValue()) {
+      const delta = quillEditor?.clipboard.convert(val);
       quillEditor?.updateContents(delta)
-      quillEditor?.clipboard.dangerouslyPasteHTML(val, 'user')
+    }
+
+    if (onHref && quillEditor) {
+      let links = quillEditor.root?.querySelectorAll('a') || []
+      for (let i = 0; i < links.length; i++) {
+        links[i].addEventListener('click', (e) => {
+          e.preventDefault()
+          onHref(e)
+        })
+      }
     }
   }
 
@@ -321,7 +332,7 @@ function QuillEditor(props: IProps) {
         audio: () => {
           audioRef.current = true;
           setAudioAble(true)
-        }
+        },
       },
     }
 

@@ -5,7 +5,7 @@ import { DocumentService } from '@/typings/document';
 import { documentService, fileService } from '@/services';
 import { Card, Spin, Tag } from 'antd';
 import { HistoryOutlined, EyeOutlined, AppstoreOutlined } from '@ant-design/icons';
-import { DATE_FORMAT } from '@/constants';
+import { DATE_FORMAT, isElectron } from '@/constants';
 import { QuillEditor, TBreadcrumb } from '@/components';
 import { useNavigate } from 'react-router';
 import dayjs from 'dayjs';
@@ -77,6 +77,14 @@ function Detail() {
           value={content}
           syntax
           readOnly
+          onHref={e => {
+            const href = e.target.href
+            if (isElectron) {
+              window.app.openUrl(href);
+            } else {
+              window.open(href, 'target')
+            }
+          }}
         />
       </div>
     </>
