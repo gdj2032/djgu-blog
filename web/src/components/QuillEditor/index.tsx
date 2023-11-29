@@ -19,7 +19,7 @@ import { ImageDrop } from 'quill-image-drop-module';
 import QuillToast from './QuillToast';
 import QuillVideo from './QuillVideo';
 import QuillAudio from './QuillAudio';
-// import Delta from "quill-delta";
+import Delta from "quill-delta";
 
 type T_UPLOAD_FILE = 'image' | 'video' | 'audio';
 
@@ -167,6 +167,7 @@ function QuillEditor(props: IProps) {
 
   useEffect(() => {
     if (value !== content) {
+      console.info('--- value, content --->', { value, content });
       setContent(value)
     }
   }, [value])
@@ -285,7 +286,11 @@ function QuillEditor(props: IProps) {
   }
 
   const setValue = (val) => {
-    quillEditor?.clipboard.dangerouslyPasteHTML(0, val)
+    if (val !== getValue()) {
+      const delta = new Delta()
+      quillEditor?.updateContents(delta)
+      quillEditor?.clipboard.dangerouslyPasteHTML(val, 'user')
+    }
   }
 
   const init = () => {

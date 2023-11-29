@@ -95,7 +95,7 @@ function Create() {
         name: res.data.name,
         description: res.data.description,
         routeId: res.data.route?.id,
-        // content: res.data.content,
+        tagIds: res.data.tags?.map(e => e.id),
       })
     }
   }
