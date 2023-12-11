@@ -14,11 +14,12 @@ class RouteService {
     if (error) {
       return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
     }
+    const all = await this.all()
     return RESPONSE_TYPE.commonSuccess2List({
       res, data,
       limit: _limit,
       offset: _offset,
-      total: data.length,
+      total: all.length,
     })
   }
 
