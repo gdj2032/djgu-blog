@@ -9,3 +9,5 @@ export const VERSION = packageJson.version;
 export const APPNAME = packageJson.name;
 export const APPCODE = packageJson.name;
 export const LOGO = require('@/images/logo.png');
+
+console.info(' --------------- VERSION --------------- ', VERSION);
