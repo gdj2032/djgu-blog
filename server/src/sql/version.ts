@@ -1,6 +1,6 @@
 export const VERSION_SQL = {
   queryAll: 'SELECT * FROM version',
-  queryLimitOffset: 'SELECT * FROM version LIMIT ?, ?',
+  queryLimitOffset: 'SELECT * FROM version ORDER BY createTime DESC LIMIT ?, ?',
   queryById: 'SELECT * FROM version WHERE id=?',
   queryByIds: 'SELECT * FROM version WHERE id in (?)',
   queryByName: 'SELECT * FROM version WHERE name=?',
