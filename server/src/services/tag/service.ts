@@ -21,11 +21,12 @@ class TagService {
       ...e,
       route: allRoute.find(v => v.id === e.routeId),
     }))
+    const all = await this.all()
     return RESPONSE_TYPE.commonSuccess2List({
       res, data: data1,
       limit: _limit,
       offset: _offset,
-      total: data?.length || 0,
+      total: all?.length || 0,
     })
   }
 

@@ -6,7 +6,7 @@ import fs from 'fs'
 import co from 'co';
 import OSS from 'ali-oss';
 import http from 'http'
-import { ALI_KEY, FILE_TYPE, FILE_PATH } from '@/constants';
+import { ALI_KEY, FILE_TYPE, FILE_PATH, FILE_TIME } from '@/constants';
 
 const client = new OSS({
   region: ALI_KEY.REGION, // 公共云下OSS Region
@@ -22,9 +22,10 @@ const ali_oss = {
 class FileService {
 
   constructor() {
-    // setInterval(() => {
-    //   this.deleteExpireFile()
-    // }, FILE_TIME)
+    this.deleteExpireFile()
+    setInterval(() => {
+      this.deleteExpireFile()
+    }, FILE_TIME)
   }
 
   // name: 'circle.jpeg',
@@ -138,23 +139,51 @@ class FileService {
     return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.uploadFileError })
   }
 
+  deleteFile = async (fileId: string) => {
+    if (fileId) {
+      const { error: fErr, data: fData } = await DataBase.sql(FILE_SQL.queryById, [fileId])
+      if (!fErr) {
+        const url = fData?.[0]?.url;
+        if (url) {
+          const urls = url.split(ALI_KEY.BUCKET_FILE_NAME)
+          const filePath = `${ALI_KEY.BUCKET_FILE_NAME}${urls[1]}`
+          this.delete(filePath)
+        }
+      }
+    }
+  }
+
+  private delete = async (filePath: string) => {
+    try {
+      // 填写Object完整路径。Object完整路径中不能包含Bucket名称。
+      let result = await client.delete(filePath);
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   private async allFile() {
-    return DataBase.sql(FILE_SQL.queryAll)
+    const { data } = await DataBase.sql(FILE_SQL.queryAll)
+    return data || []
   }
 
   // 删除过期且未持久化的文件
   private deleteExpireFile = async () => {
     const files = await this.allFile()
     const curTime = moment().valueOf()
-    // const needDeleteFiles = files.filter((e) => {
-    //   const moreOneDay = (curTime - +e.createTime) >= FILE_TIME;
-    //   return e.persistenceStorage === 0 && moreOneDay;
-    // })
-
-    // if (needDeleteFiles?.length > 0) {
-    //   // 删除数据
-    //   await DataBase.sql(FILE_SQL.deleteById, )
-    // }
+    const needDeleteFiles = files.filter((e) => {
+      const moreOneDay = (curTime - +e.createTime) >= FILE_TIME;
+      return +e.used === 0 && moreOneDay;
+    })
+    console.info('--- needDeleteFiles --->', needDeleteFiles);
+    if (needDeleteFiles?.length > 0) {
+      // 删除数据
+      for (const e of needDeleteFiles) {
+        this.deleteFile(e.id)
+        DataBase.sql(FILE_SQL.deleteById, e.id)
+      }
+    }
   }
 }
 

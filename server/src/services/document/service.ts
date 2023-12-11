@@ -1,7 +1,9 @@
+import { ALI_KEY } from "@/constants";
 import DataBase from "@/db";
 import { DOCUMENT_SQL, FILE_SQL } from "@/sql";
 import { RESPONSE_TYPE, RESPONSE_CODE_MSG, commonUuid } from "@/utils";
 import moment from 'moment';
+import fileService from "../file/service";
 import routeService from "../route/service";
 import tagService from "../tag/service";
 
@@ -130,12 +132,17 @@ class DocumentService {
     })
     if (errorAble) return errorAble;
     const time = moment().valueOf();
-    await DataBase.sql(DOCUMENT_SQL.update, [{ name, description, routeId, fileId, tagIds: tagIds.join(','), updateTime: time }, id])
-    const { data } = await DataBase.sql(DOCUMENT_SQL.queryById, [id]);
-    DataBase.sql(FILE_SQL.update, [{ used: 1 }, fileId])
-    return RESPONSE_TYPE.commonSuccess({
-      res, data,
-    })
+    const detailInfo = await DataBase.sql(DOCUMENT_SQL.queryById, [id])
+    const updateInfo = await DataBase.sql(DOCUMENT_SQL.update, [{ name, description, routeId, fileId, tagIds: tagIds.join(','), updateTime: time }, id])
+    if (!updateInfo.error) {
+      const { data } = await DataBase.sql(DOCUMENT_SQL.queryById, [id]);
+      DataBase.sql(FILE_SQL.update, [{ used: 1 }, fileId])
+      this.deleteFile(detailInfo.data[0].fileId)
+      return RESPONSE_TYPE.commonSuccess({
+        res, data,
+      })
+    }
+    return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
   }
 
   async delete(...args) {
@@ -148,8 +155,10 @@ class DocumentService {
       ]
     })
     if (errorAble) return errorAble;
+    const detailInfo = await DataBase.sql(DOCUMENT_SQL.queryById, [id])
     const { error } = await DataBase.sql(DOCUMENT_SQL.deleteById, [id])
     if (!error) {
+      this.deleteFile(detailInfo.data[0].fileId)
       return RESPONSE_TYPE.commonSuccess({ res })
     }
     return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
@@ -178,6 +187,20 @@ class DocumentService {
       return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
     }
     return RESPONSE_TYPE.commonSuccess({ res })
+  }
+
+  deleteFile = async (fileId: string) => {
+    if (fileId) {
+      const { error: fErr, data: fData } = await DataBase.sql(FILE_SQL.queryById, [fileId])
+      if (!fErr) {
+        const url = fData?.[0]?.url;
+        if (url) {
+          const urls = url.split(ALI_KEY.BUCKET_FILE_NAME)
+          const filePath = `${ALI_KEY.BUCKET_FILE_NAME}${urls[1]}`
+          fileService.deleteFile(filePath)
+        }
+      }
+    }
   }
 }
 
