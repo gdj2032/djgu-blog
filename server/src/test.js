@@ -1,45 +1,3 @@
-const checkCommands = (commands) => {
-  if (commands) {
-    const singleQuote = commands.includes("'")
-    if (singleQuote) {
-      const reg = /'(.*?)'/g
-      const arr = commands.match(reg)
-      console.log("🚀 ~ file: CreateDistributedTrainingMirror.tsx:91 ~ checkCommands ~ arr:", arr)
-      if (arr.length) {
-        let commandArr = []
-        let str = commands;
-        for (const i of arr) {
-          // const prevReg = new RegExp("^\(\S*)" + i + "$")
-          // const nextReg = new RegExp("^" + i + "(\S*)$")
-          const idx = str.indexOf(i)
-          const prev = str.substring(0, idx)
-          const next = str.substring(idx + i.length)
-          str = next
-          if (prev) {
-            const cur = prev.split(' ').filter(e => !!e);
-            commandArr = commandArr.concat(cur)
-          }
-
-          commandArr.push(i.replaceAll("'", ""))
-        }
-
-        if (str) {
-          const strArr = str.split(' ').filter(e => !!e);
-          commandArr = commandArr.concat(strArr)
-        }
-
-        console.info('--- commandArr --->', commandArr);
-
-        return commandArr
-      }
-    }
-    return commands.split(' ')
-  }
-  return []
-}
-
-checkCommands(`'aaa' s1 sh -c '/root/nexusnet/scripts/run_server.sh 2>&1 | tee /root/nexusnet/metric_log/stdout.log' sh1 -c1 'log1111' 222`)
-
 // const mysql = require('mysql')
 
 // const DATABASE_INFO = {
@@ -193,7 +151,7 @@ const getGUID = () => {
 
 
 const createGuid = () => {
-  const guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxx'.replace(/[xy]/g, (c: string) => {
+  const guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxx'.replace(/[xy]/g, (c) => {
     // @ts-nocheck
     const r = Math.random() * 16 | 0;
     // @ts-nocheck
@@ -203,6 +161,57 @@ const createGuid = () => {
   // this.defaultGuid = guid;
   return guid;
 }
+
+
+
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
+
+const HOME_PATH = os.homedir();
+
+function test() {
+  // const downloadFilePath = `${HOME_PATH}/Downloads/小说/xxx.txt`
+  const content = fs.readFileSync(downloadFilePath).toString()
+  const contents = content.split('\n')
+  const newFilePath = path.resolve('tmp') + '/1.txt'
+
+  const point0 = '==='
+  const point1 = '、'
+  let newCtxs = []
+  for (const ctx of contents) {
+    let str = ctx;
+    if (str.includes(point0) && str.includes(point1)) {
+      const point0Idx = str.indexOf(point0)
+      const point1Idx = str.indexOf(point1)
+      const reg = /===(\S*)、/g
+      const title1 = str.replace(reg, '').replace(point0, '')
+      const num = str.substring(point0Idx + 3, point1Idx)
+      str = `第${num}章 ${title1}`
+    }
+    newCtxs.push(str)
+  }
+  fs.writeFileSync(newFilePath, newCtxs.join('\n'), { encoding: 'utf8' })
+  // const reg = /===(\S*)、/g
+  // const t = '===1、喝酒不开车==='
+  // const s = t.replace(reg, '第')
+}
+
+test()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

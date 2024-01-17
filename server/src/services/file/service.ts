@@ -22,10 +22,10 @@ const ali_oss = {
 class FileService {
 
   constructor() {
-    this.deleteExpireFile()
-    setInterval(() => {
-      this.deleteExpireFile()
-    }, FILE_TIME)
+    // this.deleteExpireFile()
+    // setInterval(() => {
+    //   this.deleteExpireFile()
+    // }, FILE_TIME)
   }
 
   // name: 'circle.jpeg',

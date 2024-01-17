@@ -22,8 +22,22 @@ const getArray = (n: number) => {
   return s;
 }
 
-const array2Interface = (key: string, value: any, blank: number, i: number) => {
-  for (const item of value) {
+const array2Interface = (key: string, value: any[], blank: number, i: number) => {
+  if (value.length === 0) {
+    fs.appendFileSync(txtPath, `${getBlack(blank)}'${key}': string[];${os.EOL}`, { encoding: 'utf-8' });
+    return;
+  }
+  let value2 = value;
+  const type0 = Object.prototype.toString.call(value2[0])
+  if (type0 === '[object Object]') {
+    value2 = [value.reduce((acc, cur) => {
+      return {
+        ...acc,
+        ...cur,
+      }
+    }, {})]
+  }
+  for (const item of value2) {
     const type1 = Object.prototype.toString.call(item)
     if (type1 === '[object Number]') {
       fs.appendFileSync(txtPath, `${getBlack(blank)}'${key}': number${getArray(i)};${os.EOL}`, { encoding: 'utf-8' });
@@ -42,6 +56,7 @@ const array2Interface = (key: string, value: any, blank: number, i: number) => {
 
 const object2InterfaceFn = (key: string, value: any, blank: number) => {
   const type = Object.prototype.toString.call(value)
+  // console.log('🚀 ~ file: index.ts:46 ~ object2Interface ~ value:', key, value, type)
   if (type === '[object String]') {
     // 字符串
     fs.appendFileSync(txtPath, `${getBlack(blank)}'${key}': string;${os.EOL}`, { encoding: 'utf-8' });
@@ -67,6 +82,10 @@ const object2InterfaceFn = (key: string, value: any, blank: number) => {
     if (key) {
       fs.appendFileSync(txtPath, `${getBlack(blank)}}${os.EOL}`, { encoding: 'utf-8' });
     }
+  } else if (type === '[object Null]' || type === '[object Undefined]') {
+    fs.appendFileSync(txtPath, `${getBlack(blank)}'${key}': string;${os.EOL}`, { encoding: 'utf-8' });
+  } else if (type === '[object Boolean]') {
+    fs.appendFileSync(txtPath, `${getBlack(blank)}'${key}': boolean;${os.EOL}`, { encoding: 'utf-8' });
   }
 }
 
