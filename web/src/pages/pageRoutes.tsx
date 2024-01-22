@@ -1,4 +1,5 @@
 const pageRoutes = {
+  index: '/',
   home: '/home',
   login: '/login',
   admin: '/admin',

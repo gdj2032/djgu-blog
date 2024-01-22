@@ -25,6 +25,7 @@ interface IContainerProps {
 }
 
 function ContainerPage(props: IContainerProps) {
+  console.log("🚀 ~ ContainerPage ~ props:", props)
   const sys = useAppSelector(sysAction.sysInfo);
   const { routes = [] } = props;
 

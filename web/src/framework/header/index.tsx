@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout, Tooltip } from 'antd'
-import { GithubOutlined, LoginOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons'
+import { BookOutlined, GithubOutlined, LoginOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons'
 import { APPNAME, isElectron, USER_ROLE } from '@/constants'
 import './index.scss'
 import { doLogout } from '@/utils'
@@ -58,6 +58,15 @@ const CustomHeader = () => {
             }}
           />
         </div>
+        {
+          isElectron && (
+            <div className="u-item u-login">
+              <Tooltip title='小说'>
+                <BookOutlined className="u-icon" />
+              </Tooltip>
+            </div>
+          )
+        }
         {
           username && (
             <div className="u-item">

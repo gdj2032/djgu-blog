@@ -22,11 +22,12 @@ import {
 } from '@/pages';
 import { RouteObject } from 'react-router/dist/lib/context';
 import React from 'react';
+import ContainerPage from '../container';
 // import { useNavigate } from 'react-router-dom';
 // import NotFound from '../404';
 
 export const PathConfig = {
-  index: '/',
+  // index: '/',
   ...pageRoutes,
 };
 
@@ -40,62 +41,68 @@ export const PathConfig = {
 
 // export const loginRoute: RouteObject[] = [
 //   {
-//     element: <Redirect to={PathConfig.login} />,
+//     Component: Redirect={PathConfig.login} />,
 //     path: '*'
 //   },
 //   {
-//     element: <Login />,
+//     Component: Login,
 //     path: PathConfig.login,
 //   },
 // ];
 
 export const pageRoute = (): RouteObject[] => [
   {
+    path: PathConfig.login,
+    Component: Login,
+  },
+  {
     path: PathConfig.index,
-    element: <Home />,
+    Component: Home,
   },
   {
     path: PathConfig.home,
-    element: <Home />,
+    Component: Home,
   },
   {
-    path: PathConfig.login,
-    element: <Login />,
-  },
-  {
-    path: PathConfig.admin,
-    element: <User />,
-  },
-  {
-    path: PathConfig.document,
-    element: <Document />,
-  },
-  {
-    path: PathConfig.documentDetail,
-    element: <DocumentDetail />,
-  },
-  {
-    path: PathConfig.documentCreate,
-    element: <DocumentCreate />,
-  },
-  {
-    path: PathConfig.knowledge,
-    element: <Knowledge />,
-  },
-  {
-    path: PathConfig.tools,
-    element: <Tools />,
-  },
-  {
-    path: PathConfig.toolsCrawlers,
-    element: <ToolsCrawlers />,
-  },
-  {
-    path: PathConfig.toolsData2Interface,
-    element: <ToolsData2Interface />,
+    path: '/',
+    Component: ContainerPage,
+    children: [
+      {
+        path: PathConfig.admin,
+        Component: User,
+      },
+      {
+        path: PathConfig.document,
+        Component: Document,
+      },
+      {
+        path: PathConfig.documentDetail,
+        Component: DocumentDetail,
+      },
+      {
+        path: PathConfig.documentCreate,
+        Component: DocumentCreate,
+      },
+      {
+        path: PathConfig.knowledge,
+        Component: Knowledge,
+      },
+      {
+        path: PathConfig.tools,
+        Component: Tools,
+      },
+      {
+        path: PathConfig.toolsCrawlers,
+        Component: ToolsCrawlers,
+      },
+      {
+        path: PathConfig.toolsData2Interface,
+        Component: ToolsData2Interface,
+      },
+    ]
   },
   {
     path: '*',
-    element: <Content />
+    Component: Content
   },
 ];

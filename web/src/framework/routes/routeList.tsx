@@ -1,14 +1,36 @@
+
+
 import React from 'react'
 import {
-  Route
+  Navigate,
+  Route,
+  RouteObject,
 } from 'react-router-dom'
-import { RouteObject } from 'react-router/dist/lib/context'
 
-const routeList = (routeConfig: RouteObject[]): any => routeConfig.map((route: RouteObject) => {
-  if (route.children) {
-    return routeList(route.children)
+interface IRouteWrapProps {
+  route: RouteObject;
+}
+
+const RouterComponent = (props: IRouteWrapProps) => {
+  const { route } = props
+  const { element, Component, children } = route
+  let ele = element
+  if (Component) {
+    ele = <Component routes={children} />
   }
-  return <Route path={route.path} element={route.element} key={route.path} />
+  return ele
+}
+
+const routeList = (routeConfig: RouteObject[]) => routeConfig.map((route: RouteObject) => {
+  return (
+    <Route path={route.path} element={<RouterComponent route={route} />} key={route.path} >
+      {
+        route.children?.map(e => (
+          <Route path={e.path} element={<RouterComponent route={e} />} key={e.path} />
+        ))
+      }
+    </Route>
+  )
 })
 
 export default routeList

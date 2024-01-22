@@ -3,12 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
 
-export interface IrouteState {
+export interface IRouteState {
   routes: RouteService.IListData[],
   currentRoute: RouteService.IListData,
 }
 
-const initialState: IrouteState = {
+const initialState: IRouteState = {
   routes: [],
   currentRoute: undefined,
 };
@@ -17,13 +17,13 @@ const routeSlice = createSlice({
   name: 'route',
   initialState,
   reducers: {
-    setRouteInfo: (state, action: PayloadAction<IrouteState>) => {
+    setRouteInfo: (state, action: PayloadAction<IRouteState>) => {
       return {
         ...state,
         ...action.payload
       };
     },
-    setCurrentRoute: (state, action: PayloadAction<IrouteState['currentRoute']>) => {
+    setCurrentRoute: (state, action: PayloadAction<IRouteState['currentRoute']>) => {
       return {
         ...state,
         currentRoute: action.payload

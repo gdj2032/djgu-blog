@@ -1,48 +1,67 @@
 .g-home {
-  width: 100%;
-  height: 100%;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('../../images/bg.jpeg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  overflow: auto;
 
-  .m-search {
-    height: 48px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 12px;
+  .m-hb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+
+    .g-header-bar {
+      margin-top: -80px;
+      transition: all 0.3s ease;
+    }
   }
 
-  .m-container {
+  .m-hb-show {
+    .g-header-bar {
+      margin-top: 0;
+    }
+  }
+
+  .m-app-name {
     position: relative;
-    width: 100%;
-    height: 100%;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
+    font-size: 40px;
+    color: #a4a4a4;
+    white-space: nowrap;
+    font-weight: 600;
+  }
 
-    .p-loading {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      display: flex;
-      justify-content: center;
-      margin-top: 40px;
+  .m-app-name::after {
+    content: "开发随笔";
+    font-size: 40px;
+    color: #fff;
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: ani 2s linear;
+  }
+
+  @keyframes ani {
+    0% {
+      width: 0;
+      text-shadow: none;
     }
 
-    .p-list {
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    .p-scroll-bottom {
-      text-align: center;
-      color: rgba(204, 204, 204, .7);
-      line-height: 32px;
+    100% {
+      width: 100%;
+      border: none;
     }
   }
 }
+
 
 .page-frame-ele {}

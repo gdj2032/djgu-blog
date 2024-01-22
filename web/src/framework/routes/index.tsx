@@ -1,8 +1,9 @@
+import { DownAnimation } from '@/components';
 import { Content } from '@/pages';
 import { routeAction, useAppSelector } from '@/stores';
 import React, { useEffect } from 'react';
-import { HashRouter } from 'react-router-dom';
-import ContainerPage from '../container';
+import { HashRouter, Routes } from 'react-router-dom';
+import routeList from './routeList';
 import { pageRoute } from './routes';
 
 const Roots = () => {
@@ -17,11 +18,15 @@ const Roots = () => {
     // window.onhashchange = () => {
     //   setLocal(window.location.hash.replace('#', ''))
     // }
+    const move = new DownAnimation()
+    move.start()
   }, [])
 
   return (
     <HashRouter>
-      <ContainerPage routes={routes} />
+      <Routes>
+        {routeList(routes)}
+      </Routes>
     </HashRouter>
   );
 }
