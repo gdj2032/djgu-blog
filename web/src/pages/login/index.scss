@@ -1,12 +1,19 @@
 .layout-login {
-  height: 100%;
-  overflow: hidden;
   position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-image: var(--home-bg-img);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   .login-wrap {
-    height: 100%;
     min-width: 452px;
-    min-height: 628px;
+    min-height: 560px;
     font-size: 0;
     display: flex;
     align-items: center;
@@ -82,7 +89,7 @@
         .ant-form-explain {}
       }
 
-      .login-btn {
+      .ant-btn-item {
         .ant-btn.ant-btn-primary {
           height: 40px;
           font-size: 18px;
@@ -96,6 +103,19 @@
         width: 280px;
         margin: 0 auto 0;
         display: block;
+        border: 0;
+      }
+
+      .login-btn {
+        .ant-btn.ant-btn-primary {
+          background: linear-gradient(to right, #4D8BED, #ff00c3);
+        }
+      }
+
+      .cancel-btn {
+        .ant-btn.ant-btn-primary {
+          background: linear-gradient(to right, #303133, #c6bec3);
+        }
       }
     }
   }
