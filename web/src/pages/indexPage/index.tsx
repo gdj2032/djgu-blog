@@ -6,7 +6,7 @@ import './index.scss';
 
 function Index() {
   return (
-    <div className='Index'>Index</div>
+    <div className='g-index'></div>
   )
 }
 
