@@ -11,7 +11,7 @@ import './index.scss';
 
 function Data2Interface() {
   const route = [
-    { name: '首页', url: PathConfig.home },
+    // { name: '首页', url: PathConfig.home },
     { name: '工具', url: PathConfig.tools },
     { name: '数据转接口' },
   ]

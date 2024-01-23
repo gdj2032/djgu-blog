@@ -17,7 +17,6 @@ function Tools() {
 
   const navigate = useNavigate()
   const route = [
-    { name: '首页', url: PathConfig.home },
     { name: '工具' },
   ]
   return (

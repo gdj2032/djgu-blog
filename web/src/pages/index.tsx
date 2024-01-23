@@ -9,3 +9,4 @@ export { default as Tools } from './tools';
 export { default as ToolsCrawlers } from './tools/crawlers';
 export { default as ToolsData2Interface } from './tools/data2Interface';
 export { default as Content } from './content';
+export { default as IndexPage } from './indexPage';

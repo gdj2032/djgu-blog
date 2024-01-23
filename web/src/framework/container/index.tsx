@@ -12,21 +12,15 @@ import { RouteObject } from 'react-router/dist/lib/context';
 import { Layout } from 'antd';
 import React, { useEffect } from 'react';
 import './index.scss';
-import PageFrame from '@/components/PageFrame';
-import { sysAction, useAppSelector } from '@/stores';
-import { isElectron } from '@/constants';
 import { Content } from 'antd/es/layout/layout';
-import Aside from '../aside';
-import Header from '../header';
 import { initRoutes } from '@/utils';
+import HeaderBar from '../headerBar';
 
 interface IContainerProps {
   routes: RouteObject[]
 }
 
 function ContainerPage(props: IContainerProps) {
-  console.log("🚀 ~ ContainerPage ~ props:", props)
-  const sys = useAppSelector(sysAction.sysInfo);
   const { routes = [] } = props;
 
   useEffect(() => {
@@ -34,19 +28,16 @@ function ContainerPage(props: IContainerProps) {
   }, [])
 
   return (
-    <PageFrame className={sys.mode} hideTitleBar={!isElectron}>
-      <Layout className="g-container">
-        <Header />
-        <Layout>
-          <Aside />
-          <Content className="layout-content">
-            <Routes>
-              {routeList(routes)}
-            </Routes>
-          </Content>
-        </Layout>
+    <Layout className="g-container">
+      <HeaderBar />
+      <Layout>
+        <Content className="layout-content">
+          <Routes>
+            {routeList(routes)}
+          </Routes>
+        </Content>
       </Layout>
-    </PageFrame>
+    </Layout>
   );
 }
 

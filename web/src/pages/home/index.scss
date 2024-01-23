@@ -2,7 +2,7 @@
   position: relative;
   width: 100vw;
   height: 100vh;
-  background-image: url('../../images/bg.jpeg');
+  background-image: var(--home-bg-img);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -16,10 +16,11 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 80px;
+    height: 100px;
+    z-index: 10000;
 
     .g-header-bar {
-      margin-top: -80px;
+      margin-top: -100px;
       transition: all 0.3s ease;
     }
   }

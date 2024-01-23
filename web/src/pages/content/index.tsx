@@ -52,7 +52,7 @@ function Contents() {
   }
 
   return (
-    <div className='g-home' onScroll={handleScroll}>
+    <div className='g-content' onScroll={handleScroll}>
       <div className="m-search">
         <Input.Search
           style={{ width: 800 }}

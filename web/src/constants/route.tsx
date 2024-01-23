@@ -4,8 +4,8 @@ export const DEFAULT_ROUTE_OPTION = {
   routes: [
     {
       id: '1',
-      name: '首页',
-      path: '/home',
+      name: '主页',
+      path: '/index',
       role: USER_ROLE.common,
     },
     {
