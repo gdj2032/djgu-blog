@@ -20,6 +20,8 @@ import {
   Content,
   ToolsData2Interface,
   IndexPage,
+  BookRead,
+  Book,
 } from '@/pages';
 import { RouteObject } from 'react-router/dist/lib/context';
 import ContainerPage from '../container';
@@ -58,6 +60,14 @@ export const pageRoute = (): RouteObject[] => [
   {
     path: PathConfig.home,
     Component: Home,
+  },
+  {
+    path: PathConfig.book,
+    Component: Book,
+  },
+  {
+    path: PathConfig.bookRead,
+    Component: BookRead,
   },
   {
     id: 'container',

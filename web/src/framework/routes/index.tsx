@@ -31,7 +31,7 @@ const Roots = () => {
   }, [])
 
   useEffect(() => {
-    if (window.location.hash === '#/') {
+    if (window.location.hash === '#/' || window.location.hash === '') {
       window.location.hash = PathConfig.home
     }
   }, [window.location.hash])

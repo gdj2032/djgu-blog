@@ -10,6 +10,8 @@ const pageRoutes = {
   tools: '/tools',
   toolsCrawlers: '/tools/crawlers',
   toolsData2Interface: '/tools/data2Interface',
-  content: '/content'
+  content: '/content',
+  book: '/book',
+  bookRead: '/book/read',
 };
 export default pageRoutes;

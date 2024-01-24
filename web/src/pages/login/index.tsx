@@ -1,20 +1,14 @@
 import { doLogin } from '@/utils';
 import { Button, Checkbox, Form, Input } from 'antd';
 import React from 'react';
-// import * as sha1 from 'sha1';
-// import { VERSION } from '@/constants';
 import './index.scss';
 import Setting from '@/utils/setting';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { PageFrame } from '@/components';
-import { isElectron } from '@/constants';
-import { useAppSelector, sysAction } from '@/stores';
 import { useNavigate } from 'react-router';
 import { PathConfig } from '@/framework/routes/routes';
 
 function Login() {
   const navigate = useNavigate()
-  const sys = useAppSelector(sysAction.sysInfo);
   const onFinish = (values: any) => {
     doLogin({ id: '1', ...values, isLogin: true })
   };

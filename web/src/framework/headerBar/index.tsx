@@ -2,15 +2,15 @@
  * 导航栏
  */
 import { CSwitch, Icon, Loading } from '@/components';
-import { APPNAME, isElectron, USER_ROLE } from '@/constants';
+import { isElectron, USER_ROLE } from '@/constants';
 import { GITHUB_KNOWLEDGE_URL } from '@/pages/knowledge/constants';
 import { useAppSelector, routeAction, userAction, sysAction } from '@/stores';
 import { doLogout } from '@/utils';
 import { BookOutlined, UserOutlined, LogoutOutlined, LoginOutlined, SettingOutlined, GithubOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import Logo from '../logo';
 import { PathConfig } from '../routes/routes';
 import './index.scss';
@@ -20,11 +20,9 @@ interface IProps {
 
 function HeaderBar(_: IProps) {
   const navigate = useNavigate()
-  const location = useLocation()
   const { routes } = useAppSelector(routeAction.routeInfo)
   const sysInfo = useAppSelector(sysAction.sysInfo)
   const { username, role } = useAppSelector(userAction.userInfo);
-  const [selectedKey, changeSelectedKeys] = useState(location.pathname)
 
   const dispatch = useDispatch()
 
@@ -82,7 +80,7 @@ function HeaderBar(_: IProps) {
           isElectron && (
             <div className="u-item u-login">
               <Tooltip title='小说'>
-                <BookOutlined className="u-icon" />
+                <BookOutlined className="u-icon" onClick={() => navigate(PathConfig.book)} />
               </Tooltip>
             </div>
           )

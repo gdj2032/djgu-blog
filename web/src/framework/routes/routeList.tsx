@@ -2,7 +2,6 @@
 
 import React from 'react'
 import {
-  Navigate,
   Route,
   RouteObject,
 } from 'react-router-dom'

@@ -10,3 +10,5 @@ export { default as ToolsCrawlers } from './tools/crawlers';
 export { default as ToolsData2Interface } from './tools/data2Interface';
 export { default as Content } from './content';
 export { default as IndexPage } from './indexPage';
+export { default as Book } from './book';
+export { default as BookRead } from './book/read';
