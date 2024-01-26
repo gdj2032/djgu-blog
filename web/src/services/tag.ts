@@ -1,9 +1,18 @@
 import { request } from "@/request";
 import { TagService } from "@/typings/tag";
 
+// 所有标签 同级
 export function dList(query: TagService.IQueryInfo): T_RESPONSE_LIST<TagService.IListData> {
   return request.get({
     path: '/tag/list',
+    query,
+  })
+}
+
+// 分层标签 不同级
+export function dListTier(query: TagService.IQueryTierInfo): T_RESPONSE_BASE<TagService.IListData[]> {
+  return request.get({
+    path: '/tag/list/tier',
     query,
   })
 }

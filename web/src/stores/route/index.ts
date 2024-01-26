@@ -6,11 +6,13 @@ import { RootState } from '../store';
 export interface IRouteState {
   routes: RouteService.IListData[],
   currentRoute: RouteService.IListData,
+  currentSelectKeys: string[];
 }
 
 const initialState: IRouteState = {
   routes: [],
   currentRoute: undefined,
+  currentSelectKeys: [],
 };
 
 const routeSlice = createSlice({
@@ -29,12 +31,18 @@ const routeSlice = createSlice({
         currentRoute: action.payload
       };
     },
+    setCurrentSelectKeys: (state, action: PayloadAction<IRouteState['currentSelectKeys']>) => {
+      return {
+        ...state,
+        currentSelectKeys: action.payload
+      };
+    },
   }
 });
 
 const routeInfo = (state: RootState) => state.route;
 
-const { setRouteInfo, setCurrentRoute } = routeSlice.actions;
+const { setRouteInfo, setCurrentRoute, setCurrentSelectKeys } = routeSlice.actions;
 
 const routeReducer = routeSlice.reducer;
 
@@ -43,4 +51,5 @@ export {
   routeInfo,
   setRouteInfo,
   setCurrentRoute,
+  setCurrentSelectKeys,
 };

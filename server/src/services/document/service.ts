@@ -10,10 +10,10 @@ import tagService from "../tag/service";
 class DocumentService {
   async list(...args) {
     const [req, res] = args;
-    const { limit = 10, offset = 0, name = '', latest = false, routeId } = req.query as any;
+    const { limit = 10, offset = 0, name = '', latest = false, routeId, tagId } = req.query as any;
     const _limit = +limit;
     const _offset = +offset;
-    const sqlOpt = DOCUMENT_SQL.queryLimitOffsetFn({ limit: _limit, offset: _offset, name, routeId, orderType: latest ? 'createTime' : 'see' })
+    const sqlOpt = DOCUMENT_SQL.queryLimitOffsetFn({ limit: _limit, offset: _offset, name, routeId, orderType: latest ? 'createTime' : 'see', tagId })
     const { error, data } = await DataBase.sql(sqlOpt.sql, sqlOpt.data)
     if (error) {
       return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)

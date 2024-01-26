@@ -1,24 +1,30 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * tab路由公共页面 不存在显示404
  */
-import { DocumentItem } from '@/components';
+import { DocumentItem, TagsTree } from '@/components';
 import NotFound from '@/framework/404';
 import { PathConfig } from '@/framework/routes/routes';
-import { documentService } from '@/services';
+import { documentService, tagService } from '@/services';
 import { routeAction, useAppSelector } from '@/stores';
 import { DocumentService } from '@/typings/document';
+import { TagService } from '@/typings/tag';
 import { useVirtualList } from '@djgu/react-comps';
 import { Input, Spin } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import './index.scss';
 
 function Contents() {
-  const { currentRoute } = useAppSelector(routeAction.routeInfo)
+  const { currentRoute, currentSelectKeys } = useAppSelector(routeAction.routeInfo)
 
   const navigate = useNavigate()
   const [loadingMore, setLoadingMore] = useState(false)
   const [value, setValue] = useState('')
+
+  if (!currentRoute?.id) {
+    return <NotFound />;
+  }
 
   const { dataSource, debounceRefresh, loading, paginationProps } = useVirtualList<DocumentService.IListData>(async ({ limit, offset }) => {
     if (!currentRoute) {
@@ -29,17 +35,14 @@ function Contents() {
       offset,
       name: value,
       routeId: currentRoute.id,
+      tagId: currentSelectKeys?.[0],
     })
     setLoadingMore(false)
     if (res?.code === 200) {
       return { dataSource: res.data?.data || [], total: +res.data.total }
     }
     return { dataSource: [], total: 0 }
-  }, [value, currentRoute])
-
-  if (!currentRoute?.id) {
-    return <NotFound />;
-  }
+  }, [value, currentRoute, currentSelectKeys])
 
   const handleScroll = (e) => {
     if (e.target.clientHeight + e.target.scrollTop === e.target.scrollHeight) {
@@ -83,6 +86,8 @@ function Contents() {
         }
         {loading && <Spin rootClassName="p-loading" spinning={loading} />}
       </div>
+
+      <TagsTree />
     </div>
   )
 }

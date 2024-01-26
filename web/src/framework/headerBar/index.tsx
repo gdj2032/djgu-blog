@@ -8,9 +8,9 @@ import { useAppSelector, routeAction, userAction, sysAction } from '@/stores';
 import { doLogout } from '@/utils';
 import { BookOutlined, UserOutlined, LogoutOutlined, LoginOutlined, SettingOutlined, GithubOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import Logo from '../logo';
 import { PathConfig } from '../routes/routes';
 import './index.scss';
@@ -20,11 +20,23 @@ interface IProps {
 
 function HeaderBar(_: IProps) {
   const navigate = useNavigate()
-  const { routes } = useAppSelector(routeAction.routeInfo)
+  const location = useLocation()
+  const { routes, currentRoute } = useAppSelector(routeAction.routeInfo)
   const sysInfo = useAppSelector(sysAction.sysInfo)
   const { username, role } = useAppSelector(userAction.userInfo);
 
   const dispatch = useDispatch()
+
+
+  useEffect(() => {
+    const cur = routes?.find(e => e.path === location.pathname)
+    if (cur && cur.path !== currentRoute?.path) {
+      dispatch(routeAction.setCurrentRoute(cur))
+    }
+    if (!cur) {
+      dispatch(routeAction.setCurrentRoute(undefined))
+    }
+  }, [location.pathname, routes])
 
   const Comp: any = isElectron ? 'div' : 'a'
   let timer
@@ -45,8 +57,11 @@ function HeaderBar(_: IProps) {
             routes?.map(e => (
               <div
                 key={e.path}
-                className='i-btn'
-                onClick={() => { navigate(e.path) }}>
+                className={`i-btn i-btn-${e.path === currentRoute?.path ? 'active' : ''}`}
+                onClick={() => {
+                  navigate(e.path)
+                  dispatch(routeAction.setCurrentRoute(e))
+                }}>
                 {e.name}
               </div>
             ))

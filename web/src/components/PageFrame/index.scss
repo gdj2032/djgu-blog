@@ -99,6 +99,8 @@
     flex: 1;
     overflow: hidden;
     background: $white;
+    display: flex;
+    flex-direction: column;
   }
 }
 

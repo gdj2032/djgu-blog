@@ -35,10 +35,11 @@ export const TAG_SQL = {
     return { sql: info, data }
   },
   queryById: 'SELECT * FROM tag WHERE id=?',
+  queryByParentTagId: 'SELECT * FROM tag WHERE parentTagId=?',
   queryByIds: 'SELECT * FROM tag WHERE id in (?)',
   queryByName: 'SELECT * FROM tag WHERE name=?',
   queryByRouteId: 'SELECT * FROM tag WHERE routeId=?',
-  insert: 'INSERT INTO tag (id, name, description, routeId, createTime, updateTime, userId) VALUES(?,?,?,?,?,?,?)',
+  insert: 'INSERT INTO tag (id, name, description, routeId, parentTagId, createTime, updateTime, userId) VALUES(?,?,?,?,?,?,?,?)',
   update: 'UPDATE tag SET ? WHERE id = ?',
   deleteById: 'DELETE FROM tag where id=?',
 }

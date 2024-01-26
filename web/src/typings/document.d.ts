@@ -22,6 +22,6 @@ export declare namespace DocumentService {
   interface IQueryInfo extends ILimitOffset {
     name?: string;
     routeId?: string;
-    tagIds?: string[];
+    tagId?: string;
   }
 }

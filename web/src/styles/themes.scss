@@ -10,7 +10,9 @@
   --logo-color: #fff;
   --logo-bg: #000;
   --header-bar-bg: #fff;
-  --home-bg-img: url(../images/bg_light.jpeg)
+  --home-bg-img: url(../images/bg_light.jpeg);
+
+  --book-top-bg: rgba(2, 158, 145, 0.3);
 }
 
 .dark {
@@ -25,5 +27,7 @@
   --logo-color: #000;
   --logo-bg: #fff;
   --header-bar-bg: #313131;
-  --home-bg-img: url(../images/bg_dark.jpeg)
+  --home-bg-img: url(../images/bg_dark.jpeg);
+
+  --book-top-bg: rgba(0, 98, 90, 0.8);
 }

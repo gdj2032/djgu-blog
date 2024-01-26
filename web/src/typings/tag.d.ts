@@ -6,6 +6,12 @@ export declare namespace TagService {
     createTime?: string;
     user?: IIdName;
     path: string;
+    parentTag?: IListData
+
+    // tier存在
+    children?: IListData[]
+    title?: string;
+    key?: string;
   }
 
   interface ICreateInfo {
@@ -15,6 +21,11 @@ export declare namespace TagService {
   }
 
   interface IQueryInfo extends ILimitOffset {
+    name?: string;
+    routeId?: string;
+  }
+
+  interface IQueryTierInfo {
     name?: string;
     routeId?: string;
   }

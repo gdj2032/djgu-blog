@@ -8,6 +8,10 @@ export default class Tag {
   list(...args) {
     return documentService.list(...args)
   }
+  @Get('/list/tier')
+  listTier(...args) {
+    return documentService.listTier(...args)
+  }
   @Get('/detail/:id')
   detail(...args) {
     return documentService.detail(...args)

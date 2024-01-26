@@ -26,8 +26,13 @@
         &:hover {
           cursor: pointer;
           opacity: 0.8;
-          color: #1677ff;
+          color: $theme-btn-color;
         }
+      }
+
+      .i-btn-active {
+        color: $theme-btn-color;
+        font-weight: 600;
       }
     }
   }

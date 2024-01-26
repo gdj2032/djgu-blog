@@ -7,6 +7,7 @@ import { IModalProps } from '@djgu/react-comps/dist/utils/openModal'
 import { routeService, tagService } from '@/services';
 import { useForm } from 'antd/es/form/Form';
 import { TagService } from '@/typings/tag';
+import { RouteService } from '@/typings/route';
 
 interface IProps extends IModalProps {
   data?: TagService.IListData;
@@ -17,17 +18,19 @@ function UpdateTagModal(props: IProps) {
   const [loading, setLoading] = useState(false)
   const [form] = useForm()
 
-  const [parRoutes, setParRoutes] = useState<TagService.IListData[]>([])
+  const [parRoutes, setParRoutes] = useState<RouteService.IListData[]>([])
+  const [allTags, setAllTags] = useState<TagService.IListData[]>([])
 
   useEffect(() => {
     init()
   }, [])
 
   const init = async () => {
-    const res = await routeService.dList({ limit: 10000, offset: 0 })
-    setParRoutes(res.data.data)
+    const res1 = await routeService.dList({ limit: 10000, offset: 0 })
+    const res2 = await tagService.dList({ limit: 10000, offset: 0 })
+    setParRoutes(res1?.data?.data)
+    setAllTags(res2?.data?.data)
   }
-
 
   const handleOk = async () => {
     const params = await form?.validateFields();
@@ -72,17 +75,23 @@ function UpdateTagModal(props: IProps) {
         <Form.Item
           label="名称"
           name="name"
-          rules={[{ required: true, message: '请输入名称' }, { max: 20, message: '名称长度不能超过20字' }]}
+          rules={[{ required: true, message: '请输入名称' }, { max: 50, message: '名称长度不能超过20字' }]}
         >
           <Input placeholder="请输入名称" />
         </Form.Item>
         <Form.Item
           label="路由"
           name="routeId"
+          rules={[{ required: true, message: '请选择路由' }]}
         >
           <Select placeholder="请选择路由" popupMatchSelectWidth options={parRoutes} fieldNames={{ label: 'name', value: 'id' }} optionFilterProp='name' allowClear showSearch />
         </Form.Item>
-
+        <Form.Item
+          label="父标签"
+          name="parentTagId"
+        >
+          <Select placeholder="请选择父标签" popupMatchSelectWidth options={allTags} fieldNames={{ label: 'name', value: 'id' }} optionFilterProp='name' allowClear showSearch />
+        </Form.Item>
         <Form.Item
           label="描述"
           name="description"

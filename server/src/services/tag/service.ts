@@ -17,17 +17,39 @@ class TagService {
       return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
     }
     const allRoute = await routeService.all()
-    const data1 = data.map(e => ({
+    const all = await this.all()
+    const data1 = data.map((e) => ({
       ...e,
       route: allRoute.find(v => v.id === e.routeId),
+      parentTag: all?.find(v => v.id === e.parentTagId)
     }))
-    const all = await this.all()
     return RESPONSE_TYPE.commonSuccess2List({
       res, data: data1,
       limit: _limit,
       offset: _offset,
       total: all?.length || 0,
     })
+  }
+
+  // 标签分层
+  async listTier(...args) {
+    const [req, res] = args;
+    const { routeId } = req.query as any;
+    if (routeId) {
+      const allRoute = await routeService.all()
+      const { data } = await DataBase.sql(TAG_SQL.queryByRouteId, [routeId])
+      if (data?.length > 0) {
+        const d = await this.getTierTags(data);
+        return RESPONSE_TYPE.commonSuccess({
+          res, data: d,
+        })
+      }
+    } else {
+      return RESPONSE_TYPE.commonSuccess({
+        res, data: [],
+      })
+    }
+    return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
   }
 
   async all() {
@@ -37,7 +59,7 @@ class TagService {
 
   async queryById(id) {
     const { data } = await DataBase.sql(TAG_SQL.queryById, [id])
-    return data
+    return data?.[0]
   }
 
   async queryByIds(ids) {
@@ -45,6 +67,39 @@ class TagService {
     return data
   }
 
+  getTierTags = async (tags) => {
+    const data: any[] = []
+    const cfg = {}
+    for (const item of tags) {
+      if (item.parentTagId) {
+        if (cfg[item.parentTagId]) {
+          cfg[item.parentTagId].push(item)
+        } else {
+          cfg[item.parentTagId] = [item]
+        }
+      } else {
+        data.push(item)
+      }
+    }
+
+    const df = async (items) => {
+      if (items) {
+        for (const item of items) {
+          const id = item.id;
+          const children = cfg[id];
+          item.route = await routeService.queryById(item.routeId)
+          item.parentTag = await this.queryById(item.parentTagId)
+          item.children = await df(children)
+          item.key = item.id;
+          item.title = item.name
+        }
+      }
+      return items;
+    }
+
+    const d = await df(data)
+    return d;
+  }
 
   async detail(...args) {
     const [req, res] = args;
@@ -70,7 +125,7 @@ class TagService {
 
   async create(...args) {
     const [req, res] = args;
-    const { name, description, routeId } = req.body as any;
+    const { name, description, routeId, parentTagId } = req.body as any;
     const userInfo = getUserIdNameBySession(req.headers?.session as string);
     const errorAble = await RESPONSE_TYPE.commonErrors({
       res,
@@ -92,7 +147,7 @@ class TagService {
     if (errorAble) return errorAble;
     const dId = commonUuid()
     const time = moment().valueOf()
-    const { error } = await DataBase.sql(TAG_SQL.insert, [dId, name, description, routeId, time, time, userInfo?.id])
+    const { error } = await DataBase.sql(TAG_SQL.insert, [dId, name, description, routeId, parentTagId, time, time, userInfo?.id])
     if (error) {
       return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.tagInsertError })
     }
@@ -105,7 +160,7 @@ class TagService {
   async edit(...args) {
     const [req, res] = args;
     const { id } = req.params;
-    const { name, description, routeId } = req.body as any;
+    const { name, description, routeId, parentTagId } = req.body as any;
     const errorAble = await RESPONSE_TYPE.commonErrors({
       res,
       errs: [
@@ -129,7 +184,7 @@ class TagService {
     })
     if (errorAble) return errorAble;
     const time = moment().valueOf()
-    await DataBase.sql(TAG_SQL.update, [{ name, description, routeId, updateTime: time }, id])
+    await DataBase.sql(TAG_SQL.update, [{ name, description, routeId, parentTagId, updateTime: time }, id])
     const { data } = await DataBase.sql(TAG_SQL.queryById, [id]);
     return RESPONSE_TYPE.commonSuccess({
       res, data,
@@ -153,6 +208,16 @@ class TagService {
         {
           func: async () => {
             const par1 = await DataBase.sql(DOCUMENT_SQL.queryByTagId, [id])
+            if (par1.data?.length) {
+              return true
+            }
+            return false
+          },
+          ...RESPONSE_CODE_MSG.tagUsedNotDelete
+        },
+        {
+          func: async () => {
+            const par1 = await DataBase.sql(TAG_SQL.queryByParentTagId, [id])
             if (par1.data?.length) {
               return true
             }

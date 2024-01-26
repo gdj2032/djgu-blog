@@ -5,12 +5,13 @@ interface IQueryParams {
   orderBy?: 'ASC' | 'DESC'
   limit?: number;
   offset?: number;
+  tagId?: string;
 }
 
 export const DOCUMENT_SQL = {
   queryAll: 'SELECT * FROM document',
   queryLimitOffsetFn: (query?: IQueryParams) => {
-    const { name, routeId, orderBy = 'DESC', orderType = 'createTime', limit, offset } = query || {};
+    const { name, routeId, orderBy = 'DESC', orderType = 'createTime', limit, offset, tagId } = query || {};
     let info = 'SELECT * FROM document'
     let data: any[] = []
     const where = ' WHERE'
@@ -28,9 +29,19 @@ export const DOCUMENT_SQL = {
       info += ` routeId=?`
       data.push(routeId)
     }
+    if (tagId) {
+      if (routeId || name) {
+        info += ' AND'
+      } else {
+        info += where;
+      }
+      info += ` tagIds LIKE ?`
+      data.push(`%${tagId}%`)
+    }
     const lim = ` ORDER BY ${orderType} ${orderBy} LIMIT ?, ?`
     info += lim;
     data = data.concat([offset, limit])
+    console.info('--- info --->', info, data);
     return { sql: info, data }
   },
   queryLimitOffset: 'SELECT * FROM document LIMIT ?, ?',
