@@ -87,6 +87,12 @@ class DownAnimation {
     });
   }
 
+  stop() {
+    /* 停止动画 */
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    window.cancelAnimationFrame(this.loop)
+  }
+
   start() {
     this.createCanvas()
     this.createData()

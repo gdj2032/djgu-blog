@@ -44,7 +44,7 @@ const CustomHeader = () => {
             checked={sysInfo.mode === 'light'}
             checkCircle={<Icon name="light" fill='rgba(242, 230, 96, 1)' />}
             uncheckedCircle={<Icon name="dark" fill='rgba(146, 196, 255, 1)' />}
-            checkedBg='rgba(188, 236, 244, 1)'
+            checkedBg='rgba(188, 236, 200, 1)'
             uncheckedBg='rgba(68, 87, 129, 1)'
             checkedCircleBg='rgba(180, 200, 222, 1)'
             uncheckedCircleBg='rgba(26, 39, 68, 1)'

@@ -1,7 +1,7 @@
 /**
  * 导航栏
  */
-import { CSwitch, Icon, Loading } from '@/components';
+import { CSwitch, Icon, Loading, SnowSwitch } from '@/components';
 import { isElectron, USER_ROLE } from '@/constants';
 import { GITHUB_KNOWLEDGE_URL } from '@/pages/knowledge/constants';
 import { useAppSelector, routeAction, userAction, sysAction } from '@/stores';
@@ -71,13 +71,16 @@ function HeaderBar(_: IProps) {
 
       <div className='m-set-bar'>
         <div className='u-item'>
+          <SnowSwitch />
+        </div>
+        <div className='u-item'>
           <CSwitch
             size={{ width: 32, height: 16 }}
             className='mode-switch'
             checked={sysInfo.mode === 'light'}
             checkCircle={<Icon name="light" fill='rgba(242, 230, 96, 1)' />}
             uncheckedCircle={<Icon name="dark" fill='rgba(146, 196, 255, 1)' />}
-            checkedBg='rgba(188, 236, 244, 1)'
+            checkedBg='rgba(193, 252, 255, 1)'
             uncheckedBg='rgba(68, 87, 129, 1)'
             checkedCircleBg='rgba(180, 200, 222, 1)'
             uncheckedCircleBg='rgba(26, 39, 68, 1)'

@@ -41,9 +41,11 @@ export default class App {
       const ret = this.onAppQuit();
       if (ret instanceof Promise) {
         ret.finally(() => {
+          globalShortcut.unregisterAll();
           app.quit();
         })
       } else {
+        globalShortcut.unregisterAll();
         app.quit();
       }
     })
@@ -90,6 +92,16 @@ export default class App {
         curWindow.webContents.openDevTools();
       }
     });
+
+    // globalShortcut.register('Left', () => {
+    //   const curWindow = BrowserWindow.getFocusedWindow();
+    //   curWindow?.webContents.send("click-left");
+    // })
+
+    // globalShortcut.register('Right', () => {
+    //   const curWindow = BrowserWindow.getFocusedWindow();
+    //   curWindow?.webContents.send("click-right");
+    // })
 
     if (!app.isPackaged) {
       try {
@@ -244,4 +256,5 @@ export default class App {
   protected onAppStartup() {
 
   }
+
 }

@@ -52,7 +52,6 @@ export default class BaseWindow {
     this.hostWnd?.close();
   }
   protected init(url: string, options: electron.LoadURLOptions) {
-    console.log('🚀 ~ file: baseWindow.ts ~ line 52 ~ BaseWindow ~ init ~ url', url)
     this.hostWnd.on('closed', async (e: electron.Event) => {
       await this.onClosed(e);
       this.hostWnd = null;

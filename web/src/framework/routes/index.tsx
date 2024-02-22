@@ -3,14 +3,16 @@ import { isElectron } from '@/constants';
 import { Content } from '@/pages';
 import { routeAction, sysAction, useAppSelector } from '@/stores';
 import React, { useEffect, useMemo } from 'react';
+import { useState } from 'react';
 import { HashRouter, Routes } from 'react-router-dom';
 import routeList from './routeList';
 import { pageRoute, PathConfig } from './routes';
 
 const Roots = () => {
 
-  const sys = useAppSelector(sysAction.sysInfo);
+  const { mode, snow } = useAppSelector(sysAction.sysInfo);
   const { routes: storeRoutes } = useAppSelector(routeAction.routeInfo)
+  const [downAnimation, setDownAnimation] = useState<DownAnimation>()
 
   const routes = useMemo(() => {
     const r = [...pageRoute()]
@@ -27,8 +29,21 @@ const Roots = () => {
   useEffect(() => {
     // const browserLanguage = (navigator.language || navigator.language).toLowerCase().split(/[-_]/)[0];
     const move = new DownAnimation()
-    move.start()
+    if (snow) {
+      move.start()
+    }
+    setDownAnimation(move)
   }, [])
+
+  useEffect(() => {
+    if (downAnimation) {
+      if (snow) {
+        downAnimation.start()
+      } else {
+        downAnimation.stop()
+      }
+    }
+  }, [snow])
 
   useEffect(() => {
     if (window.location.hash === '#/' || window.location.hash === '') {
@@ -37,7 +52,7 @@ const Roots = () => {
   }, [window.location.hash])
 
   return (
-    <PageFrame className={sys.mode} hideTitleBar={!isElectron}>
+    <PageFrame className={mode} hideTitleBar={!isElectron}>
       <HashRouter>
         <Routes>
           {routeList(routes)}
