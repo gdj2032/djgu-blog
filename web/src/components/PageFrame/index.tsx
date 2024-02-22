@@ -9,6 +9,7 @@ import icTopMax from '@/images/topbar/icon_top_max.png';
 import icTopMin from '@/images/topbar/ic_top_min.png';
 import icTopClose from '@/images/topbar/icon_top_close.png';
 import icLauncher from '@/images/logo.png';
+import { PathConfig } from '@/framework/routes/routes';
 
 const CustomEventType = 'frameWndEvent';
 
@@ -221,7 +222,7 @@ export default class PageFrame extends React.Component<IFramePageProps, IFramePa
         {!this.props.hideTitleBar && (
           <div className={`page-frame-header ${this.props.transparent ? 'transparent' : ''}`}>
             <div className="page-frame-title-wrap">
-              {icon && <div className="page-frame-icon">{icon}</div>}
+              {icon && <div className="page-frame-icon" onClick={() => { window.location.hash = PathConfig.home }}>{icon}</div>}
               {this.props.title && <div className={`page-frame-title ${this.props.titleAtCenter ? 'center-title' : ''}`}>{this.props.title}</div>}
             </div>
             <div className="page-frame-flex-area" />

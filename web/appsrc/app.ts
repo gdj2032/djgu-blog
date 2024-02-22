@@ -6,6 +6,7 @@ import { getAppConfig, getResourcePath } from './utils';
 import Logger from './logger';
 import HotkeyMgr from './hotkeyMgr';
 import * as os from 'os';
+import BookUtil from './bookUtil';
 
 const childProcess = require('child_process');
 
@@ -13,10 +14,12 @@ export default class App {
   static sysInfo: any = null;
   static instance: App = null;
   private _isQuit = false;
+  private bookUtil: BookUtil;
   public get isQuit() {
     return this._isQuit;
   }
   constructor() {
+    this.bookUtil = new BookUtil();
     App.instance = this;
 
     process.on('uncaughtException', (err: any) => {
@@ -184,6 +187,14 @@ export default class App {
 
     MessageQueue.registerMessage('open-url', 0, (data: { url: string }) => {
       shell.openExternal(data.url);
+    })
+
+    MessageQueue.registerMessage('save-book', 0, (data: { filename: string, content: string }) => {
+      return this.bookUtil.setFile(data)
+    })
+
+    MessageQueue.registerMessage('get-book', 0, (data: { filename: string }) => {
+      return this.bookUtil.getFile(data.filename)
     })
   }
   public getSysInfo() {

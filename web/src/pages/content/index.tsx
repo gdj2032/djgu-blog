@@ -5,13 +5,12 @@
 import { DocumentItem, TagsTree } from '@/components';
 import NotFound from '@/framework/404';
 import { PathConfig } from '@/framework/routes/routes';
-import { documentService, tagService } from '@/services';
+import { documentService } from '@/services';
 import { routeAction, useAppSelector } from '@/stores';
 import { DocumentService } from '@/typings/document';
-import { TagService } from '@/typings/tag';
 import { useVirtualList } from '@djgu/react-comps';
 import { Input, Spin } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import './index.scss';
 

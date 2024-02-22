@@ -6,3 +6,4 @@ export * from './document';
 export * from './format';
 export * from './version';
 export * from './route';
+export * from './book'

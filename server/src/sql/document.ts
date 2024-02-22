@@ -41,7 +41,7 @@ export const DOCUMENT_SQL = {
     const lim = ` ORDER BY ${orderType} ${orderBy} LIMIT ?, ?`
     info += lim;
     data = data.concat([offset, limit])
-    console.info('--- info --->', info, data);
+    // console.info('--- info --->', info, data);
     return { sql: info, data }
   },
   queryLimitOffset: 'SELECT * FROM document LIMIT ?, ?',

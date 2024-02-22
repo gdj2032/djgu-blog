@@ -16,11 +16,12 @@ import {
 import storage from 'redux-persist/lib/storage';
 import { sysReducer } from './sys';
 import { routeReducer } from './route';
+import { bookReducer } from './book';
 
 const persistConfig = {
   key: 'root',
   storage: storage, //指定存储位置，一定要写
-  whitelist: ['user', 'sys', 'route']
+  whitelist: ['user', 'sys', 'route', 'book']
 }
 
 const allReducers = combineReducers({
@@ -28,6 +29,7 @@ const allReducers = combineReducers({
   user: userReducer,
   sys: sysReducer,
   route: routeReducer,
+  book: bookReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, allReducers)

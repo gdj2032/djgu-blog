@@ -411,6 +411,14 @@ class ElectronClient {
   openUrl(url: string) {
     this.sendMessageToApp('open-url', { url });
   }
+
+  setBook(data: { filename: string, content: string }) {
+    return this.sendMessageToApp('save-book', data);
+  }
+
+  getBook(data: { filename: string }) {
+    return this.sendMessageToApp('get-book', data);
+  }
 }
 
 // tslint:disable-next-line: interface-name
