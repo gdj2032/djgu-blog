@@ -6,13 +6,19 @@ import { BookService } from '@/typings/book';
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Upload } from 'antd';
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import BookList from './bookList';
 import './index.scss';
 
 function Book() {
   const dispatch = useDispatch()
+  const [isEdit, setIsEdit] = useState(false)
+  const [selects, setSelects] = useState([])
+
+  useEffect(() => {
+    setSelects([])
+  }, [isEdit])
 
   const handleSelect = (opt) => {
     const { file } = opt
@@ -45,11 +51,24 @@ function Book() {
     };
   }
 
+  const handleEdit = () => {
+    setIsEdit(!isEdit);
+  }
+
+  const handleDelete = () => {
+    if (selects.length) {
+      dispatch(bookAction.deleteBooks(selects))
+      setIsEdit(false);
+    }
+  }
+
   return (
     <div className='g-book'>
       <div className='m-b-top'>
         <div className='p-bt-title'>书架</div>
         <div className='p-bt-upload'>
+          {isEdit && <Button className='global-mgr-20' danger onClick={handleDelete}>删除</Button>}
+          <Button className='global-mgr-20' onClick={handleEdit}>{isEdit ? '取消' : '管理'}</Button>
           <Upload
             name='file'
             accept='text/plain'
@@ -61,7 +80,7 @@ function Book() {
           </Upload>
         </div>
       </div>
-      <BookList />
+      <BookList isEdit={isEdit} onChangeSelect={setSelects} selects={selects} />
     </div>
   )
 }

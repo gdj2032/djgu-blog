@@ -33,6 +33,7 @@ class ReadBookUtil {
 
       if (chapters0.length > 10) {
         for (const cp of chapters0) {
+          if (!ctx) continue;
           const ctx2 = ctx.split(cp)
           const content = ctx2[0]
           ctx = ctx2[1]

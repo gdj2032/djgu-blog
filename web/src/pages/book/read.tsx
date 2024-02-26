@@ -50,7 +50,6 @@ function BookRead() {
   const init = () => {
     const curChapter = chapters[currentBook?.id]
     if (currentBook && !curChapter) {
-      // if (currentBook) {
       const rbu = new ReadBookUtil({ id: bookReadId, book: currentBook, setting, isInit: true })
       setReadBookUtil(rbu)
     }

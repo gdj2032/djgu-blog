@@ -82,12 +82,32 @@ const bookSlice = createSlice({
         loading: action.payload
       }
     },
+    deleteBooks: (state, action: PayloadAction<string[]>) => {
+      const ids = action.payload
+      const newBooks = [...state.books].filter(e => !ids.includes(e.id))
+      const chapters = { ...state.chapters };
+      const chapter = { ...state.chapter };
+      if (ids?.length) {
+        for (const id of ids) {
+          chapters[id] = undefined
+          chapter[id] = undefined;
+        }
+      }
+      const cfg = {
+        ...state,
+        books: newBooks,
+        chapters,
+        chapter,
+      }
+      console.info('--- cfg --->', cfg);
+      return cfg
+    }
   }
 });
 
 const bookInfo = (state: RootState) => state.book;
 
-const { addBook, setCurrentBook, setChapters, setChapter, setSetting, setLoading } = bookSlice.actions;
+const { addBook, setCurrentBook, setChapters, setChapter, setSetting, setLoading, deleteBooks } = bookSlice.actions;
 
 const bookReducer = bookSlice.reducer;
 
@@ -100,4 +120,5 @@ export {
   setChapter,
   setSetting,
   setLoading,
+  deleteBooks,
 };
