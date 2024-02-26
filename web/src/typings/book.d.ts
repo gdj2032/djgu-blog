@@ -2,6 +2,7 @@ export declare namespace BookService {
   interface IBookItem {
     id: string;
     name: string;
+    fullName: string;
     type: 'txt' | 'epub',
     author: string;
     createTime: number;

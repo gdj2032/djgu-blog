@@ -122,6 +122,7 @@ declare class ElectronClient {
   openUrl(url: string): void;
   setBook(data: { filename: string, content: string, filepath: string }): { filepath: string, error: string }
   getBook(data: { filename: string }): { content: string, error: string }
+  deleteBook(data: { filename: string }): void
 }
 declare global {
   interface Window {

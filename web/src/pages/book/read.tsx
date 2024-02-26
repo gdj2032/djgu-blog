@@ -3,13 +3,14 @@
  */
 import { PathConfig } from '@/framework/routes/routes';
 import { useAppSelector, bookAction } from '@/stores';
-import { BookOutlined, HomeOutlined, ReloadOutlined } from '@ant-design/icons';
+import { BookOutlined, HomeOutlined, ReloadOutlined, SettingOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import ReadBookUtil from './bookUtil';
 import './index.scss';
+import SetModal from './setModal';
 
 const bookReadId = 'bookReadId'
 
@@ -18,6 +19,7 @@ function BookRead() {
   const navigate = useNavigate()
   const { currentBook, chapters, chapter, setting, loading } = useAppSelector(bookAction.bookInfo)
   const [readBookUtil, setReadBookUtil] = useState<ReadBookUtil>()
+  const [openSetModal, setOpenSetModal] = useState(true)
 
   const config = useMemo(() => {
     const curChapter = chapters[currentBook?.id]?.find(e => e.id === chapter[currentBook?.id]?.chapterId)
@@ -91,12 +93,17 @@ function BookRead() {
     }
   }
 
+  const handleSet = () => {
+    setOpenSetModal(true)
+  }
+
   return (
     <div className='g-book-read'    >
       <div className='m-book-title'>
         <HomeOutlined className='m-home' onClick={() => navigate(PathConfig.home)} />
         <BookOutlined className="m-home" onClick={() => navigate(PathConfig.book)} />
         <ReloadOutlined className="m-home" onClick={handleReset} />
+        <SettingOutlined className="m-home" onClick={handleSet} />
         {`${currentBook?.name} > ${config.curChapter?.title} (${config.pageId + 1}/${config.allPage})`}
       </div>
       <div className='m-chapter-page' id={bookReadId} style={{ ...setting }}>{config.curPage?.map((e, i) => <p key={i}>{e}</p>)}</div>
@@ -107,6 +114,14 @@ function BookRead() {
           <Spin spinning={loading} />
         </div>
       }
+
+      <SetModal
+        open={openSetModal}
+        close={() => {
+          setOpenSetModal(false)
+        }}
+        onReset={handleReset}
+      />
     </div>
   )
 }

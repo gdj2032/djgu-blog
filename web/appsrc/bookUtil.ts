@@ -39,6 +39,13 @@ class BookUtil {
     }
     return { content: '', error: '获取文件失败' };
   }
+
+  deleteFile = (filename: string) => {
+    if (filename) {
+      const filepath = `${this.folderPath}/${filename}`
+      fs.deleteFileSync(filepath)
+    }
+  }
 }
 
 export default BookUtil;

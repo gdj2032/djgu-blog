@@ -133,3 +133,20 @@
     align-items: center;
   }
 }
+
+.m-set-modal {
+  .p-set-item {
+    display: flex;
+    line-height: 32px;
+
+    .i-label {
+      width: 100px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .i-value {
+      font-size: 12px;
+    }
+  }
+}

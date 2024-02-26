@@ -21,7 +21,7 @@ class ReadBookUtil {
 
   init(isInit?: boolean) {
     store.dispatch(bookAction.setLoading(true))
-    const bookInfo = window.app.getBook({ filename: `${this.book.name}.${this.book.type}` })
+    const bookInfo = window.app.getBook({ filename: this.book.fullName })
     if (bookInfo?.content) {
       const { fontSize, lineHeight } = this.setting
       const ctx0 = bookInfo.content;

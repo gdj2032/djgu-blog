@@ -35,6 +35,7 @@ function Book() {
         const fileItem: BookService.IBookItem = {
           id,
           name: filename,
+          fullName: file.name,
           type: 'txt',
           author,
           createTime: +id,
@@ -67,7 +68,7 @@ function Book() {
       <div className='m-b-top'>
         <div className='p-bt-title'>书架</div>
         <div className='p-bt-upload'>
-          {isEdit && <Button className='global-mgr-20' danger onClick={handleDelete}>删除</Button>}
+          {isEdit && <Button className='global-mgr-20' danger onClick={handleDelete} disabled={!!selects.length}>删除</Button>}
           <Button className='global-mgr-20' onClick={handleEdit}>{isEdit ? '取消' : '管理'}</Button>
           <Upload
             name='file'
@@ -76,7 +77,7 @@ function Book() {
             customRequest={handleSelect}
             maxCount={1}
           >
-            <Button icon={<UploadOutlined />}>选择文件</Button>
+            <Button icon={<UploadOutlined />}>上传</Button>
           </Upload>
         </div>
       </div>

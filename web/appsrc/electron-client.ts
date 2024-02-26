@@ -419,6 +419,10 @@ class ElectronClient {
   getBook(data: { filename: string }) {
     return this.sendMessageToApp('get-book', data);
   }
+
+  deleteBook(data: { filename: string }) {
+    this.sendMessageToApp('delete-book', data);
+  }
 }
 
 // tslint:disable-next-line: interface-name

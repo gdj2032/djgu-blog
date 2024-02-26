@@ -208,6 +208,10 @@ export default class App {
     MessageQueue.registerMessage('get-book', 0, (data: { filename: string }) => {
       return this.bookUtil.getFile(data.filename)
     })
+
+    MessageQueue.registerMessage('delete-book', 0, (data: { filename: string }) => {
+      this.bookUtil.deleteFile(data.filename)
+    })
   }
   public getSysInfo() {
     if (!App.sysInfo) {

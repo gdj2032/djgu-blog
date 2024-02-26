@@ -29,3 +29,18 @@ export const BOOK_BG_COLOR = {
     return BOOK_BG_COLOR.colors[0];
   }
 }
+
+// 字体大小
+export const BOOK_FONT_SIZE = {
+  min: 10,
+  max: 40,
+  step: 2,
+  sizes() {
+    const arr: number[] = [];
+    const len = (BOOK_FONT_SIZE.max - BOOK_FONT_SIZE.min) / BOOK_FONT_SIZE.step;
+    for (let i = 0; i <= len; i++) {
+      arr.push(BOOK_FONT_SIZE.min + BOOK_FONT_SIZE.step * i)
+    }
+    return arr;
+  }
+}

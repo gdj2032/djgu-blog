@@ -91,16 +91,16 @@ const bookSlice = createSlice({
         for (const id of ids) {
           chapters[id] = undefined
           chapter[id] = undefined;
+          const bookItem = state.books.find(e => e.id === id);
+          window.app?.deleteBook?.({ filename: bookItem.fullName })
         }
       }
-      const cfg = {
+      return {
         ...state,
         books: newBooks,
         chapters,
         chapter,
       }
-      console.info('--- cfg --->', cfg);
-      return cfg
     }
   }
 });
