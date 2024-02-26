@@ -91,9 +91,9 @@ class ReadBookUtil {
             pages.push(t3)
             t3 = ''
             lh++;
-            if (pages.length === oneHLineNum) {
+            if (lh >= oneHLineNum) {
               pages0.push(pages)
-              lh++;
+              lh = 0
               pages = []
             }
           }
@@ -103,7 +103,7 @@ class ReadBookUtil {
           lh++;
         }
       }
-      if (lh === oneHLineNum) {
+      if (lh >= oneHLineNum) {
         pages0.push(pages)
         pages = []
         lh = 0

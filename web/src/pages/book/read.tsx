@@ -3,12 +3,13 @@
  */
 import { PathConfig } from '@/framework/routes/routes';
 import { useAppSelector, bookAction } from '@/stores';
-import { BookOutlined, HomeOutlined, ReloadOutlined, SettingOutlined } from '@ant-design/icons';
+import { BookOutlined, HomeOutlined, MenuOutlined, ReloadOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Spin } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import ReadBookUtil from './bookUtil';
+import ChapterModal from './chapterModal';
 import './index.scss';
 import SetModal from './setModal';
 
@@ -19,7 +20,8 @@ function BookRead() {
   const navigate = useNavigate()
   const { currentBook, chapters, chapter, setting, loading } = useAppSelector(bookAction.bookInfo)
   const [readBookUtil, setReadBookUtil] = useState<ReadBookUtil>()
-  const [openSetModal, setOpenSetModal] = useState(true)
+  const [openSetModal, setOpenSetModal] = useState(false)
+  const [openChapterModal, setOpenChapterModal] = useState(false)
 
   const config = useMemo(() => {
     const curChapter = chapters[currentBook?.id]?.find(e => e.id === chapter[currentBook?.id]?.chapterId)
@@ -97,6 +99,10 @@ function BookRead() {
     setOpenSetModal(true)
   }
 
+  const handleChapter = () => {
+    setOpenChapterModal(true)
+  }
+
   return (
     <div className='g-book-read' style={{ background: setting.background, color: setting.color }} >
       <div className='m-book-title'>
@@ -104,6 +110,7 @@ function BookRead() {
         <BookOutlined className="m-home" onClick={() => navigate(PathConfig.book)} />
         <ReloadOutlined className="m-home" onClick={handleReset} />
         <SettingOutlined className="m-home" onClick={handleSet} />
+        <MenuOutlined className="m-home" onClick={handleChapter} />
         {`${currentBook?.name} > ${config.curChapter?.title} (${config.pageId + 1}/${config.allPage})`}
       </div>
       <div className='m-chapter-page' id={bookReadId} style={{ ...setting, lineHeight: `${setting.lineHeight}px` }}>{config.curPage?.map((e, i) => <p key={i}>{e}</p>)}</div>
@@ -122,6 +129,14 @@ function BookRead() {
           setOpenSetModal(false)
         }}
         onReset={handleReset}
+      />
+
+      <ChapterModal
+        open={openChapterModal}
+        close={() => {
+          setOpenChapterModal(false)
+        }}
+        chapterId={config.chapterId}
       />
     </div>
   )
