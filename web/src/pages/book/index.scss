@@ -99,7 +99,6 @@
     height: 24px;
 
     .m-home {
-      color: var(--theme-font);
       margin-right: 4px;
       font-size: 12px;
 
@@ -116,9 +115,7 @@
     justify-content: space-between;
     padding: 24px;
 
-    &>p {
-      line-height: 24px;
-    }
+    &>p {}
   }
 
   .m-book-loading {
@@ -131,6 +128,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
   }
 }
 
@@ -138,6 +136,7 @@
   .p-set-item {
     display: flex;
     line-height: 32px;
+    margin-bottom: 12px;
 
     .i-label {
       width: 100px;

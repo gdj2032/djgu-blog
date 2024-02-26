@@ -35,12 +35,28 @@ export const BOOK_FONT_SIZE = {
   min: 10,
   max: 40,
   step: 2,
-  sizes() {
-    const arr: number[] = [];
-    const len = (BOOK_FONT_SIZE.max - BOOK_FONT_SIZE.min) / BOOK_FONT_SIZE.step;
-    for (let i = 0; i <= len; i++) {
-      arr.push(BOOK_FONT_SIZE.min + BOOK_FONT_SIZE.step * i)
-    }
-    return arr;
-  }
+  // sizes() {
+  //   const arr: number[] = [];
+  //   const len = (BOOK_FONT_SIZE.max - BOOK_FONT_SIZE.min) / BOOK_FONT_SIZE.step;
+  //   for (let i = 0; i <= len; i++) {
+  //     arr.push(BOOK_FONT_SIZE.min + BOOK_FONT_SIZE.step * i)
+  //   }
+  //   return arr;
+  // }
+}
+
+// 行高 字体大小+行高=实际行高
+export const BOOK_LINE_HEIGHT = {
+  min: 2,
+  max: 40,
+  step: 2,
+  // sizes() {
+  //   const arr: number[] = [];
+  //   const len = (BOOK_LINE_HEIGHT.max - BOOK_LINE_HEIGHT.min) / BOOK_LINE_HEIGHT.step;
+  //   for (let i = 0; i <= len; i++) {
+  //     arr.push(BOOK_LINE_HEIGHT.min + BOOK_LINE_HEIGHT.step * i)
+  //   }
+  //   console.info('--- info --->', arr);
+  //   return arr;
+  // }
 }

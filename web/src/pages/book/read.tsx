@@ -4,7 +4,7 @@
 import { PathConfig } from '@/framework/routes/routes';
 import { useAppSelector, bookAction } from '@/stores';
 import { BookOutlined, HomeOutlined, ReloadOutlined, SettingOutlined } from '@ant-design/icons';
-import { Spin } from 'antd';
+import { Button, Spin } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -98,7 +98,7 @@ function BookRead() {
   }
 
   return (
-    <div className='g-book-read'    >
+    <div className='g-book-read' style={{ background: setting.background, color: setting.color }} >
       <div className='m-book-title'>
         <HomeOutlined className='m-home' onClick={() => navigate(PathConfig.home)} />
         <BookOutlined className="m-home" onClick={() => navigate(PathConfig.book)} />
@@ -106,12 +106,13 @@ function BookRead() {
         <SettingOutlined className="m-home" onClick={handleSet} />
         {`${currentBook?.name} > ${config.curChapter?.title} (${config.pageId + 1}/${config.allPage})`}
       </div>
-      <div className='m-chapter-page' id={bookReadId} style={{ ...setting }}>{config.curPage?.map((e, i) => <p key={i}>{e}</p>)}</div>
+      <div className='m-chapter-page' id={bookReadId} style={{ ...setting, lineHeight: `${setting.lineHeight}px` }}>{config.curPage?.map((e, i) => <p key={i}>{e}</p>)}</div>
 
       {
         loading &&
         <div className='m-book-loading'>
-          <Spin spinning={loading} />
+          <Spin spinning={loading}></Spin>
+          <Button type='link' onClick={() => dispatch(bookAction.setLoading(false))}>取消</Button>
         </div>
       }
 

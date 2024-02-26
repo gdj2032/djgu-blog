@@ -20,9 +20,9 @@ class ReadBookUtil {
   }
 
   init(isInit?: boolean) {
-    store.dispatch(bookAction.setLoading(true))
     const bookInfo = window.app.getBook({ filename: this.book.fullName })
     if (bookInfo?.content) {
+      store.dispatch(bookAction.setLoading(true))
       const { fontSize, lineHeight } = this.setting
       const ctx0 = bookInfo.content;
       const chapters0 = this.getChapters(ctx0)
@@ -51,10 +51,10 @@ class ReadBookUtil {
         if (isInit) {
           store.dispatch(bookAction.setChapter({ id: this.book.id, chapter: { chapterId: 0, pageId: 0 } }))
         }
-        setTimeout(() => {
-          store.dispatch(bookAction.setLoading(false))
-        }, 300);
       }
+      setTimeout(() => {
+        store.dispatch(bookAction.setLoading(false))
+      }, 300);
     }
   }
 
@@ -74,6 +74,7 @@ class ReadBookUtil {
     const oneWLineNum = +Math.floor(w / fontSize).toFixed(0);
     const oneHLineNum = +Math.floor(h / lineHeight).toFixed(0);
     let pages: string[] = []
+    let lh = 0
     for (const t1 of texts) {
       const t2 = t1.replace('\r', '').trim()
       if (!t2) {
@@ -81,6 +82,7 @@ class ReadBookUtil {
       }
       if (t2.length <= oneWLineNum) {
         pages.push(t2)
+        lh++;
       } else {
         let t3 = ''
         for (const t4 of t2) {
@@ -88,19 +90,23 @@ class ReadBookUtil {
           if (t3.length === oneWLineNum) {
             pages.push(t3)
             t3 = ''
+            lh++;
             if (pages.length === oneHLineNum) {
               pages0.push(pages)
+              lh++;
               pages = []
             }
           }
         }
         if (t3) {
           pages.push(t3)
+          lh++;
         }
       }
-      if (pages.length === oneHLineNum) {
+      if (lh === oneHLineNum) {
         pages0.push(pages)
         pages = []
+        lh = 0
       }
     }
     if (pages.length > 0) {

@@ -1,10 +1,10 @@
 /**
  * 设置弹窗
  */
-import { BOOK_FONT_SIZE } from '@/constants';
+import { BOOK_FONT_SIZE, BOOK_LINE_HEIGHT } from '@/constants';
 import { bookAction, useAppSelector } from '@/stores';
-import { Button, ColorPicker, Drawer, InputNumber, Row } from 'antd';
-import React, { useState } from 'react';
+import { Button, ColorPicker, Drawer, InputNumber, Row, Tooltip } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import './index.scss';
 
@@ -19,14 +19,21 @@ function SetModal(props: IProps) {
   const dispatch = useDispatch()
   const { setting } = useAppSelector(bookAction.bookInfo)
 
-  const [setCfg, setSetCfg] = useState(setting)
+  const [setCfg, setSetCfg] = useState({ ...setting, lineHeight: setting.lineHeight - setting.fontSize })
 
-  const setConfigs = [
+  useEffect(() => {
+    if (open) {
+      setSetCfg({ ...setting, lineHeight: setting.lineHeight - setting.fontSize })
+    }
+  }, [open])
+
+  const setConfigs = () => [
     {
+      id: 1,
       label: '字号',
       value: (
         <InputNumber
-          value={setting.fontSize}
+          value={setCfg.fontSize}
           style={{ width: 160 }}
           {...BOOK_FONT_SIZE}
           onChange={v => {
@@ -36,16 +43,43 @@ function SetModal(props: IProps) {
       ),
     },
     {
+      id: 2,
       label: '背景色',
       value: (
         <ColorPicker
-          value={setting.background}
-          onChange={(v) => {
-            setSetCfg({ ...setCfg, background: v.toRgbString() })
+          value={setCfg.background}
+          onChangeComplete={(v) => {
+            setSetCfg({ ...setCfg, background: `#${v.toHex()}` })
           }}
         />
       )
-    }
+    },
+    {
+      id: 3,
+      label: '字体颜色',
+      value: (
+        <ColorPicker
+          value={setCfg.color}
+          onChangeComplete={(v) => {
+            setSetCfg({ ...setCfg, color: `#${v.toHex()}` })
+          }}
+        />
+      )
+    },
+    {
+      id: 4,
+      label: <Tooltip title='实际行高 = 字号+行间距'>行间距</Tooltip>,
+      value: (
+        <InputNumber
+          value={setCfg.lineHeight}
+          style={{ width: 160 }}
+          {...BOOK_LINE_HEIGHT}
+          onChange={v => {
+            setSetCfg({ ...setCfg, lineHeight: v })
+          }}
+        />
+      ),
+    },
   ]
   return (
     <Drawer
@@ -59,9 +93,11 @@ function SetModal(props: IProps) {
         <Row justify='end'>
           <Button
             onClick={() => {
-              dispatch(bookAction.setSetting(setCfg))
+              dispatch(bookAction.setSetting({ ...setCfg, lineHeight: setCfg.fontSize + setCfg.lineHeight }))
               close()
-              onReset()
+              setTimeout(() => {
+                onReset()
+              }, 500);
             }}
             type="primary"
             className='global-mgr-20'
@@ -71,8 +107,8 @@ function SetModal(props: IProps) {
       }
     >
       {
-        setConfigs.map(e => (
-          <div className='p-set-item' key={e.label}>
+        setConfigs().map(e => (
+          <div className='p-set-item' key={e.id}>
             <div className='i-label'>{e.label}</div>
             <div className='i-value'>{e.value}</div>
           </div>

@@ -68,7 +68,7 @@ function Book() {
       <div className='m-b-top'>
         <div className='p-bt-title'>书架</div>
         <div className='p-bt-upload'>
-          {isEdit && <Button className='global-mgr-20' danger onClick={handleDelete} disabled={!!selects.length}>删除</Button>}
+          {isEdit && <Button className='global-mgr-20' danger onClick={handleDelete} disabled={!selects.length}>删除</Button>}
           <Button className='global-mgr-20' onClick={handleEdit}>{isEdit ? '取消' : '管理'}</Button>
           <Upload
             name='file'
