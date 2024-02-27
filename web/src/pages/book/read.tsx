@@ -90,7 +90,7 @@ function BookRead() {
     if (readBookUtil) {
       readBookUtil.init()
     } else {
-      const rbu = new ReadBookUtil({ id: bookReadId, book: currentBook, setting, isInit: false })
+      const rbu = new ReadBookUtil({ id: bookReadId, book: currentBook, isInit: false })
       setReadBookUtil(rbu)
     }
   }

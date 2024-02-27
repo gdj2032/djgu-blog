@@ -4,7 +4,6 @@ import { BookService } from "@/typings/book";
 interface IProps {
   id: string;
   book: BookService.IBookItem
-  setting: BookService.ISetting;
   isInit?: boolean;
 }
 
@@ -12,14 +11,14 @@ class ReadBookUtil {
   id: string;
   book: BookService.IBookItem;
   setting: BookService.ISetting;
-  constructor({ id, book, setting, isInit = false }: IProps) {
+  constructor({ id, book, isInit = false }: IProps) {
     this.id = id;
     this.book = book;
-    this.setting = setting;
     this.init(isInit)
   }
 
   init(isInit?: boolean) {
+    this.setting = store.getState().book.setting;
     const bookInfo = window.app.getBook({ filename: this.book.fullName })
     if (bookInfo?.content) {
       store.dispatch(bookAction.setLoading(true))
@@ -73,6 +72,7 @@ class ReadBookUtil {
     const h = dom.clientHeight - this.paddingSize;
     const oneWLineNum = +Math.floor(w / fontSize).toFixed(0);
     const oneHLineNum = +Math.floor(h / lineHeight).toFixed(0);
+    console.log("🚀 ~ ReadBookUtil ~ getPages ~ oneHLineNum:", oneHLineNum)
     let pages: string[] = []
     let lh = 0
     for (const t1 of texts) {
