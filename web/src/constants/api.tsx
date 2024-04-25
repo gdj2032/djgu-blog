@@ -10,7 +10,7 @@ let API_HOST = ''
 if (isProduction) {
   API_HOST = '/api';
   if (isElectron) {
-    API_HOST = 'http://116.62.21.79:5678/api';
+    API_HOST = 'http://127.0.0.1:9999';
   }
 } else {
   API_HOST = !mockSwitch ? '/api' : '/mock';

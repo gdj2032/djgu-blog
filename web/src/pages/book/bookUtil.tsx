@@ -35,7 +35,7 @@ class ReadBookUtil {
           if (!ctx) continue;
           const ctx2 = ctx.split(cp)
           const content = ctx2[0]
-          ctx = ctx2[1]
+          ctx = this.getCtx(ctx2, cp)
           const item: BookService.IChapter = {
             id,
             title,
@@ -45,6 +45,9 @@ class ReadBookUtil {
           chapters.push(item)
           id++;
           title = cp;
+          if (cp.includes('113') || cp.includes('114')) {
+            console.log(item, ctx)
+          }
         }
         store.dispatch(bookAction.setChapters({ id: this.book.id, chapters }))
         if (isInit) {
@@ -57,9 +60,23 @@ class ReadBookUtil {
     }
   }
 
+  getCtx = (ctx: string[], cp: string) => {
+    let str = cp;
+    for (let i = 1; i < ctx.length; i++) {
+      const item = ctx[i]
+      str += item + cp;
+    }
+    return str
+  }
+
   private getChapters(ctx: string) {
-    const reg = /(正文){0,1}(第)([零〇一二三四五六七八九十百千万a-zA-Z0-9]{1,7})[章节卷集部篇回]((?! {4}).)((?!\t{1,4}).){0,30}\r?\n/g;
-    const res = ctx.match(reg)
+    let reg = /(正文){0,1}(第)([零〇一二三四五六七八九十百千万a-zA-Z0-9]{1,7})[章节卷集部篇回]((?! {4}).)((?!\t{1,4}).){0,30}\r?\n/g;
+    let res = ctx.match(reg)
+    if (res.length < 100) {
+      reg = /([零〇一二三四五六七八九十百千万a-zA-Z0-9]{1,7})[ ]((?! {4}).)((?!\t{1,4}).){0,30}\r?\n/g;
+      res = ctx.match(reg)
+      console.log("🚀 ~ ReadBookUtil ~ getChapters ~ res:", res)
+    }
     return res
   }
 

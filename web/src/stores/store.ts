@@ -1,8 +1,13 @@
-import { __DEV__ } from '@/constants';
-import { configureStore, ThunkAction, Action, combineReducers } from '@reduxjs/toolkit';
-import counterReducer from './counter';
-import { userReducer } from './user';
-import logger from 'redux-logger';
+import { __DEV__ } from "@/constants";
+import {
+  configureStore,
+  ThunkAction,
+  Action,
+  combineReducers,
+} from "@reduxjs/toolkit";
+import counterReducer from "./counter";
+import { userReducer } from "./user";
+import logger from "redux-logger";
 import {
   persistStore,
   persistReducer,
@@ -11,18 +16,18 @@ import {
   PAUSE,
   PERSIST,
   PURGE,
-  REGISTER
-} from 'redux-persist'
-import storage from 'redux-persist/lib/storage';
-import { sysReducer } from './sys';
-import { routeReducer } from './route';
-import { bookReducer } from './book';
+  REGISTER,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { sysReducer } from "./sys";
+import { routeReducer } from "./route";
+import { bookReducer } from "./book";
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage: storage, //指定存储位置，一定要写
-  whitelist: ['user', 'sys', 'route', 'book']
-}
+  whitelist: ["user", "sys", "route", "book"],
+};
 
 const allReducers = combineReducers({
   counter: counterReducer,
@@ -30,21 +35,22 @@ const allReducers = combineReducers({
   sys: sysReducer,
   route: routeReducer,
   book: bookReducer,
-})
+});
 
-const persistedReducer = persistReducer(persistConfig, allReducers)
+const persistedReducer = persistReducer(persistConfig, allReducers);
 
 export const store = configureStore({
   reducer: persistedReducer,
   devTools: __DEV__,
-  middleware: getDefaultMiddleware => getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-    },
-  }).concat(logger)
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(logger),
 });
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

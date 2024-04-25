@@ -1,8 +1,7 @@
-import { ALI_KEY } from "@/constants";
 import DataBase from "@/db";
 import { DOCUMENT_SQL, FILE_SQL } from "@/sql";
 import { RESPONSE_TYPE, RESPONSE_CODE_MSG, commonUuid } from "@/utils";
-import moment from 'moment';
+import moment from "moment";
 import fileService from "../file/service";
 import routeService from "../route/service";
 import tagService from "../tag/service";
@@ -10,35 +9,50 @@ import tagService from "../tag/service";
 class DocumentService {
   async list(...args) {
     const [req, res] = args;
-    const { limit = 10, offset = 0, name = '', latest = false, routeId, tagId } = req.query as any;
+    const {
+      limit = 10,
+      offset = 0,
+      name = "",
+      latest = false,
+      routeId,
+      tagId,
+    } = req.query as any;
     const _limit = +limit;
     const _offset = +offset;
-    const sqlOpt = DOCUMENT_SQL.queryLimitOffsetFn({ limit: _limit, offset: _offset, name, routeId, orderType: latest ? 'createTime' : 'see', tagId })
-    const { error, data } = await DataBase.sql(sqlOpt.sql, sqlOpt.data)
+    const sqlOpt = DOCUMENT_SQL.queryLimitOffsetFn({
+      limit: _limit,
+      offset: _offset,
+      name,
+      routeId,
+      orderType: latest ? "createTime" : "see",
+      tagId,
+    });
+    const { error, data } = await DataBase.sql(sqlOpt.sql, sqlOpt.data);
     if (error) {
-      return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
+      return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg);
     }
-    const allRoutes = await routeService.all()
-    const allTags = await tagService.all()
+    const allRoutes = await routeService.all();
+    const allTags = await tagService.all();
     const newData = data?.map((e) => {
       return {
         ...e,
         route: allRoutes.find((v) => v.id === e.routeId),
-        tags: allTags?.filter(v => e.tagIds?.includes(v.id))
-      }
-    })
-    const allData = await this.all()
+        tags: allTags?.filter((v) => e.tagIds?.includes(v.id)),
+      };
+    });
+    const allData = await this.all();
     return RESPONSE_TYPE.commonSuccess2List({
-      res, data: newData,
+      res,
+      data: newData,
       limit: _limit,
       offset: _offset,
       total: allData.length,
-    })
+    });
   }
 
   async all() {
-    const { data } = await DataBase.sql(DOCUMENT_SQL.queryAll)
-    return data || []
+    const { data } = await DataBase.sql(DOCUMENT_SQL.queryAll);
+    return data || [];
   }
 
   async detail(...args) {
@@ -46,15 +60,13 @@ class DocumentService {
     const { id } = req.params as any;
     const errorAble = await RESPONSE_TYPE.commonErrors({
       res,
-      errs: [
-        { func: () => !id, ...RESPONSE_CODE_MSG.idNotEmpty },
-      ]
-    })
+      errs: [{ func: () => !id, ...RESPONSE_CODE_MSG.idNotEmpty }],
+    });
     if (errorAble) return errorAble;
-    const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryById, [id])
+    const { error, data } = await DataBase.sql(DOCUMENT_SQL.queryById, [id]);
     if (!error) {
-      const route = await routeService.queryById(data[0].routeId)
-      const tags = await tagService.queryByIds(data[0].tagIds)
+      const route = await routeService.queryById(data[0].routeId);
+      const tags = await tagService.queryByIds(data[0].tagIds);
       return RESPONSE_TYPE.commonSuccess({
         res,
         data: {
@@ -62,9 +74,9 @@ class DocumentService {
           route,
           tags,
         },
-      })
+      });
     }
-    return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
+    return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg);
   }
 
   async create(...args) {
@@ -79,7 +91,9 @@ class DocumentService {
         { func: () => !tagIds?.length, ...RESPONSE_CODE_MSG.tagNotEmpty },
         {
           func: async () => {
-            const { data: d1 } = await DataBase.sql(DOCUMENT_SQL.queryByName, [name])
+            const { data: d1 } = await DataBase.sql(DOCUMENT_SQL.queryByName, [
+              name,
+            ]);
             if (d1?.length) {
               return true;
             }
@@ -87,20 +101,34 @@ class DocumentService {
           },
           ...RESPONSE_CODE_MSG.nameExist,
         },
-      ]
-    })
+      ],
+    });
     if (errorAble) return errorAble;
-    const dId = commonUuid()
+    const dId = commonUuid();
     const time = moment().valueOf();
-    const { error } = await DataBase.sql(DOCUMENT_SQL.insert, [dId, name, description, fileId, routeId, time, time, 0, tagIds.join(',')])
+    const { error } = await DataBase.sql(DOCUMENT_SQL.insert, [
+      dId,
+      name,
+      description,
+      fileId,
+      routeId,
+      time,
+      time,
+      0,
+      tagIds.join(","),
+    ]);
     if (error) {
-      return RESPONSE_TYPE.commonError({ res, ...RESPONSE_CODE_MSG.documentInsertError })
+      return RESPONSE_TYPE.commonError({
+        res,
+        ...RESPONSE_CODE_MSG.documentInsertError,
+      });
     }
     const { data } = await DataBase.sql(DOCUMENT_SQL.queryById, [dId]);
-    DataBase.sql(FILE_SQL.update, [{ used: 1 }, fileId])
+    DataBase.sql(FILE_SQL.update, [{ used: 1 }, fileId]);
     return RESPONSE_TYPE.commonSuccess({
-      res, data,
-    })
+      res,
+      data,
+    });
   }
 
   async edit(...args) {
@@ -117,9 +145,11 @@ class DocumentService {
         { func: () => !tagIds?.length, ...RESPONSE_CODE_MSG.tagNotEmpty },
         {
           func: async () => {
-            const { data: d1 } = await DataBase.sql(DOCUMENT_SQL.queryByName, [name])
+            const { data: d1 } = await DataBase.sql(DOCUMENT_SQL.queryByName, [
+              name,
+            ]);
             if (d1?.length) {
-              const d2 = d1.filter(e => e.id !== id);
+              const d2 = d1.filter((e) => e.id !== id);
               if (d2?.length) {
                 return true;
               }
@@ -128,21 +158,32 @@ class DocumentService {
           },
           ...RESPONSE_CODE_MSG.nameExist,
         },
-      ]
-    })
+      ],
+    });
     if (errorAble) return errorAble;
     const time = moment().valueOf();
-    const detailInfo = await DataBase.sql(DOCUMENT_SQL.queryById, [id])
-    const updateInfo = await DataBase.sql(DOCUMENT_SQL.update, [{ name, description, routeId, fileId, tagIds: tagIds.join(','), updateTime: time }, id])
+    const detailInfo = await DataBase.sql(DOCUMENT_SQL.queryById, [id]);
+    const updateInfo = await DataBase.sql(DOCUMENT_SQL.update, [
+      {
+        name,
+        description,
+        routeId,
+        fileId,
+        tagIds: tagIds.join(","),
+        updateTime: time,
+      },
+      id,
+    ]);
     if (!updateInfo.error) {
       const { data } = await DataBase.sql(DOCUMENT_SQL.queryById, [id]);
-      DataBase.sql(FILE_SQL.update, [{ used: 1 }, fileId])
-      this.deleteFile(detailInfo.data[0].fileId)
+      DataBase.sql(FILE_SQL.update, [{ used: 1 }, fileId]);
+      this.deleteFile(detailInfo.data[0].fileId);
       return RESPONSE_TYPE.commonSuccess({
-        res, data,
-      })
+        res,
+        data,
+      });
     }
-    return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
+    return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg);
   }
 
   async delete(...args) {
@@ -150,18 +191,16 @@ class DocumentService {
     const { id } = req.params;
     const errorAble = await RESPONSE_TYPE.commonErrors({
       res,
-      errs: [
-        { func: () => !id, ...RESPONSE_CODE_MSG.idNotEmpty },
-      ]
-    })
+      errs: [{ func: () => !id, ...RESPONSE_CODE_MSG.idNotEmpty }],
+    });
     if (errorAble) return errorAble;
-    const detailInfo = await DataBase.sql(DOCUMENT_SQL.queryById, [id])
-    const { error } = await DataBase.sql(DOCUMENT_SQL.deleteById, [id])
+    const detailInfo = await DataBase.sql(DOCUMENT_SQL.queryById, [id]);
+    const { error } = await DataBase.sql(DOCUMENT_SQL.deleteById, [id]);
     if (!error) {
-      this.deleteFile(detailInfo.data[0].fileId)
-      return RESPONSE_TYPE.commonSuccess({ res })
+      this.deleteFile(detailInfo.data[0].fileId);
+      return RESPONSE_TYPE.commonSuccess({ res });
     }
-    return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
+    return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg);
   }
 
   async see(...args) {
@@ -177,33 +216,38 @@ class DocumentService {
           func: async () => {
             if (error) return true;
             return false;
-          }, ...RESPONSE_CODE_MSG.serverError
+          },
+          ...RESPONSE_CODE_MSG.serverError,
         },
-      ]
-    })
+      ],
+    });
     if (errorAble) return errorAble;
-    const { error: e2 } = await DataBase.sql(DOCUMENT_SQL.update, [{ see: data[0].see + 1 }, id])
+    const { error: e2 } = await DataBase.sql(DOCUMENT_SQL.update, [
+      { see: data[0].see + 1 },
+      id,
+    ]);
     if (e2) {
-      return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg)
+      return RESPONSE_TYPE.serverError(res, RESPONSE_CODE_MSG.serverError.msg);
     }
-    return RESPONSE_TYPE.commonSuccess({ res })
+    return RESPONSE_TYPE.commonSuccess({ res });
   }
 
   deleteFile = async (fileId: string) => {
     if (fileId) {
-      const { error: fErr, data: fData } = await DataBase.sql(FILE_SQL.queryById, [fileId])
+      const { error: fErr, data: fData } = await DataBase.sql(
+        FILE_SQL.queryById,
+        [fileId]
+      );
       if (!fErr) {
         const url = fData?.[0]?.url;
         if (url) {
-          const urls = url.split(ALI_KEY.BUCKET_FILE_NAME)
-          const filePath = `${ALI_KEY.BUCKET_FILE_NAME}${urls[1]}`
-          fileService.deleteFile(filePath)
+          fileService.deleteFile(url);
         }
       }
     }
-  }
+  };
 }
 
-const documentService = new DocumentService()
+const documentService = new DocumentService();
 
-export default documentService
+export default documentService;

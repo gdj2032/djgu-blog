@@ -13,5 +13,6 @@ const pageRoutes = {
   content: '/content',
   book: '/book',
   bookRead: '/book/read',
+  test: '/test',
 };
 export default pageRoutes;

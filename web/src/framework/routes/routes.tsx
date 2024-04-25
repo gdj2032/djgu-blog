@@ -22,6 +22,7 @@ import {
   IndexPage,
   BookRead,
   Book,
+  Test,
 } from '@/pages';
 import { RouteObject } from 'react-router/dist/lib/context';
 import ContainerPage from '../container';
@@ -68,6 +69,10 @@ export const pageRoute = (): RouteObject[] => [
   {
     path: PathConfig.bookRead,
     Component: BookRead,
+  },
+  {
+    path: PathConfig.test,
+    Component: Test,
   },
   {
     id: 'container',

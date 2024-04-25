@@ -67,7 +67,7 @@ function BookRead() {
       const prevChapter = chapters[currentBook?.id]?.[chapterId]
       pageId = prevChapter?.pages.length - 1
     }
-    if (config.chapterId > 0) {
+    if (chapterId >= 0 && pageId >= 0) {
       dispatch(bookAction.setChapter({ id: currentBook.id, chapter: { chapterId, pageId } }))
     }
   }
@@ -76,12 +76,12 @@ function BookRead() {
     const curPageId = config.pageId
     const allPage = config.allPage;
     let pageId = curPageId + 1
-    let chapterId = config.curChapter?.id;
+    let chapterId = config.chapterId;
     if (pageId >= allPage) {
       chapterId = config.curChapter?.id + 1
       pageId = 0
     }
-    if (config.chapterId < config.curChapter?.total) {
+    if (chapterId < config.curChapter?.total && pageId < allPage) {
       dispatch(bookAction.setChapter({ id: currentBook.id, chapter: { chapterId, pageId } }))
     }
   }

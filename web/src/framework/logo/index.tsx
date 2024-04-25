@@ -15,7 +15,7 @@ function Logo(props: IProps) {
       <div className='m-c'>D</div>
       <div className='m-r'>J</div> */}
       <div className='m-logo1'>G</div>
-      <div className='m-logo2'>Blog</div>
+      {/* <div className='m-logo2'>Blog</div> */}
     </div>
   )
 }
