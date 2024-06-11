@@ -1,9 +1,14 @@
 package com.gdj.blog.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gdj.blog.common.GlobalCommon;
 import com.gdj.blog.entity.Result;
 import com.gdj.blog.entity.User;
 import com.gdj.blog.service.impl.UserServiceImpl;
 import com.gdj.blog.utils.JwtUtils;
+import com.gdj.blog.utils.PageUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,13 +38,24 @@ public class UserController {
             u.setPassword("");
             return Result.success(u);
         }
-        return Result.error("用户名密码错误", "400");
+        return Result.error400("用户名密码错误");
     }
 
-    @GetMapping("/list")
-    public Result userList() {
-        List<User> users = userService.list();
-        return Result.success(users);
+    @DeleteMapping("/logout")
+    public Result logout(HttpServletRequest request) {
+        request.getSession().removeAttribute(GlobalCommon.SESSION);
+        return Result.success("登出成功");
+    }
+
+    @GetMapping("")
+    public Result userList(
+        @RequestParam(defaultValue = "") String name,
+        @RequestParam(defaultValue = "10") Integer limit,
+        @RequestParam(defaultValue = "0") Integer offset
+    ) {
+        Page<User> page = new Page<>(offset + 1, limit);
+        IPage<User> pages = userService.selectUserPage(page, new User());
+        return Result.success(PageUtils.page2PageInfo(pages));
     }
 
 }

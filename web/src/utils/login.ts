@@ -20,6 +20,7 @@ export const doLogin = (params: any) => new Promise(async (resolve, reject) => {
     username: params.username,
     password: sha1(params.password)
   });
+  console.info('--- res --->', res);
   if (res?.code === 200) {
     const { data } = res
     Setting.username = params.username

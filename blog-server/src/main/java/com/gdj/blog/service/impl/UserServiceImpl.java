@@ -1,5 +1,6 @@
 package com.gdj.blog.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gdj.blog.entity.User;
 import com.gdj.blog.mapper.UserMapper;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-//@SuppressWarnings({"rawtypes","unchecked"})
 @RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
@@ -20,5 +20,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     public User login(User user) {
         return userMapper.selectByUserName(user.getUsername());
+    }
+
+    @Override
+    public IPage<User> selectUserPage(IPage<User> page, User user) {
+        return page.setRecords(baseMapper.selectUserPage(page, user));
     }
 }

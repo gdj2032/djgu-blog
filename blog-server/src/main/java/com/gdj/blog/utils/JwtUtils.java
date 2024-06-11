@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class JwtUtils {
     private static final String signKey = "ggg23333";
-    private static final Long expire = Long.valueOf((3600 * 1000));
+    private static final Long expire = Long.valueOf((24 * 3600 * 1000));
 
     /**
      * 生成jwt

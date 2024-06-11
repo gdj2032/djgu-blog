@@ -14,7 +14,14 @@ function checkStatus(response: any, download?: boolean) {
           return Promise.resolve(blob);
         });
       }
-      return response.text().then((text: string) => Promise.resolve(text ? JSON.parse(text) : {}));
+      return response.text().then((text: string) => {
+        const r = text ? JSON.parse(text) : {}
+        console.log("🚀 ~ returnresponse.text ~ r:", r)
+        if (r.code !== 200 && r.message) {
+          message.error(r.message)
+        }
+        return Promise.resolve(r)
+      });
     case 401:
       doLogout({ tip: '登录已失效', type: 'error' });
       initRoutes()
@@ -42,7 +49,7 @@ function fetchRequest(options: IRequestOptions) {
     headers: {
       ...options.headers,
       ele: isElectron,
-      SESSION: store.getState()?.user?.session,
+      session: store.getState()?.user?.session,
     }
   };
 

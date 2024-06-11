@@ -5,4 +5,7 @@
     <select id="selectByUserName" resultType="com.gdj.blog.entity.User">
         select * from user where username = #{username}
     </select>
+    <select id="selectUserPage" resultType="com.gdj.blog.entity.User">
+        select * from user
+    </select>
 </mapper>
