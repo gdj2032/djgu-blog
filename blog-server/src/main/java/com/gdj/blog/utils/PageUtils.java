@@ -1,7 +1,11 @@
 package com.gdj.blog.utils;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gdj.blog.entity.PageInfo;
+import com.gdj.blog.entity.User;
+
+import java.util.function.Function;
 
 public class PageUtils<T> {
 
@@ -13,4 +17,10 @@ public class PageUtils<T> {
         pi.setCurrent(pages.getCurrent() - 1);
         return pi;
     }
+
+//    public static <T> PageInfo<T> getPageInfo(Integer offset, Integer limit, Function<Page<T>, T> fn) {
+//        Page<T> page = new Page<>(offset + 1, limit);
+//        IPage<T> pages = (IPage<T>) fn.ex(page);
+//        return page2PageInfo(pages);
+//    }
 }

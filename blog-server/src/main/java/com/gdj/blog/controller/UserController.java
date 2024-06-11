@@ -49,12 +49,11 @@ public class UserController {
 
     @GetMapping("")
     public Result userList(
-        @RequestParam(defaultValue = "") String name,
         @RequestParam(defaultValue = "10") Integer limit,
         @RequestParam(defaultValue = "0") Integer offset
     ) {
         Page<User> page = new Page<>(offset + 1, limit);
-        IPage<User> pages = userService.selectUserPage(page, new User());
+        IPage<User> pages = userService.selectUserPage(page);
         return Result.success(PageUtils.page2PageInfo(pages));
     }
 

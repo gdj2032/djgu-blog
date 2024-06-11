@@ -11,5 +11,5 @@ public interface IUserService extends IService<User> {
      * @param page
      * @return
      */
-    IPage<User> selectUserPage(IPage<User> page, User user);
+    IPage<User> selectUserPage(IPage<User> page);
 }

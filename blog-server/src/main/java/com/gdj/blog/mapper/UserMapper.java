@@ -10,5 +10,5 @@ public interface UserMapper extends BaseMapper<User> {
 
     User selectByUserName(String username);
 
-    List<User> selectUserPage(IPage<User> page, User user);
+    List<User> selectUserPage(IPage<User> page);
 }
