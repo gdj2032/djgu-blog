@@ -2,10 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gdj.blog.mapper.UserMapper">
 
-    <select id="selectByUserName" resultType="com.gdj.blog.entity.User">
-        select * from user where username = #{username}
+    <select id="login" resultType="com.gdj.blog.entity.User">
+        select *
+        from user
+        where username = #{username}
+          and password = #{password}
     </select>
     <select id="selectUserPage" resultType="com.gdj.blog.entity.User">
-        select * from user
+        select id, username, role, create_time, login_time, first
+        from user
     </select>
 </mapper>

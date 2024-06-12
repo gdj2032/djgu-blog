@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -28,6 +27,7 @@ public class UserController {
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
         User u = userService.login(user);
+        log.info("login: " + String.valueOf(u));
         if (u != null) {
             Map<String, Object> m = new HashMap<>();
             m.put("id", u.getId());

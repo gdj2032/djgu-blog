@@ -10,8 +10,8 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启SQL语句打印
-#  mapper-locations: classpath*com/gdj/blog/mapper/*.xml #配置mapper.xml文件所在的路径
-#  type-aliases-package: com.gdj.blog.mapper #配置映射类所在的包名
+  mapper-locations: classpath*com/gdj/blog/mapper/*.xml #配置mapper.xml文件所在的路径
+  type-aliases-package: com.gdj.blog.mapper #配置映射类所在的包名
 
 server:
   port: 9999

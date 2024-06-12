@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserMapper extends BaseMapper<User> {
 
-    User selectByUserName(String username);
+    User login(User user);
 
     List<User> selectUserPage(IPage<User> page);
 }

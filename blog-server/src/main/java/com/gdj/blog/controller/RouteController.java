@@ -7,11 +7,9 @@ import com.gdj.blog.entity.Route;
 import com.gdj.blog.service.impl.RouteServiceImpl;
 import com.gdj.blog.utils.PageUtils;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("route")
@@ -29,5 +27,24 @@ public class RouteController {
         Page<Route> page = new Page<>(offset + 1, limit);
         IPage<Route> pages = routeService.selectRoutePage(page);
         return Result.success(PageUtils.page2PageInfo(pages));
+    }
+
+    @PostMapping("/create")
+    public Result createRoute(@RequestBody @Valid Route route) {
+        Boolean isCreate = routeService.save(route);
+        return Result.success(isCreate);
+    }
+
+    @PutMapping("/edit/{id}")
+    public Result editRoute(@PathVariable String id, @RequestBody @Valid Route route) {
+        route.setId(id);
+        Boolean isEdit = routeService.updateById(route);
+        return Result.success(isEdit);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public Result deleteRoute(@PathVariable String id) {
+        Boolean isCreate = routeService.removeById(id);
+        return Result.success(isCreate);
     }
 }

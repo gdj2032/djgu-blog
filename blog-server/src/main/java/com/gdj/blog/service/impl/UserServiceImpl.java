@@ -19,7 +19,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private UserMapper userMapper;
 
     public User login(User user) {
-        return userMapper.selectByUserName(user.getUsername());
+        return baseMapper.login(user);
     }
 
     @Override
