@@ -8,9 +8,9 @@ import com.gdj.blog.entity.User;
 import com.gdj.blog.service.impl.UserServiceImpl;
 import com.gdj.blog.utils.JwtUtils;
 import com.gdj.blog.utils.PageUtils;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -22,7 +22,7 @@ import java.util.Map;
 @RequestMapping("user")
 public class UserController {
 
-    @Autowired
+    @Resource
     private UserServiceImpl userService;
 
     @PostMapping("/login")
