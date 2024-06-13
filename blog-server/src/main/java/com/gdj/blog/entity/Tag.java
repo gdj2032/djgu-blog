@@ -9,13 +9,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("route")
-public class Route {
+@TableName("tag")
+public class Tag {
     private String id;
-    @NotEmpty(message = "路由名称不能为空")
+    @NotEmpty(message = "标签名称不能为空")
     private String name;
     private String description;
-    @NotEmpty(message = "路径不能为空")
-    private String path;
-    private String role;
+    private String userId;
+    private String createTime;
+    private String updateTime;
+    private String routeId;
+    private String prentTagId;
 }

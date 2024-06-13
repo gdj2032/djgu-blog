@@ -9,5 +9,5 @@ import java.util.List;
 
 @Component
 public interface RouteMapper extends BaseMapper<Route> {
-    List<Route> selectRoutePage(IPage<Route> page);
+    List<Route> pages(IPage<Route> page);
 }

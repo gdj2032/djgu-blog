@@ -11,5 +11,5 @@ public interface IRouteService extends IService<Route> {
      * @param page
      * @return
      */
-    IPage<Route> selectRoutePage(IPage<Route> page);
+    IPage<Route> pages(IPage<Route> page);
 }

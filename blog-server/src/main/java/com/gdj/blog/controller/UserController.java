@@ -47,7 +47,7 @@ public class UserController {
         return Result.success("登出成功");
     }
 
-    @GetMapping("")
+    @GetMapping
     public Result userList(
         @RequestParam(defaultValue = "10") Integer limit,
         @RequestParam(defaultValue = "0") Integer offset

@@ -24,6 +24,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public IPage<User> selectUserPage(IPage<User> page) {
-        return page.setRecords(baseMapper.selectUserPage(page));
+        return page.setRecords(baseMapper.pages(page));
     }
 }

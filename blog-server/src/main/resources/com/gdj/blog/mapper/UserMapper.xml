@@ -8,7 +8,7 @@
         where username = #{username}
           and password = #{password}
     </select>
-    <select id="selectUserPage" resultType="com.gdj.blog.entity.User">
+    <select id="pages" resultType="com.gdj.blog.entity.User">
         select id, username, role, create_time, login_time, first
         from user
     </select>

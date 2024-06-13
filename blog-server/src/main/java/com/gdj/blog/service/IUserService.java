@@ -6,6 +6,8 @@ import com.gdj.blog.entity.User;
 
 public interface IUserService extends IService<User> {
 
+    User login(User user);
+
     /**
      * 用户列表分页查询
      * @param page

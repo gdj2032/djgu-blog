@@ -12,5 +12,5 @@ public interface UserMapper extends BaseMapper<User> {
 
     User login(User user);
 
-    List<User> selectUserPage(IPage<User> page);
+    List<User> pages(IPage<User> page);
 }
