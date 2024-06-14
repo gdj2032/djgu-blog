@@ -19,5 +19,5 @@ public class Tag {
     private String createTime;
     private String updateTime;
     private String routeId;
-    private String prentTagId;
+    private String parentTagId;
 }

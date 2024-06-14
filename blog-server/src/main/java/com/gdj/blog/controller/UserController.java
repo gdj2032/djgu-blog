@@ -6,15 +6,12 @@ import com.gdj.blog.common.GlobalCommon;
 import com.gdj.blog.entity.Result;
 import com.gdj.blog.entity.User;
 import com.gdj.blog.service.impl.UserServiceImpl;
-import com.gdj.blog.utils.JwtUtils;
+import com.gdj.blog.utils.CurrentLoginInfo;
 import com.gdj.blog.utils.PageUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @Slf4j
@@ -27,15 +24,8 @@ public class UserController {
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
         User u = userService.login(user);
-        log.info("login: " + String.valueOf(u));
         if (u != null) {
-            Map<String, Object> m = new HashMap<>();
-            m.put("id", u.getId());
-            m.put("username", u.getUsername());
-            m.put("session", u.getSession());
-            String jwt = JwtUtils.generateJwt(m);
-            u.setSession(jwt);
-            u.setPassword("");
+            CurrentLoginInfo.setUserInfo(u);
             return Result.success(u);
         }
         return Result.error400("用户名密码错误");
