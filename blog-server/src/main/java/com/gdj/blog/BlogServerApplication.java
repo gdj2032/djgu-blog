@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 
 @SpringBootApplication
-@MapperScan("com.gdj.blog.mapper")
+@MapperScan(basePackages = {"com.gdj.blog.mapper"})
 @ServletComponentScan //开启servlet组件支持
 public class BlogServerApplication {
 

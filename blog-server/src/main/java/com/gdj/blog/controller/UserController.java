@@ -2,11 +2,11 @@ package com.gdj.blog.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.gdj.blog.common.GlobalCommon;
-import com.gdj.blog.entity.Result;
+import com.gdj.blog.constant.GlobalConstant;
+import com.gdj.blog.entity.PageInfo;
 import com.gdj.blog.entity.User;
+import com.gdj.blog.entity.WebResponse;
 import com.gdj.blog.service.impl.UserServiceImpl;
-import com.gdj.blog.utils.CurrentLoginInfo;
 import com.gdj.blog.utils.PageUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,29 +22,25 @@ public class UserController {
     private UserServiceImpl userService;
 
     @PostMapping("/login")
-    public Result login(@RequestBody User user) {
-        User u = userService.login(user);
-        if (u != null) {
-            CurrentLoginInfo.setUserInfo(u);
-            return Result.success(u);
-        }
-        return Result.error400("用户名密码错误");
+    public WebResponse<?> login(@RequestBody User user) {
+        return WebResponse.ok(userService.login(user));
     }
 
     @DeleteMapping("/logout")
-    public Result logout(HttpServletRequest request) {
-        request.getSession().removeAttribute(GlobalCommon.SESSION);
-        return Result.success("登出成功");
+    public WebResponse<?> logout(HttpServletRequest request) {
+        request.getSession().removeAttribute(GlobalConstant.SESSION);
+        return WebResponse.ok("登出成功");
     }
 
     @GetMapping
-    public Result userList(
+    public WebResponse<PageInfo<User>> userList(
         @RequestParam(defaultValue = "10") Integer limit,
         @RequestParam(defaultValue = "0") Integer offset
     ) {
-        Page<User> page = new Page<>(offset + 1, limit);
+        int pageNumber = offset / limit + 1;
+        Page<User> page = new Page<>(pageNumber, limit);
         IPage<User> pages = userService.selectUserPage(page);
-        return Result.success(PageUtils.page2PageInfo(pages));
+        return WebResponse.ok(PageUtils.page2PageInfo(pages));
     }
 
 }

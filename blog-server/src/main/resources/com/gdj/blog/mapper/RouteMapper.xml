@@ -5,4 +5,14 @@
     <select id="pages" resultType="com.gdj.blog.entity.Route">
         select * from route
     </select>
+    <select id="selectByName" resultType="com.gdj.blog.entity.Route">
+        select *
+        from route
+        where name = #{name}
+    </select>
+    <select id="selectByPath" resultType="com.gdj.blog.entity.Route">
+        select *
+        from route
+        where path = #{path}
+    </select>
 </mapper>

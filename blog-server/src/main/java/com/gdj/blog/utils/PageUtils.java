@@ -1,11 +1,7 @@
 package com.gdj.blog.utils;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gdj.blog.entity.PageInfo;
-import com.gdj.blog.entity.User;
-
-import java.util.function.Function;
 
 public class PageUtils<T> {
 

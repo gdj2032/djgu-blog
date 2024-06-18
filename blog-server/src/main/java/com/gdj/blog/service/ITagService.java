@@ -7,4 +7,8 @@ import com.gdj.blog.entity.Tag;
 public interface ITagService extends IService<Tag> {
 
     IPage<Tag> pages(IPage<Tag> page);
+
+    Tag selectByName(String tagName);
+
+    Tag insert(Tag tag);
 }

@@ -9,4 +9,6 @@ import java.util.List;
 public interface TagMapper extends BaseMapper<Tag> {
 
     List<Tag> pages(IPage<Tag> page);
+
+    Tag selectByName(String tagName);
 }

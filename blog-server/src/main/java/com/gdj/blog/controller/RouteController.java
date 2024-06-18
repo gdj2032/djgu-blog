@@ -2,8 +2,10 @@ package com.gdj.blog.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.gdj.blog.entity.Result;
+import com.gdj.blog.entity.PageInfo;
 import com.gdj.blog.entity.Route;
+import com.gdj.blog.entity.WebResponse;
+import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.service.impl.RouteServiceImpl;
 import com.gdj.blog.utils.PageUtils;
 import jakarta.annotation.Resource;
@@ -11,7 +13,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("route")
@@ -22,37 +24,39 @@ public class RouteController {
     private RouteServiceImpl routeService;
 
     @GetMapping("/list")
-    public Result list(
+    public WebResponse<PageInfo<Route>> list(
         @RequestParam(defaultValue = "10") Integer limit,
         @RequestParam(defaultValue = "0") Integer offset
     ) {
-        Page<Route> page = new Page<>(offset + 1, limit);
+        int pageNumber = offset / limit + 1;
+        Page<Route> page = new Page<>(pageNumber, limit);
         IPage<Route> pages = routeService.pages(page);
-        return Result.success(PageUtils.page2PageInfo(pages));
-    }
-
-    @GetMapping("/list/tier")
-    public Result listTier() {
-        List<Route> routes = routeService.list();
-        return Result.success(routes);
+        return WebResponse.ok(PageUtils.page2PageInfo(pages));
     }
 
     @PostMapping("/create")
-    public Result create(@RequestBody @Valid Route route) {
-        Boolean isCreate = routeService.save(route);
-        return Result.success(isCreate);
+    public WebResponse<?> create(@RequestBody @Valid Route route) {
+        return WebResponse.ok(routeService.insert(route));
     }
 
     @PutMapping("/edit/{id}")
-    public Result edit(@PathVariable String id, @RequestBody @Valid Route route) {
-        route.setId(id);
-        Boolean isEdit = routeService.updateById(route);
-        return Result.success(isEdit);
+    public WebResponse<?> edit(@PathVariable long id, @RequestBody @Valid Route route) {
+        Route route2 = routeService.getById(id);
+        if (!Objects.isNull(route2)) {
+            route.setId(id);
+            Boolean isEdit = routeService.updateById(route);
+            return WebResponse.ok(isEdit);
+        }
+        throw BaseResult.NOT_FOUND.message("路由不存在").exception();
     }
 
     @DeleteMapping("/delete/{id}")
-    public Result delete(@PathVariable String id) {
-        Boolean isCreate = routeService.removeById(id);
-        return Result.success(isCreate);
+    public WebResponse<?> delete(@PathVariable long id) {
+        Route route = routeService.getById(id);
+        if (!Objects.isNull(route)) {
+            Boolean isCreate = routeService.removeById(id);
+            return WebResponse.ok(isCreate);
+        }
+        throw BaseResult.NOT_FOUND.message("路由不存在").exception();
     }
 }

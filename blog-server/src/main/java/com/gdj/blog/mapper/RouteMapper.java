@@ -10,4 +10,8 @@ import java.util.List;
 @Component
 public interface RouteMapper extends BaseMapper<Route> {
     List<Route> pages(IPage<Route> page);
+
+    Route selectByName(String name);
+
+    Route selectByPath(String path);
 }

@@ -1,8 +1,7 @@
 package com.gdj.blog.interceptor;
 
-import com.alibaba.fastjson.JSONObject;
-import com.gdj.blog.common.GlobalCommon;
-import com.gdj.blog.entity.Result;
+import com.gdj.blog.constant.GlobalConstant;
+import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
 @Component
@@ -24,25 +22,17 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (url.contains("login")) {
             return true;
         }
-        String jwt = req.getHeader(GlobalCommon.SESSION);
+        String jwt = req.getHeader(GlobalConstant.SESSION);
         if (!StringUtils.hasLength(jwt)) {
             log.info("未登录");
-            Result err = Result.error400("not login");
-            final String s = JSONObject.toJSONString(err);
-            log.info(s);
-            res.getWriter().write(s);
-            return false;
+            throw BaseResult.NO_AUTH.message("未登录").exception();
         }
         try {
             JwtUtils.parseJwt(jwt);
         } catch (Exception e) {
             e.printStackTrace();
             log.info("令牌校验失败");
-            Result err = Result.error400("not login");
-            final String s = JSONObject.toJSONString(err);
-            log.info(s);
-            res.getWriter().write(s);
-            return false;
+            throw BaseResult.NO_AUTH.message("未登录").exception();
         }
         log.info("令牌校验成功");
         return true;

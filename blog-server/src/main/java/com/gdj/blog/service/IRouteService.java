@@ -12,4 +12,10 @@ public interface IRouteService extends IService<Route> {
      * @return
      */
     IPage<Route> pages(IPage<Route> page);
+
+    Route selectByName(String name);
+
+    Route selectByPath(String path);
+
+    Route insert(Route entity);
 }
