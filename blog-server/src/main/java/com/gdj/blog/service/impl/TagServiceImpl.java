@@ -1,13 +1,18 @@
 package com.gdj.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.gdj.blog.entity.Tag;
-import com.gdj.blog.entity.TagTier;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gdj.blog.dao.ContainerServiceImpl;
+import com.gdj.blog.entity.*;
 import com.gdj.blog.exception.BaseResult;
+import com.gdj.blog.mapper.RouteMapper;
 import com.gdj.blog.mapper.TagMapper;
+import com.gdj.blog.mapper.UserMapper;
 import com.gdj.blog.service.ITagService;
 import com.gdj.blog.utils.CurrentLoginInfo;
+import com.gdj.blog.utils.SmartBeanUtil;
+import com.github.yulichang.wrapper.MPJLambdaWrapper;
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,19 +27,22 @@ import java.util.Objects;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagService {
+public class TagServiceImpl extends ContainerServiceImpl<TagMapper, Tag> implements ITagService {
+
+    @Resource
+    private RouteMapper routeMapper;
+    @Resource
+    private UserMapper userMapper;
+
     @Override
-    public IPage<Tag> pages(IPage<Tag> page) {
-        return page.setRecords(baseMapper.pages(page));
-    }
-
     public Tag selectByName(String tagName) {
-        return baseMapper.selectByName(tagName);
+        return baseMapper.selectOne(new MPJLambdaWrapper<>(Tag.class).eq(Tag::getName, tagName));
     }
 
+    @Override
     public Tag insert(Tag entity) {
         Tag tag2 = selectByName(entity.getName());
-        if (tag2 != null) {
+        if (Objects.isNull(tag2)) {
             throw BaseResult.REPEAT.message("名称已存在").exception();
         }
         String time = String.valueOf(LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli());
@@ -42,37 +50,73 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
         entity.setUpdateTime(time);
         entity.setUserId(Objects.requireNonNull(CurrentLoginInfo.getUserInfo()).getId());
         baseMapper.insert(entity);
-        return baseMapper.selectByName(entity.getName());
+        return selectByName(entity.getName());
     }
 
+    @Override
+    public IPage<TagVo> pageData(Integer limit, Integer offset) {
+        int pageNumber = offset / limit + 1;
+        IPage<Tag> pages = baseMapper.selectJoinPage(new Page<>(pageNumber, limit), Tag.class,
+                new MPJLambdaWrapper<Tag>()
+                        .selectAll(Tag.class)
+        );
+        IPage<TagVo> pages2 = new Page<>(pageNumber, limit);
+        SmartBeanUtil.copyProperties(pages, pages2);
+        pages2.setRecords(changeTags2TagVos(pages.getRecords()));
+        return pages2;
+    }
+
+    public List<TagVo> changeTags2TagVos(List<Tag> tags) {
+        List<TagVo> tagVos = new ArrayList<>();
+        tags.forEach(e -> {
+            TagVo tagVo = changeTag2TagVo(e);
+            tagVos.add(tagVo);
+        });
+        return tagVos;
+    }
+
+    public TagVo changeTag2TagVo(Tag e) {
+        TagVo tagVo = new TagVo();
+        SmartBeanUtil.copyProperties(e, tagVo);
+        if (Objects.nonNull(e.getRouteId())) {
+            Route route = routeMapper.selectById(e.getRouteId());
+            tagVo.setRoute(new IdName(route.getId(), route.getName()));
+        }
+        if (Objects.nonNull(e.getUserId())) {
+            User user = userMapper.selectById(e.getUserId());
+            tagVo.setUser(new IdName(user.getId(), user.getUsername()));
+        }
+        if (Objects.nonNull(e.getParentTagId())) {
+            Tag tag = baseMapper.selectById(e.getParentTagId());
+            tagVo.setParentTag(new IdName(tag.getId(), tag.getName()));
+        }
+        return tagVo;
+    }
+
+    @Override
     public List<TagTier> tiers() {
         List<Tag> tags = baseMapper.selectList(null);
-        List<TagTier> tagTiers = tags.stream().map(e -> {
+        List<TagVo> tagVos = changeTags2TagVos(tags);
+        List<TagTier> tagTiers = new ArrayList<>();
+        tagVos.forEach(e -> {
             TagTier tagTier = new TagTier();
-            tagTier.setId(e.getId());
-            tagTier.setName(e.getName());
-            tagTier.setParentTagId(e.getParentTagId());
-            tagTier.setDescription(e.getDescription());
-            tagTier.setCreateTime(e.getCreateTime());
-            tagTier.setUpdateTime(e.getUpdateTime());
-            tagTier.setUserId(e.getUserId());
-            return tagTier;
-        }).toList();
-//        log.info("tagTiers: " + String.valueOf(tagTiers));
+            SmartBeanUtil.copyProperties(e, tagTier);
+            tagTiers.add(tagTier);
+        });
         return handleTagTiers(tagTiers);
     }
 
     private List<TagTier> handleTagTiers(List<TagTier> tagTiers) {
         List<TagTier> tagTierList = new ArrayList<>();
-        HashMap<String, List<TagTier>> map = new HashMap<>();
+        HashMap<Long, List<TagTier>> map = new HashMap<>();
         for (TagTier tagTier : tagTiers) {
-            if (tagTier.getParentTagId() != null) {
-                if (map.containsKey(tagTier.getParentTagId())) {
-                    map.get(tagTier.getParentTagId()).add(tagTier);
+            if (Objects.nonNull(tagTier.getParentTag())) {
+                if (map.containsKey(tagTier.getParentTag().getId())) {
+                    map.get(tagTier.getParentTag().getId()).add(tagTier);
                 } else {
                     List<TagTier> list = new ArrayList<>();
                     list.add(tagTier);
-                    map.put(tagTier.getParentTagId(), list);
+                    map.put(tagTier.getParentTag().getId(), list);
                 }
             } else {
                 tagTierList.add(tagTier);
@@ -82,7 +126,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
         return dfTagTiers(tagTierList, map);
     }
 
-    private List<TagTier> dfTagTiers(List<TagTier> tagTiers, HashMap<String, List<TagTier>> map) {
+    private List<TagTier> dfTagTiers(List<TagTier> tagTiers, HashMap<Long, List<TagTier>> map) {
         if (tagTiers != null) {
             for (TagTier tagTier : tagTiers) {
                 List<TagTier> children = map.get(tagTier.getId());

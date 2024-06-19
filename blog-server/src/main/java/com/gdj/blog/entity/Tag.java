@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 @TableName("tag")
 public class Tag {
     @TableId(type = IdType.AUTO, value = "id")
-    private long id;
+    private Long id;
     @NotEmpty(message = "标签名称不能为空")
     private String name;
     private String description;
-    private long userId;
+    private Long userId;
     private String createTime;
     private String updateTime;
-    private String routeId;
-    private String parentTagId;
+    private Long routeId;
+    private Long parentTagId;
 }

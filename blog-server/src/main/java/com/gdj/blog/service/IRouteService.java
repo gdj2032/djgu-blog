@@ -1,10 +1,10 @@
 package com.gdj.blog.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.gdj.blog.dao.IContainerBaseService;
 import com.gdj.blog.entity.Route;
 
-public interface IRouteService extends IService<Route> {
+public interface IRouteService extends IContainerBaseService<Route> {
 
     /**
      * 路由列表分页查询

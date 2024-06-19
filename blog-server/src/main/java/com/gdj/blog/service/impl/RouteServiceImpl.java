@@ -1,7 +1,7 @@
 package com.gdj.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.gdj.blog.dao.ContainerServiceImpl;
 import com.gdj.blog.entity.Route;
 import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.mapper.RouteMapper;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RouteServiceImpl extends ServiceImpl<RouteMapper, Route> implements IRouteService {
+public class RouteServiceImpl extends ContainerServiceImpl<RouteMapper, Route> implements IRouteService {
 
     @Resource
     private RouteMapper routeMapper;

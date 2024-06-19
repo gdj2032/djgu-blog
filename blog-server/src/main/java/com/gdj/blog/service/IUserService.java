@@ -1,17 +1,13 @@
 package com.gdj.blog.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.gdj.blog.dao.IContainerBaseService;
 import com.gdj.blog.entity.User;
+import com.gdj.blog.entity.UserVo;
 
-public interface IUserService extends IService<User> {
+public interface IUserService extends IContainerBaseService<User> {
 
     User login(User user);
 
-    /**
-     * 用户列表分页查询
-     * @param page
-     * @return
-     */
-    IPage<User> selectUserPage(IPage<User> page);
+    IPage<UserVo> pageData(Integer limit, Integer offset);
 }

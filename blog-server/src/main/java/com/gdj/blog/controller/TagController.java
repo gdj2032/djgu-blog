@@ -1,9 +1,8 @@
 package com.gdj.blog.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gdj.blog.entity.PageInfo;
 import com.gdj.blog.entity.Tag;
+import com.gdj.blog.entity.TagVo;
 import com.gdj.blog.entity.WebResponse;
 import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.service.impl.TagServiceImpl;
@@ -26,14 +25,11 @@ public class TagController {
     private TagServiceImpl tagService;
 
     @GetMapping("/list")
-    public WebResponse<PageInfo<Tag>> list(
+    public WebResponse<PageInfo<TagVo>> list(
             @RequestParam(defaultValue = "10") Integer limit,
             @RequestParam(defaultValue = "0") Integer offset
     ) {
-        int pageNumber = offset / limit + 1;
-        Page<Tag> page = new Page<>(pageNumber, limit);
-        IPage<Tag> pages = tagService.pages(page);
-        return WebResponse.ok(PageUtils.page2PageInfo(pages));
+        return WebResponse.ok(PageUtils.page2PageInfo(tagService.pageData(limit, offset)));
     }
 
     @GetMapping("/list/tier")

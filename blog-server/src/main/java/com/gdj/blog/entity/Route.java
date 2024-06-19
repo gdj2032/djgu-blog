@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @TableName("route")
 public class Route {
     @TableId(type = IdType.AUTO, value = "id")
-    private long id;
+    private Long id;
     @NotEmpty(message = "路由名称不能为空")
     private String name;
     private String description;

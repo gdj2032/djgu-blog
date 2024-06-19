@@ -1,14 +1,20 @@
 package com.gdj.blog.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.gdj.blog.dao.IContainerBaseService;
 import com.gdj.blog.entity.Tag;
+import com.gdj.blog.entity.TagTier;
+import com.gdj.blog.entity.TagVo;
 
-public interface ITagService extends IService<Tag> {
+import java.util.List;
 
-    IPage<Tag> pages(IPage<Tag> page);
+public interface ITagService extends IContainerBaseService<Tag> {
 
-    Tag selectByName(String tagName);
+    Tag selectByName(String name);
 
     Tag insert(Tag tag);
+
+    IPage<TagVo> pageData(Integer limit, Integer offset);
+
+    List<TagTier> tiers();
 }
