@@ -2,17 +2,17 @@ package com.gdj.blog.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gdj.blog.dao.IContainerBaseService;
-import com.gdj.blog.entity.Route;
+import com.gdj.blog.entity.RouteDO;
 
-public interface IRouteService extends IContainerBaseService<Route> {
+public interface IRouteService extends IContainerBaseService<RouteDO> {
 
-    IPage<Route> pageData(Integer limit, Integer offset);
+    IPage<RouteDO> pageData(Integer limit, Integer offset);
 
-    Route getByName(String name);
+    RouteDO getByName(String name);
 
-    Route getByPath(String path);
+    RouteDO getByPath(String path);
 
-    Route insert(Route entity);
+    RouteDO insert(RouteDO entity);
 
-    Route update(Route entity);
+    RouteDO update(RouteDO entity);
 }

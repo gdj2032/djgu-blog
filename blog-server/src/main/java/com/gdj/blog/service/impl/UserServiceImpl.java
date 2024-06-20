@@ -3,7 +3,7 @@ package com.gdj.blog.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gdj.blog.dao.ContainerServiceImpl;
-import com.gdj.blog.entity.User;
+import com.gdj.blog.entity.UserDO;
 import com.gdj.blog.entity.UserVo;
 import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.mapper.UserMapper;
@@ -18,16 +18,16 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl extends ContainerServiceImpl<UserMapper, User> implements IUserService {
+public class UserServiceImpl extends ContainerServiceImpl<UserMapper, UserDO> implements IUserService {
 
     @Resource
     private UserMapper userMapper;
 
-    public User login(User user) {
-        User u = baseMapper.selectJoinOne(User.class,
-                new MPJLambdaWrapper<User>()
-                        .eq(User::getUsername, user.getUsername())
-                        .eq(User::getPassword, user.getPassword())
+    public UserDO login(UserDO user) {
+        UserDO u = baseMapper.selectJoinOne(UserDO.class,
+                new MPJLambdaWrapper<UserDO>()
+                        .eq(UserDO::getUsername, user.getUsername())
+                        .eq(UserDO::getPassword, user.getPassword())
         );
         if (u != null) {
             CurrentLoginInfo.setUserInfo(u);
@@ -44,8 +44,8 @@ public class UserServiceImpl extends ContainerServiceImpl<UserMapper, User> impl
     ) {
         int pageNumber = offset / limit + 1;
         return baseMapper.selectJoinPage(new Page<>(pageNumber, limit), UserVo.class,
-                new MPJLambdaWrapper<User>()
-                        .selectAll(User.class)
+                new MPJLambdaWrapper<UserDO>()
+                        .selectAll(UserDO.class)
         );
     }
 }

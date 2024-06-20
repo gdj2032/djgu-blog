@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("tag")
-public class Tag {
+public class TagDO {
     @TableId(type = IdType.AUTO, value = "id")
     private Long id;
     @NotEmpty(message = "标签名称不能为空")

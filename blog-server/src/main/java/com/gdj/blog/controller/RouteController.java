@@ -1,7 +1,7 @@
 package com.gdj.blog.controller;
 
 import com.gdj.blog.entity.PageInfo;
-import com.gdj.blog.entity.Route;
+import com.gdj.blog.entity.RouteDO;
 import com.gdj.blog.entity.WebResponse;
 import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.service.impl.RouteServiceImpl;
@@ -22,7 +22,7 @@ public class RouteController {
     private RouteServiceImpl routeService;
 
     @GetMapping("/list")
-    public WebResponse<PageInfo<Route>> list(
+    public WebResponse<PageInfo<RouteDO>> list(
         @RequestParam(defaultValue = "10") Integer limit,
         @RequestParam(defaultValue = "0") Integer offset
     ) {
@@ -30,20 +30,20 @@ public class RouteController {
     }
 
     @PostMapping("/create")
-    public WebResponse<Route> create(@RequestBody @Valid Route route) {
-        return WebResponse.ok(routeService.insert(route));
+    public WebResponse<RouteDO> create(@RequestBody @Valid RouteDO routeDo) {
+        return WebResponse.ok(routeService.insert(routeDo));
     }
 
     @PutMapping("/edit/{id}")
-    public WebResponse<?> update(@PathVariable long id, @RequestBody @Valid Route route) {
-        route.setId(id);
-        return WebResponse.ok(routeService.update(route));
+    public WebResponse<?> update(@PathVariable long id, @RequestBody @Valid RouteDO routeDo) {
+        routeDo.setId(id);
+        return WebResponse.ok(routeService.update(routeDo));
     }
 
     @DeleteMapping("/delete/{id}")
     public WebResponse<?> delete(@PathVariable long id) {
-        Route route = routeService.getById(id);
-        if (!Objects.isNull(route)) {
+        RouteDO routeDo = routeService.getById(id);
+        if (!Objects.isNull(routeDo)) {
             Boolean isCreate = routeService.removeById(id);
             return WebResponse.ok(isCreate);
         }

@@ -2,7 +2,7 @@ package com.gdj.blog.controller;
 
 import com.gdj.blog.constant.GlobalConstant;
 import com.gdj.blog.entity.PageInfo;
-import com.gdj.blog.entity.User;
+import com.gdj.blog.entity.UserDO;
 import com.gdj.blog.entity.UserVo;
 import com.gdj.blog.entity.WebResponse;
 import com.gdj.blog.service.impl.UserServiceImpl;
@@ -21,7 +21,7 @@ public class UserController {
     private UserServiceImpl userService;
 
     @PostMapping("/login")
-    public WebResponse<?> login(@RequestBody User user) {
+    public WebResponse<UserDO> login(@RequestBody UserDO user) {
         return WebResponse.ok(userService.login(user));
     }
 

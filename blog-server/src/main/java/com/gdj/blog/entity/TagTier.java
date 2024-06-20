@@ -5,6 +5,6 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class TagTier extends TagVo {
+public class TagTier extends TagVO {
     List<TagTier> children;
 }

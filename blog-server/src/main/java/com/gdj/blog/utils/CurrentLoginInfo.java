@@ -1,7 +1,7 @@
 package com.gdj.blog.utils;
 
 import com.gdj.blog.constant.GlobalConstant;
-import com.gdj.blog.entity.User;
+import com.gdj.blog.entity.UserDO;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ public class CurrentLoginInfo {
         return request.getHeader(GlobalConstant.SESSION);
     }
 
-    public static void setUserInfo(User user) {
+    public static void setUserInfo(UserDO user) {
         if (user != null) {
             Map<String, Object> m = new HashMap<>();
             m.put(GlobalConstant.SESSION_ID, user.getId());
@@ -30,12 +30,12 @@ public class CurrentLoginInfo {
         }
     }
 
-    public static User getUserInfo() {
+    public static UserDO getUserInfo() {
         String session = getSession();
         if (session == null) return null;
         try {
             Claims claims = JwtUtils.parseJwt(session);
-            User user = new User();
+            UserDO user = new UserDO();
             user.setId(Long.parseLong(claims.get(GlobalConstant.SESSION_ID).toString()));
             user.setUsername((String) claims.get(GlobalConstant.SESSION_USERNAME));
             return user;

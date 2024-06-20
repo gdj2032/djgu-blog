@@ -1,8 +1,8 @@
 package com.gdj.blog.controller;
 
 import com.gdj.blog.entity.PageInfo;
-import com.gdj.blog.entity.Tag;
-import com.gdj.blog.entity.TagVo;
+import com.gdj.blog.entity.TagDO;
+import com.gdj.blog.entity.TagVO;
 import com.gdj.blog.entity.WebResponse;
 import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.service.impl.TagServiceImpl;
@@ -23,7 +23,7 @@ public class TagController {
     private TagServiceImpl tagService;
 
     @GetMapping("/list")
-    public WebResponse<PageInfo<TagVo>> list(
+    public WebResponse<PageInfo<TagVO>> list(
             @RequestParam(defaultValue = "10") Integer limit,
             @RequestParam(defaultValue = "0") Integer offset
     ) {
@@ -36,20 +36,20 @@ public class TagController {
     }
 
     @PostMapping("/create")
-    public WebResponse<?> create(@RequestBody @Valid Tag tag) {
-        return WebResponse.ok(tagService.insert(tag));
+    public WebResponse<?> create(@RequestBody @Valid TagDO tagDo) {
+        return WebResponse.ok(tagService.insert(tagDo));
     }
 
     @PutMapping("/edit/{id}")
-    public WebResponse<?> edit(@PathVariable long id, @RequestBody @Valid Tag tag) {
-        tag.setId(id);
-        return WebResponse.ok(tagService.update(tag));
+    public WebResponse<?> edit(@PathVariable long id, @RequestBody @Valid TagDO tagDo) {
+        tagDo.setId(id);
+        return WebResponse.ok(tagService.update(tagDo));
     }
 
     @DeleteMapping("/delete/{id}")
     public WebResponse<?> delete(@PathVariable long id) {
-        Tag tag = tagService.getById(id);
-        if (!Objects.isNull(tag)) {
+        TagDO tagDo = tagService.getById(id);
+        if (!Objects.isNull(tagDo)) {
             Boolean isCreate = tagService.removeById(id);
             return WebResponse.ok(isCreate);
         }

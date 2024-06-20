@@ -17,7 +17,7 @@ import java.io.Serializable;
 @JsonIgnoreProperties(allowSetters = true, value = {"password"})
 //该注解也是放在类名上面，作用是：忽略类中字段值为null的对象属性
 //@JsonInclude(JsonInclude.Include.NON_NULL)
-public class User implements Serializable {
+public class UserDO implements Serializable {
     private Long id;
 
     @NotEmpty(message = "用户名不能为空")

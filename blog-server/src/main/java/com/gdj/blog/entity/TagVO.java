@@ -3,7 +3,7 @@ package com.gdj.blog.entity;
 import lombok.Data;
 
 @Data
-public class TagVo {
+public class TagVO {
     private Long id;
     private String name;
     private String description;

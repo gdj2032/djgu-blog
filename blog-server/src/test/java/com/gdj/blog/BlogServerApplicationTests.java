@@ -1,8 +1,8 @@
 package com.gdj.blog;
 
-import com.gdj.blog.entity.Route;
-import com.gdj.blog.entity.TagDo;
-import com.gdj.blog.entity.User;
+import com.gdj.blog.entity.RouteDO;
+import com.gdj.blog.entity.TagDTO;
+import com.gdj.blog.entity.UserDO;
 import com.gdj.blog.mapper.RouteMapper;
 import com.gdj.blog.mapper.TagMapper;
 import com.gdj.blog.mapper.UserMapper;
@@ -33,19 +33,19 @@ class BlogServerApplicationTests {
     void contextLoads() {
 //        List<User> users = userMapper.selectList(null);
 //        users.forEach(System.out::println);
-        List<User> users = userService.list();
+        List<UserDO> users = userService.list();
         users.forEach(System.out::println);
     }
 
     @Test
     void testTags() {
-        List<TagDo> tags = tagMapper.pageData(0, 10);
+        List<TagDTO> tags = tagMapper.pageData(0, 10);
         tags.forEach(System.out::println);
     }
 
     @Test
     void getRouteNameCount() {
-        long n1 = routeMapper.selectCount(new MPJLambdaWrapper<>(Route.class).eq(Route::getName, "test2"));
+        long n1 = routeMapper.selectCount(new MPJLambdaWrapper<>(RouteDO.class).eq(RouteDO::getName, "test2"));
         log.info("getRouteNameCount: {}", n1);
     }
 

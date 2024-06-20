@@ -1,12 +1,12 @@
 package com.gdj.blog.mapper;
 
 import com.gdj.blog.dao.ContainerBaseMapper;
-import com.gdj.blog.entity.Tag;
-import com.gdj.blog.entity.TagDo;
+import com.gdj.blog.entity.TagDO;
+import com.gdj.blog.entity.TagDTO;
 
 import java.util.List;
 
-public interface TagMapper extends ContainerBaseMapper<Tag> {
+public interface TagMapper extends ContainerBaseMapper<TagDO> {
 
-    List<TagDo> pageData(Integer pageNumber, Integer pageSize);
+    List<TagDTO> pageData(Integer pageNumber, Integer pageSize);
 }

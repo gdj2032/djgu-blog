@@ -27,7 +27,7 @@ import java.util.Objects;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TagServiceImpl extends ContainerServiceImpl<TagMapper, Tag> implements ITagService {
+public class TagServiceImpl extends ContainerServiceImpl<TagMapper, TagDO> implements ITagService {
 
     @Resource
     private RouteMapper routeMapper;
@@ -35,14 +35,14 @@ public class TagServiceImpl extends ContainerServiceImpl<TagMapper, Tag> impleme
     private UserMapper userMapper;
 
     @Override
-    public Tag getByName(String tagName) {
-        return baseMapper.selectOne(new MPJLambdaWrapper<>(Tag.class).eq(Tag::getName, tagName));
+    public TagDO getByName(String tagName) {
+        return baseMapper.selectOne(new MPJLambdaWrapper<>(TagDO.class).eq(TagDO::getName, tagName));
     }
 
     @Override
-    public Tag insert(Tag entity) {
-        Tag tag2 = getByName(entity.getName());
-        if (Objects.nonNull(tag2)) throw BaseResult.REPEAT.message("名称已存在").exception();
+    public TagDO insert(TagDO entity) {
+        TagDO tagDO2 = getByName(entity.getName());
+        if (Objects.nonNull(tagDO2)) throw BaseResult.REPEAT.message("名称已存在").exception();
         String time = String.valueOf(LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli());
         entity.setCreateTime(time);
         entity.setUpdateTime(time);
@@ -52,22 +52,22 @@ public class TagServiceImpl extends ContainerServiceImpl<TagMapper, Tag> impleme
     }
 
     @Override
-    public IPage<TagVo> pageData(Integer limit, Integer offset) {
+    public IPage<TagVO> pageData(Integer limit, Integer offset) {
         int pageNumber = offset / limit;
         long total = baseMapper.selectCount(new MPJLambdaWrapper<>());
-        List<TagDo> tags = baseMapper.pageData(pageNumber, limit);
+        List<TagDTO> tags = baseMapper.pageData(pageNumber, limit);
         log.info(String.valueOf(tags.size()));
-        List<TagVo> tagVos = changeTags2TagVos(tags);
-        IPage<TagVo> tagVoPages = new Page<>(pageNumber, limit);
+        List<TagVO> tagVos = changeTags2TagVos(tags);
+        IPage<TagVO> tagVoPages = new Page<>(pageNumber, limit);
         tagVoPages.setRecords(tagVos);
         tagVoPages.setTotal(total);
         return tagVoPages;
     }
 
     @Override
-    public Tag update(Tag entity) {
+    public TagDO update(TagDO entity) {
         if (Objects.isNull(getById(entity.getId()))) throw BaseResult.NOT_FOUND.message("标签不存在").exception();
-        long n1 = baseMapper.selectCount(new MPJLambdaWrapper<>(Tag.class).eq(Tag::getName, entity.getName()).ne(Route::getId, entity.getId()));
+        long n1 = baseMapper.selectCount(new MPJLambdaWrapper<>(TagDO.class).eq(TagDO::getName, entity.getName()).ne(RouteDO::getId, entity.getId()));
         if (n1 >= 1) throw BaseResult.REPEAT.message("名称已存在").exception();
         boolean suc = updateById(entity);
         if (suc) {
@@ -76,17 +76,17 @@ public class TagServiceImpl extends ContainerServiceImpl<TagMapper, Tag> impleme
         throw BaseResult.SERVER_TOO_BUSY.message("标签更新失败").exception();
     }
 
-    public List<TagVo> changeTags2TagVos(List<TagDo> tags) {
-        List<TagVo> tagVos = new ArrayList<>();
+    public List<TagVO> changeTags2TagVos(List<TagDTO> tags) {
+        List<TagVO> tagVos = new ArrayList<>();
         tags.forEach(e -> {
-            TagVo tagVo = changeTag2TagVo(e);
+            TagVO tagVo = changeTag2TagVo(e);
             tagVos.add(tagVo);
         });
         return tagVos;
     }
 
-    public TagVo changeTag2TagVo(TagDo e) {
-        TagVo tagVo = new TagVo();
+    public TagVO changeTag2TagVo(TagDTO e) {
+        TagVO tagVo = new TagVO();
         SmartBeanUtil.copyProperties(e, tagVo);
         if (Objects.nonNull(e.getRouteId())) {
             tagVo.setRoute(new IdName(e.getRouteId(), e.getRouteName()));
@@ -102,7 +102,7 @@ public class TagServiceImpl extends ContainerServiceImpl<TagMapper, Tag> impleme
 
     @Override
     public List<TagTier> tiers() {
-        List<TagVo> tagVos = changeTags2TagVos(all());
+        List<TagVO> tagVos = changeTags2TagVos(all());
         List<TagTier> tagTiers = new ArrayList<>();
         tagVos.forEach(e -> {
             TagTier tagTier = new TagTier();
@@ -113,7 +113,7 @@ public class TagServiceImpl extends ContainerServiceImpl<TagMapper, Tag> impleme
     }
 
     @Override
-    public List<TagDo> all() {
+    public List<TagDTO> all() {
         return baseMapper.pageData(null, null);
     }
 

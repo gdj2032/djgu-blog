@@ -11,14 +11,19 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("route")
-public class Route {
+@TableName("document")
+public class DocumentDO {
     @TableId(type = IdType.AUTO, value = "id")
     private Long id;
-    @NotEmpty(message = "路由名称不能为空")
+    @NotEmpty(message = "文档名称不能为空")
     private String name;
     private String description;
-    @NotEmpty(message = "路径不能为空")
-    private String path;
-    private String role;
+    private String createTime;
+    private String updateTime;
+    @NotEmpty(message = "路由id不能为空")
+    private String routeId;
+    private Long see;
+    @NotEmpty(message = "文件id不能为空")
+    private String fileId;
+    private String tagIds;
 }
