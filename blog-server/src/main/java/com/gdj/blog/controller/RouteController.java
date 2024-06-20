@@ -1,7 +1,5 @@
 package com.gdj.blog.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gdj.blog.entity.PageInfo;
 import com.gdj.blog.entity.Route;
 import com.gdj.blog.entity.WebResponse;
@@ -28,10 +26,7 @@ public class RouteController {
         @RequestParam(defaultValue = "10") Integer limit,
         @RequestParam(defaultValue = "0") Integer offset
     ) {
-        int pageNumber = offset / limit + 1;
-        Page<Route> page = new Page<>(pageNumber, limit);
-        IPage<Route> pages = routeService.pages(page);
-        return WebResponse.ok(PageUtils.page2PageInfo(pages));
+        return WebResponse.ok(PageUtils.page2PageInfo(routeService.pageData(limit, offset)));
     }
 
     @PostMapping("/create")

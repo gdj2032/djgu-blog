@@ -18,9 +18,12 @@ public class Tag {
     @NotEmpty(message = "标签名称不能为空")
     private String name;
     private String description;
-    private Long userId;
     private String createTime;
     private String updateTime;
+    private Long userId;
+    private String userName;
     private Long routeId;
+    private String routeName;
     private Long parentTagId;
+    private String parentTagName;
 }

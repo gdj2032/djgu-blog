@@ -17,4 +17,6 @@ public interface ITagService extends IContainerBaseService<Tag> {
     IPage<TagVo> pageData(Integer limit, Integer offset);
 
     List<TagTier> tiers();
+
+    List<Tag> all();
 }

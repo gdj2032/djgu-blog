@@ -3,7 +3,10 @@ package com.gdj.blog.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gdj.blog.dao.ContainerServiceImpl;
-import com.gdj.blog.entity.*;
+import com.gdj.blog.entity.IdName;
+import com.gdj.blog.entity.Tag;
+import com.gdj.blog.entity.TagTier;
+import com.gdj.blog.entity.TagVo;
 import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.mapper.RouteMapper;
 import com.gdj.blog.mapper.TagMapper;
@@ -79,24 +82,20 @@ public class TagServiceImpl extends ContainerServiceImpl<TagMapper, Tag> impleme
         TagVo tagVo = new TagVo();
         SmartBeanUtil.copyProperties(e, tagVo);
         if (Objects.nonNull(e.getRouteId())) {
-            Route route = routeMapper.selectById(e.getRouteId());
-            tagVo.setRoute(new IdName(route.getId(), route.getName()));
+            tagVo.setRoute(new IdName(e.getRouteId(), e.getRouteName()));
         }
         if (Objects.nonNull(e.getUserId())) {
-            User user = userMapper.selectById(e.getUserId());
-            tagVo.setUser(new IdName(user.getId(), user.getUsername()));
+            tagVo.setUser(new IdName(e.getUserId(), e.getUserName()));
         }
         if (Objects.nonNull(e.getParentTagId())) {
-            Tag tag = baseMapper.selectById(e.getParentTagId());
-            tagVo.setParentTag(new IdName(tag.getId(), tag.getName()));
+            tagVo.setParentTag(new IdName(e.getParentTagId(), e.getParentTagName()));
         }
         return tagVo;
     }
 
     @Override
     public List<TagTier> tiers() {
-        List<Tag> tags = baseMapper.selectList(null);
-        List<TagVo> tagVos = changeTags2TagVos(tags);
+        List<TagVo> tagVos = changeTags2TagVos(all());
         List<TagTier> tagTiers = new ArrayList<>();
         tagVos.forEach(e -> {
             TagTier tagTier = new TagTier();
@@ -104,6 +103,11 @@ public class TagServiceImpl extends ContainerServiceImpl<TagMapper, Tag> impleme
             tagTiers.add(tagTier);
         });
         return handleTagTiers(tagTiers);
+    }
+
+    @Override
+    public List<Tag> all() {
+        return baseMapper.all();
     }
 
     private List<TagTier> handleTagTiers(List<TagTier> tagTiers) {
