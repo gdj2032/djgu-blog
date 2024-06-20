@@ -21,9 +21,6 @@ public class Tag {
     private String createTime;
     private String updateTime;
     private Long userId;
-    private String userName;
     private Long routeId;
-    private String routeName;
     private Long parentTagId;
-    private String parentTagName;
 }

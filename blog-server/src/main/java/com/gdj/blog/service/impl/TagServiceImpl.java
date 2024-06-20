@@ -3,10 +3,7 @@ package com.gdj.blog.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gdj.blog.dao.ContainerServiceImpl;
-import com.gdj.blog.entity.IdName;
-import com.gdj.blog.entity.Tag;
-import com.gdj.blog.entity.TagTier;
-import com.gdj.blog.entity.TagVo;
+import com.gdj.blog.entity.*;
 import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.mapper.RouteMapper;
 import com.gdj.blog.mapper.TagMapper;
@@ -38,38 +35,48 @@ public class TagServiceImpl extends ContainerServiceImpl<TagMapper, Tag> impleme
     private UserMapper userMapper;
 
     @Override
-    public Tag selectByName(String tagName) {
+    public Tag getByName(String tagName) {
         return baseMapper.selectOne(new MPJLambdaWrapper<>(Tag.class).eq(Tag::getName, tagName));
     }
 
     @Override
     public Tag insert(Tag entity) {
-        Tag tag2 = selectByName(entity.getName());
-        if (Objects.isNull(tag2)) {
-            throw BaseResult.REPEAT.message("名称已存在").exception();
-        }
+        Tag tag2 = getByName(entity.getName());
+        if (Objects.nonNull(tag2)) throw BaseResult.REPEAT.message("名称已存在").exception();
         String time = String.valueOf(LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli());
         entity.setCreateTime(time);
         entity.setUpdateTime(time);
         entity.setUserId(Objects.requireNonNull(CurrentLoginInfo.getUserInfo()).getId());
         baseMapper.insert(entity);
-        return selectByName(entity.getName());
+        return getByName(entity.getName());
     }
 
     @Override
     public IPage<TagVo> pageData(Integer limit, Integer offset) {
-        int pageNumber = offset / limit + 1;
-        IPage<Tag> pages = baseMapper.selectJoinPage(new Page<>(pageNumber, limit), Tag.class,
-                new MPJLambdaWrapper<Tag>()
-                        .selectAll(Tag.class)
-        );
-        IPage<TagVo> pages2 = new Page<>(pageNumber, limit);
-        SmartBeanUtil.copyProperties(pages, pages2);
-        pages2.setRecords(changeTags2TagVos(pages.getRecords()));
-        return pages2;
+        int pageNumber = offset / limit;
+        long total = baseMapper.selectCount(new MPJLambdaWrapper<>());
+        List<TagDo> tags = baseMapper.pageData(pageNumber, limit);
+        log.info(String.valueOf(tags.size()));
+        List<TagVo> tagVos = changeTags2TagVos(tags);
+        IPage<TagVo> tagVoPages = new Page<>(pageNumber, limit);
+        tagVoPages.setRecords(tagVos);
+        tagVoPages.setTotal(total);
+        return tagVoPages;
     }
 
-    public List<TagVo> changeTags2TagVos(List<Tag> tags) {
+    @Override
+    public Tag update(Tag entity) {
+        if (Objects.isNull(getById(entity.getId()))) throw BaseResult.NOT_FOUND.message("标签不存在").exception();
+        long n1 = baseMapper.selectCount(new MPJLambdaWrapper<>(Tag.class).eq(Tag::getName, entity.getName()).ne(Route::getId, entity.getId()));
+        if (n1 >= 1) throw BaseResult.REPEAT.message("名称已存在").exception();
+        boolean suc = updateById(entity);
+        if (suc) {
+            return entity;
+        }
+        throw BaseResult.SERVER_TOO_BUSY.message("标签更新失败").exception();
+    }
+
+    public List<TagVo> changeTags2TagVos(List<TagDo> tags) {
         List<TagVo> tagVos = new ArrayList<>();
         tags.forEach(e -> {
             TagVo tagVo = changeTag2TagVo(e);
@@ -78,7 +85,7 @@ public class TagServiceImpl extends ContainerServiceImpl<TagMapper, Tag> impleme
         return tagVos;
     }
 
-    public TagVo changeTag2TagVo(Tag e) {
+    public TagVo changeTag2TagVo(TagDo e) {
         TagVo tagVo = new TagVo();
         SmartBeanUtil.copyProperties(e, tagVo);
         if (Objects.nonNull(e.getRouteId())) {
@@ -106,8 +113,8 @@ public class TagServiceImpl extends ContainerServiceImpl<TagMapper, Tag> impleme
     }
 
     @Override
-    public List<Tag> all() {
-        return baseMapper.all();
+    public List<TagDo> all() {
+        return baseMapper.pageData(null, null);
     }
 
     private List<TagTier> handleTagTiers(List<TagTier> tagTiers) {

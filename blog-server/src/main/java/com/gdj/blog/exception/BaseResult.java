@@ -14,7 +14,7 @@ public class BaseResult implements Serializable {
     private static final long serialVersionUID = 2587609271047191784L;
 
     /**
-     * 未认证
+     * 用户名密码错误
      */
     public static final BaseResult USERNAME_PASSWORD_ERROR = new BaseResult(CodeConstant.API_CODE_CALL_SUCCESS,
             "用户名密码错误", HttpStatus.BAD_REQUEST);

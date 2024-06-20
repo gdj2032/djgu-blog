@@ -36,7 +36,7 @@ public class CurrentLoginInfo {
         try {
             Claims claims = JwtUtils.parseJwt(session);
             User user = new User();
-            user.setId((long) claims.get(GlobalConstant.SESSION_ID));
+            user.setId(Long.parseLong(claims.get(GlobalConstant.SESSION_ID).toString()));
             user.setUsername((String) claims.get(GlobalConstant.SESSION_USERNAME));
             return user;
         } catch (Exception e) {

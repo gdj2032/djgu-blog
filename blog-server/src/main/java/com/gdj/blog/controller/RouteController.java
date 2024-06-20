@@ -30,19 +30,14 @@ public class RouteController {
     }
 
     @PostMapping("/create")
-    public WebResponse<?> create(@RequestBody @Valid Route route) {
+    public WebResponse<Route> create(@RequestBody @Valid Route route) {
         return WebResponse.ok(routeService.insert(route));
     }
 
     @PutMapping("/edit/{id}")
-    public WebResponse<?> edit(@PathVariable long id, @RequestBody @Valid Route route) {
-        Route route2 = routeService.getById(id);
-        if (!Objects.isNull(route2)) {
-            route.setId(id);
-            Boolean isEdit = routeService.updateById(route);
-            return WebResponse.ok(isEdit);
-        }
-        throw BaseResult.NOT_FOUND.message("路由不存在").exception();
+    public WebResponse<?> update(@PathVariable long id, @RequestBody @Valid Route route) {
+        route.setId(id);
+        return WebResponse.ok(routeService.update(route));
     }
 
     @DeleteMapping("/delete/{id}")

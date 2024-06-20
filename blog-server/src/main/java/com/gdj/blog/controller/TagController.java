@@ -12,8 +12,6 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Objects;
 
 @RestController
@@ -44,15 +42,8 @@ public class TagController {
 
     @PutMapping("/edit/{id}")
     public WebResponse<?> edit(@PathVariable long id, @RequestBody @Valid Tag tag) {
-        Tag tag2 = tagService.getById(id);
-        if (!Objects.isNull(tag2)) {
-            String time = String.valueOf(LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli());
-            tag.setId(id);
-            tag.setUpdateTime(time);
-            Boolean isEdit = tagService.updateById(tag);
-            return WebResponse.ok(isEdit);
-        }
-        throw BaseResult.NOT_FOUND.message("标签不存在").exception();
+        tag.setId(id);
+        return WebResponse.ok(tagService.update(tag));
     }
 
     @DeleteMapping("/delete/{id}")
