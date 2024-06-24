@@ -70,7 +70,11 @@ function UpdateTagModal(props: IProps) {
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 16 }}
         form={form}
-        initialValues={data}
+        initialValues={{
+          ...data,
+          routeId: data?.route?.id,
+          parentTagId: data?.parentTag?.id,
+        }}
       >
         <Form.Item
           label="名称"

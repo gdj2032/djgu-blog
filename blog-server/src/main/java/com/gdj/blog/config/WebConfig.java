@@ -15,7 +15,11 @@ public class WebConfig implements WebMvcConfigurer {
     // 忽略检查token
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/login");
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/**")
+                .excludePathPatterns("/login")
+                .excludePathPatterns("/route/list")
+                .excludePathPatterns("/tag/list")
+                .excludePathPatterns("/itemData/getInitTable");
     }
 
 //    @Bean

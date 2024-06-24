@@ -46,5 +46,8 @@ export const uploadFile = async ({ content }) => {
 
 export const initRoutes = async () => {
   const res = await routeService.dList({ limit: 10000, offset: 0 })
-  store.dispatch(routeAction.setRouteInfo({ routes: [...DEFAULT_ROUTE_OPTION.routes, ...res.data.data], currentRoute: res.data.data?.[0] }))
+  store.dispatch(routeAction.setRouteInfo({
+    routes: [...DEFAULT_ROUTE_OPTION.routes, ...res.data.data], currentRoute: res.data.data?.[0],
+    currentSelectKeys: []
+  }))
 }

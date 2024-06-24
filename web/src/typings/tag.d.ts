@@ -4,8 +4,8 @@ export declare namespace TagService {
     name: string;
     description?: string;
     createTime?: string;
-    user?: IIdName;
-    path: string;
+    user: IIdName;
+    route: IIdName;
     parentTag?: IListData
 
     // tier存在

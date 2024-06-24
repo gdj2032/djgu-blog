@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -66,10 +67,10 @@ public class DocumentServiceImpl extends ContainerServiceImpl<DocumentMapper, Do
         List<IdName> tags = new ArrayList<>();
         Arrays.stream(tagIds).toList().forEach(e -> {
             TagDO tagDO = tagMapper.selectById(e);
-            IdName tagVO = new IdName();
-            tagVO.setId(tagDO.getId());
-            tagVO.setName(tagDO.getName());
-            tags.add(tagVO);
+            if (Objects.nonNull(tagDO)) {
+                IdName tagVO = new IdName();
+                tags.add(new IdName(tagVO.getId(), tagVO.getName()));
+            }
         });
         documentVO.setTags(tags);
         return documentVO;
