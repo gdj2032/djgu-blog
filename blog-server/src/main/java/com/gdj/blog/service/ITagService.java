@@ -3,7 +3,6 @@ package com.gdj.blog.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gdj.blog.dao.IContainerBaseService;
 import com.gdj.blog.entity.TagDO;
-import com.gdj.blog.entity.TagDTO;
 import com.gdj.blog.entity.TagTier;
 import com.gdj.blog.entity.TagVO;
 
@@ -19,7 +18,7 @@ public interface ITagService extends IContainerBaseService<TagDO> {
 
     List<TagTier> tiers();
 
-    List<TagDTO> all();
+    List<TagVO> all();
 
     TagDO update(TagDO entity);
 }

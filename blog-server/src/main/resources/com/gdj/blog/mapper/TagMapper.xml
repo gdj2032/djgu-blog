@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gdj.blog.mapper.TagMapper">
-    <select id="pageData" resultType="com.gdj.blog.entity.TagDTO">
+
+    <resultMap id="TagMap" type="com.gdj.blog.entity.TagVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="description" property="description"/>
+        <association property="user" javaType="com.gdj.blog.entity.IdName">
+            <id column="user_id" property="id"/>
+            <result column="user_name" property="name"/>
+        </association>
+        <association property="parentTag" javaType="com.gdj.blog.entity.IdName">
+            <id column="parent_tag_id" property="id"/>
+            <result column="parent_tag_name" property="name"/>
+        </association>
+        <association property="route" javaType="com.gdj.blog.entity.IdName">
+            <id column="route_id" property="id"/>
+            <result column="route_name" property="name"/>
+        </association>
+    </resultMap>
+
+    <select id="pageData" resultMap="TagMap">
         select t1.id,
                t1.name,
                t1.create_time,

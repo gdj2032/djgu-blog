@@ -7,6 +7,7 @@ import com.gdj.blog.entity.DocumentDO;
 import com.gdj.blog.entity.DocumentVO;
 import com.gdj.blog.entity.IdName;
 import com.gdj.blog.entity.TagDO;
+import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.mapper.DocumentMapper;
 import com.gdj.blog.mapper.RouteMapper;
 import com.gdj.blog.mapper.TagMapper;
@@ -18,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +36,10 @@ public class DocumentServiceImpl extends ContainerServiceImpl<DocumentMapper, Do
 
     @Resource
     private TagMapper tagMapper;
+
+    public DocumentDO getByName(String name) {
+        return baseMapper.selectOne(new MPJLambdaWrapper<>(DocumentDO.class).eq(DocumentDO::getName, name));
+    }
 
     public IPage<DocumentVO> pageData(Integer limit, Integer offset, String name, String routeId, String tagId) {
         int pageNumber = offset / limit + 1;
@@ -51,6 +58,17 @@ public class DocumentServiceImpl extends ContainerServiceImpl<DocumentMapper, Do
         return pageVOIPage;
     }
 
+    @Override
+    public DocumentVO insert(DocumentDO entity) {
+        if (Objects.nonNull(getByName(entity.getName()))) throw BaseResult.REPEAT.message("名称已存在").exception();
+        entity.setSee((long) 0);
+        String time = String.valueOf(LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli());
+        entity.setCreateTime(time);
+        entity.setUpdateTime(time);
+        baseMapper.insert(entity);
+        return documentDO2Vo(getByName(entity.getName()));
+    }
+
     private List<DocumentVO> documentDOs2VOs(List<DocumentDO> documents) {
         List<DocumentVO> documentVOs = new ArrayList<>();
         for (DocumentDO documentDO : documents) {
@@ -60,6 +78,7 @@ public class DocumentServiceImpl extends ContainerServiceImpl<DocumentMapper, Do
     }
 
     private DocumentVO documentDO2Vo(DocumentDO documentDO) {
+        if (Objects.isNull(documentDO)) return null;
         DocumentVO documentVO = new DocumentVO();
         SmartBeanUtil.copyProperties(documentDO, documentVO);
         documentVO.setRoute(routeMapper.selectById(documentDO.getRouteId()));

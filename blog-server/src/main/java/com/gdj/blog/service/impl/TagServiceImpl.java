@@ -3,7 +3,10 @@ package com.gdj.blog.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gdj.blog.dao.ContainerServiceImpl;
-import com.gdj.blog.entity.*;
+import com.gdj.blog.entity.RouteDO;
+import com.gdj.blog.entity.TagDO;
+import com.gdj.blog.entity.TagTier;
+import com.gdj.blog.entity.TagVO;
 import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.mapper.RouteMapper;
 import com.gdj.blog.mapper.TagMapper;
@@ -55,11 +58,10 @@ public class TagServiceImpl extends ContainerServiceImpl<TagMapper, TagDO> imple
     public IPage<TagVO> pageData(Integer limit, Integer offset) {
         int pageNumber = offset / limit;
         long total = baseMapper.selectCount(new MPJLambdaWrapper<>());
-        List<TagDTO> tags = baseMapper.pageData(pageNumber, limit);
+        List<TagVO> tags = baseMapper.pageData(pageNumber, limit);
         log.info(String.valueOf(tags.size()));
-        List<TagVO> tagVos = changeTags2TagVos(tags);
         IPage<TagVO> tagVoPages = new Page<>(pageNumber, limit);
-        tagVoPages.setRecords(tagVos);
+        tagVoPages.setRecords(tags);
         tagVoPages.setTotal(total);
         return tagVoPages;
     }
@@ -76,33 +78,9 @@ public class TagServiceImpl extends ContainerServiceImpl<TagMapper, TagDO> imple
         throw BaseResult.SERVER_TOO_BUSY.message("标签更新失败").exception();
     }
 
-    public List<TagVO> changeTags2TagVos(List<TagDTO> tags) {
-        List<TagVO> tagVos = new ArrayList<>();
-        tags.forEach(e -> {
-            TagVO tagVo = changeTag2TagVo(e);
-            tagVos.add(tagVo);
-        });
-        return tagVos;
-    }
-
-    public TagVO changeTag2TagVo(TagDTO e) {
-        TagVO tagVo = new TagVO();
-        SmartBeanUtil.copyProperties(e, tagVo);
-        if (Objects.nonNull(e.getRouteId())) {
-            tagVo.setRoute(new IdName(e.getRouteId(), e.getRouteName()));
-        }
-        if (Objects.nonNull(e.getUserId())) {
-            tagVo.setUser(new IdName(e.getUserId(), e.getUserName()));
-        }
-        if (Objects.nonNull(e.getParentTagId())) {
-            tagVo.setParentTag(new IdName(e.getParentTagId(), e.getParentTagName()));
-        }
-        return tagVo;
-    }
-
     @Override
     public List<TagTier> tiers() {
-        List<TagVO> tagVos = changeTags2TagVos(all());
+        List<TagVO> tagVos = all();
         List<TagTier> tagTiers = new ArrayList<>();
         tagVos.forEach(e -> {
             TagTier tagTier = new TagTier();
@@ -113,7 +91,7 @@ public class TagServiceImpl extends ContainerServiceImpl<TagMapper, TagDO> imple
     }
 
     @Override
-    public List<TagDTO> all() {
+    public List<TagVO> all() {
         return baseMapper.pageData(null, null);
     }
 

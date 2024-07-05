@@ -19,7 +19,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/login")
                 .excludePathPatterns("/route/list")
                 .excludePathPatterns("/tag/list")
-                .excludePathPatterns("/itemData/getInitTable");
+                .excludePathPatterns("/itemData/getInitTable")
+                .excludePathPatterns("/file/download")
+                .excludePathPatterns("/tools/data2interface");
     }
 
 //    @Bean

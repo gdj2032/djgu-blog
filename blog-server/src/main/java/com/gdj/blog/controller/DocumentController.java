@@ -1,16 +1,15 @@
 package com.gdj.blog.controller;
 
+import com.gdj.blog.entity.DocumentDO;
 import com.gdj.blog.entity.DocumentVO;
 import com.gdj.blog.entity.PageInfo;
 import com.gdj.blog.entity.WebResponse;
 import com.gdj.blog.service.impl.DocumentServiceImpl;
 import com.gdj.blog.utils.PageUtils;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("document")
@@ -28,6 +27,11 @@ public class DocumentController {
             @RequestParam(defaultValue = "", required = false) String tagId
     ) {
         return WebResponse.ok(PageUtils.page2PageInfo(documentService.pageData(limit, offset, name, routeId, tagId)));
+    }
+
+    @PostMapping("/create")
+    public WebResponse<DocumentVO> create(@RequestBody @Valid DocumentDO documentDO) {
+        return WebResponse.ok(documentService.insert(documentDO));
     }
 
 }

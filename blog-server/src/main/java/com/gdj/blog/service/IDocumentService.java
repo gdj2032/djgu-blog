@@ -8,4 +8,6 @@ import com.gdj.blog.entity.DocumentVO;
 public interface IDocumentService extends IContainerBaseService<DocumentDO> {
 
     IPage<DocumentVO> pageData(Integer limit, Integer offset, String name, String routeId, String tagId);
+
+    DocumentVO insert(DocumentDO documentDO);
 }
