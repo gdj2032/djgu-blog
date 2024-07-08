@@ -71,8 +71,8 @@ class BlogServerApplicationTests {
     @Test
     void getDocuments() {
 //        1702274830586533L
-        IPage<DocumentVO> page = documentService.pageData(10, 0, 1702274739108752L, null, "首屏");
-        log.info(String.valueOf(page.getTotal()));
+        IPage<DocumentVO> page = documentService.pageData(10, 0, 1702274739108752L, null, null);
+        log.info(page.toString());
     }
 
 }

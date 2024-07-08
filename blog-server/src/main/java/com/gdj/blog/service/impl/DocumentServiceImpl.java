@@ -28,9 +28,8 @@ public class DocumentServiceImpl extends ContainerServiceImpl<DocumentMapper, Do
     }
 
     public IPage<DocumentVO> pageData(Integer limit, Integer offset, Long routeId, Long tagId, String nameLike) {
-        int pageNumber = offset / limit + 1;
-        IPage<DocumentVO> pageVOIPage = new Page<>(pageNumber, limit);
-        List<DocumentVO> documentVOS = baseMapper.pageData(pageNumber, limit, routeId, tagId, nameLike);
+        IPage<DocumentVO> pageVOIPage = new Page<>(offset, limit);
+        List<DocumentVO> documentVOS = baseMapper.pageData(offset, limit, routeId, tagId, nameLike);
         Long count = baseMapper.countData(routeId, tagId, nameLike);
         pageVOIPage.setTotal(count);
         pageVOIPage.setRecords(documentVOS);

@@ -10,9 +10,12 @@
         <result column="description" property="description"/>
         <result column="see" property="see"/>
         <result column="fileId" property="fileId"/>
-        <association property="route" javaType="com.gdj.blog.entity.IdName">
+        <association property="route" javaType="com.gdj.blog.entity.RouteDO">
             <id column="route_id" property="id"/>
             <result column="route_name" property="name"/>
+            <result column="route_path" property="path"/>
+            <result column="route_description" property="description"/>
+            <result column="route_role" property="role"/>
         </association>
         <!-- collection集合，嵌套的查询语句为 getTags -->
         <collection property="tags" ofType="com.gdj.blog.entity.IdName"
@@ -48,9 +51,13 @@
 
     <select id="pageData" resultMap="DocMap">
         SELECT
+        distinct d.id,
         d.*,
         r.id AS route_id,
-        r.name AS route_name
+        r.name AS route_name,
+        r.path AS route_path,
+        r.description AS route_description,
+        r.role AS route_role
         FROM document d
         <include refid="pageDataCommon"/>
         <if test="pageNumber != null">
