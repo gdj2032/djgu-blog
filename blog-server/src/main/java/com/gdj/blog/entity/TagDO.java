@@ -8,11 +8,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("tag")
-public class TagDO {
+public class TagDO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @TableId(type = IdType.AUTO, value = "id")
     private Long id;
     @NotEmpty(message = "标签名称不能为空")

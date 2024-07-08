@@ -10,11 +10,18 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("file")
-public class FileDO implements Serializable {
+@TableName("document_tag_relation")
+public class DocumentTagRelationDo implements Serializable {
+
     private static final long serialVersionUID = 1L;
+
     private Long id;
-    private Boolean used;
-    private String url;
-    private String createTime;
+    /**
+     * 标签id
+     */
+    private Long tagId;
+    /**
+     * 文档id
+     */
+    private Long documentId;
 }

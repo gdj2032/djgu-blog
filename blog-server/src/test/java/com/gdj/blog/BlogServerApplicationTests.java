@@ -1,12 +1,14 @@
 package com.gdj.blog;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.gdj.blog.entity.DocumentVO;
 import com.gdj.blog.entity.RouteDO;
 import com.gdj.blog.entity.TagVO;
 import com.gdj.blog.entity.UserDO;
-import com.gdj.blog.mapper.DocumentMapper;
 import com.gdj.blog.mapper.RouteMapper;
 import com.gdj.blog.mapper.TagMapper;
 import com.gdj.blog.mapper.UserMapper;
+import com.gdj.blog.service.impl.DocumentServiceImpl;
 import com.gdj.blog.service.impl.UserServiceImpl;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +31,7 @@ class BlogServerApplicationTests {
     @Autowired
     private UserServiceImpl userService;
     @Autowired
-    private DocumentMapper documentMapper;
+    private DocumentServiceImpl documentService;
 
     @Test
     void contextLoads() {
@@ -67,9 +69,10 @@ class BlogServerApplicationTests {
 //    }
 
     @Test
-    void getDocs() {
-//        List<DocumentVO> documentVO = documentMapper.pageData(1, 10);
-//        documentVO.forEach(System.out::println);
+    void getDocuments() {
+//        1702274830586533L
+        IPage<DocumentVO> page = documentService.pageData(10, 0, 1702274739108752L, null, "首屏");
+        log.info(String.valueOf(page.getTotal()));
     }
 
 }

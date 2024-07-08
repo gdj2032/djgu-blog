@@ -2,35 +2,66 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gdj.blog.mapper.DocumentMapper">
 
-    <!--    <resultMap id="DocMap" type="com.gdj.blog.entity.DocumentVO">-->
-    <!--        <id column="id" property="id"/>-->
-    <!--        <result column="name" property="name"/>-->
-    <!--        <result column="create_time" property="createTime"/>-->
-    <!--        <result column="update_time" property="updateTime"/>-->
-    <!--        <result column="description" property="description"/>-->
-    <!--        <result column="see" property="see"/>-->
-    <!--        <result column="fileId" property="fileId"/>-->
-    <!--        <collection property="tags" javaType="com.gdj.blog.entity.IdName">-->
-    <!--            <id column="tag_id" property="id"/>-->
-    <!--            <result column="tag_name" property="name"/>-->
-    <!--        </collection>-->
-    <!--        &lt;!&ndash;        <association property="route" javaType="com.gdj.blog.entity.IdName">&ndash;&gt;-->
-    <!--        &lt;!&ndash;            <id column="route_id" property="id"/>&ndash;&gt;-->
-    <!--        &lt;!&ndash;            <result column="route_name" property="name"/>&ndash;&gt;-->
-    <!--        &lt;!&ndash;        </association>&ndash;&gt;-->
-    <!--    </resultMap>-->
+    <resultMap id="DocMap" type="com.gdj.blog.entity.DocumentVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="description" property="description"/>
+        <result column="see" property="see"/>
+        <result column="fileId" property="fileId"/>
+        <association property="route" javaType="com.gdj.blog.entity.IdName">
+            <id column="route_id" property="id"/>
+            <result column="route_name" property="name"/>
+        </association>
+        <!-- collection集合，嵌套的查询语句为 getTags -->
+        <collection property="tags" ofType="com.gdj.blog.entity.IdName"
+                    select="getTags" column="{documentId=id}">
+        </collection>
+    </resultMap>
 
-    <!--    <select id="pageData" resultMap="DocMap">-->
-    <!--        SELECT-->
-    <!--        d.*,-->
-    <!--        r.id AS route_id,-->
-    <!--        r.name AS route_name-->
-    <!--        FROM document d-->
-    <!--        LEFT JOIN route r-->
-    <!--        ON r.id = d.route_id-->
-    <!--        <if test="pageNumber != null">-->
-    <!--            LIMIT #{pageNumber}, #{pageSize}-->
-    <!--        </if>-->
-    <!--    </select>-->
+    <!-- 嵌套的select语句，参数由 collection 的 column 传递进来 -->
+    <select id="getTags" resultType="com.gdj.blog.entity.IdName">
+        SELECT t.id, t.name
+        FROM document d
+                 LEFT JOIN document_tag_relation dtp ON d.id = dtp.document_id
+                 LEFT JOIN tag t ON dtp.tag_id = t.id
+        where dtp.document_id = #{documentId}
+    </select>
+
+    <sql id="pageDataCommon">
+        LEFT JOIN route r ON r.id = d.route_id
+        LEFT JOIN document_tag_relation dtp ON d.id = dtp.document_id
+        LEFT JOIN tag t ON dtp.tag_id = t.id
+        <where>
+            <if test="routeId != null">
+                AND d.route_id = #{routeId}
+            </if>
+            <if test="tagId != null">
+                AND t.id = #{tagId}
+            </if>
+            <if test="nameLike != null">
+                AND d.name LIKE CONCAT("%", #{nameLike}, "%")
+            </if>
+        </where>
+    </sql>
+
+    <select id="pageData" resultMap="DocMap">
+        SELECT
+        d.*,
+        r.id AS route_id,
+        r.name AS route_name
+        FROM document d
+        <include refid="pageDataCommon"/>
+        <if test="pageNumber != null">
+            LIMIT #{pageNumber}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="countData" resultType="java.lang.Long">
+        SELECT count(distinct d.id)
+        FROM document d
+        <include refid="pageDataCommon"/>
+    </select>
 
 </mapper>

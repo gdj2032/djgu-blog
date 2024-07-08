@@ -8,11 +8,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("route")
-public class RouteDO {
+public class RouteDO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @TableId(type = IdType.AUTO, value = "id")
     private Long id;
     @NotEmpty(message = "路由名称不能为空")

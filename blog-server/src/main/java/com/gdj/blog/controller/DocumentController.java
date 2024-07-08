@@ -22,15 +22,15 @@ public class DocumentController {
     public WebResponse<PageInfo<DocumentVO>> list(
             @RequestParam(defaultValue = "10") Integer limit,
             @RequestParam(defaultValue = "0") Integer offset,
-            @RequestParam(defaultValue = "", required = false) String name,
-            @RequestParam(defaultValue = "", required = false) String routeId,
-            @RequestParam(defaultValue = "", required = false) String tagId
+            @RequestParam(defaultValue = "", required = false) String nameLike,
+            @RequestParam(defaultValue = "", required = false) Long routeId,
+            @RequestParam(defaultValue = "", required = false) Long tagId
     ) {
-        return WebResponse.ok(PageUtils.page2PageInfo(documentService.pageData(limit, offset, name, routeId, tagId)));
+        return WebResponse.ok(PageUtils.page2PageInfo(documentService.pageData(limit, offset, routeId, tagId, nameLike)));
     }
 
     @PostMapping("/create")
-    public WebResponse<DocumentVO> create(@RequestBody @Valid DocumentDO documentDO) {
+    public WebResponse<DocumentDO> create(@RequestBody @Valid DocumentDO documentDO) {
         return WebResponse.ok(documentService.insert(documentDO));
     }
 

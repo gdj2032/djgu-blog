@@ -13,6 +13,6 @@ public class DocumentVO {
     private String updateTime;
     private Long see;
     private String fileId;
-    private RouteDO route;
+    private IdName route;
     private List<IdName> tags;
 }
