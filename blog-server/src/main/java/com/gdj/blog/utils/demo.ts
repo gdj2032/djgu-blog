@@ -1,8 +1,9 @@
 interface IDemo {
- 'd': {
-  'a': number;
-  'b': string;
-  'c': number[];
-  'd': Object;
- }[];
+ 'productId': number;
+ 'name': string;
+ 'orderNum': number;
+ 'id': number;
+ 'type': number;
+ 'parentId': number;
+ 'url': string;
 }
