@@ -1,5 +1,7 @@
 package com.gdj.blog.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.gdj.blog.entity.ToolsData2interfaceVO;
 import com.gdj.blog.enums.Data2interfaceEnum;
 import com.gdj.blog.utils.ToolUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -13,12 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class ToolsController {
 
-    @PostMapping("/data2interface")
+    @PostMapping("/data2Interface")
     public Object data2Interface(
-            @RequestBody Data2interfaceEnum type,
-            @RequestBody Object data
+            @RequestBody ToolsData2interfaceVO vo
     ) throws Exception {
-        log.info(data.toString());
-        return ToolUtils.data2Interface(type, data);
+        log.info(vo.toString());
+        return ToolUtils.data2Interface(Data2interfaceEnum.valueOf(vo.getType()), JSON.parseObject(vo.getData()));
     }
 }

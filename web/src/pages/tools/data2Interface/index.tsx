@@ -27,7 +27,7 @@ function Data2Interface() {
           message.error('数据格式错误')
           return
         }
-        const res = await toolsService.data2Interface(jsonData)
+        const res = await toolsService.data2Interface(JSON.stringify(jsonData))
         if (res?.code === 200) {
           message.success('转换成功')
           setValue2(res.data)

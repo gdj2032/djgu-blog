@@ -21,13 +21,14 @@ public class ToolUtils {
     public static String data2Interface(Data2interfaceEnum type, Object data) throws Exception {
         if (Objects.isNull(type)) throw BaseResult.NOT_FOUND.message("type不能为空").exception();
         if (Objects.isNull(data)) throw BaseResult.NOT_FOUND.message("data不能为空").exception();
+        String str = "";
         switch (type) {
-            case JAVASCRIPT -> data2JsInterface(JSONObject.parseObject(data.toString()));
+            case TYPESCRIPT -> str = data2JsInterface(JSONObject.parseObject(data.toString()));
             case JAVA -> {
                 return "待开发";
             }
         }
-        return null;
+        return str;
     }
 
     private static String data2JsInterface(JSONObject obj) throws Exception {
@@ -119,7 +120,9 @@ public class ToolUtils {
         } else if (value.get(0) instanceof List<?>) {
             jsArray2InterfaceFn(file, key, (List<?>) value.get(0), blank, i + 1);
         } else {
-            JSONObject jObj = JSONObject.parseObject(value.get(0).toString());
+            JSONObject obj = new JSONObject();
+            value.forEach(e -> MergeUtils.merge(e, obj));
+            JSONObject jObj = JSONObject.parseObject(obj.toString());
             if (jObj.keySet().isEmpty()) {
                 ctx.set(getBlack(blank) + "'" + key + "': Object" + getArray(i) + ";" + System.lineSeparator());
             } else {

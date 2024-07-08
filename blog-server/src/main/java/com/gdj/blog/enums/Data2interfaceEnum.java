@@ -1,11 +1,14 @@
 package com.gdj.blog.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Data2interfaceEnum {
 
     /**
-     * JS
+     * TYPESCRIPT
      */
-    JAVASCRIPT("JS"),
+    TYPESCRIPT("TYPESCRIPT"),
 
     /**
      * JAVA
@@ -19,7 +22,4 @@ public enum Data2interfaceEnum {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
 }
