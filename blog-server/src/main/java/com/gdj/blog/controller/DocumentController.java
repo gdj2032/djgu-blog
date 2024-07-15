@@ -34,4 +34,19 @@ public class DocumentController {
         return WebResponse.ok(documentService.insert(documentDO));
     }
 
+    @GetMapping("/detail/{id}")
+    public WebResponse<DocumentVO> detail(@PathVariable Long id) {
+        return WebResponse.ok(documentService.detail(id));
+    }
+
+    @PutMapping("/edit/{id}")
+    public WebResponse<DocumentVO> edit(@PathVariable Long id, @RequestBody @Valid DocumentDO documentDO) {
+        documentDO.setId(id);
+        return WebResponse.ok(documentService.edit(documentDO));
+    }
+
+    @PostMapping("/see/{id}")
+    public WebResponse<Boolean> addSee(@PathVariable Long id) {
+        return WebResponse.ok(documentService.addSee(id));
+    }
 }

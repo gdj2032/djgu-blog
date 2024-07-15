@@ -18,4 +18,6 @@ public interface DocumentMapper extends ContainerBaseMapper<DocumentDO> {
     );
 
     Long countData(Long routeId, Long tagId, String nameLike);
+
+    DocumentVO findById(Long id);
 }

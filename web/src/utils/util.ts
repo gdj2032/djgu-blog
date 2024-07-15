@@ -36,7 +36,7 @@ export const fileUuid = () => {
 
 export const uploadFile = async ({ content }) => {
   const formData = new FormData()
-  formData.append('file', `${fileUuid()}.txt`)
+  formData.append('filename', `${fileUuid()}.txt`)
   formData.append('content', content);
   formData.append('type', 'content');
   const res = await fileService.upload(formData);

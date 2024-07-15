@@ -3,19 +3,18 @@ package com.gdj.blog.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @TableName("document_tag_relation")
-public class DocumentTagRelationDo implements Serializable {
+public class DocumentTagRelationDo extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
-
-    private Long id;
     /**
      * 标签id
      */
@@ -24,4 +23,12 @@ public class DocumentTagRelationDo implements Serializable {
      * 文档id
      */
     private Long documentId;
+
+    public DocumentTagRelationDo(Long id, Long tagId, Long documentId, Timestamp createTime, Timestamp updateTime) {
+        super(id, createTime, updateTime);
+        this.setTagId(tagId);
+        this.setDocumentId(documentId);
+        this.setCreateTime(createTime);
+        this.setUpdateTime(updateTime);
+    }
 }

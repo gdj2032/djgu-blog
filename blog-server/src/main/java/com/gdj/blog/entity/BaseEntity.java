@@ -1,6 +1,7 @@
 package com.gdj.blog.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,13 +10,13 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@TableName("file")
-public class FileDO implements Serializable {
+@NoArgsConstructor
+public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    @TableId(type = IdType.AUTO, value = "id")
     private Long id;
-    private int used;
-    private String url;
     private Timestamp createTime;
+    private Timestamp updateTime;
 }

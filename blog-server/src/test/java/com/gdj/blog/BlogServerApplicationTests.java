@@ -1,10 +1,7 @@
 package com.gdj.blog;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.gdj.blog.entity.DocumentVO;
-import com.gdj.blog.entity.RouteDO;
-import com.gdj.blog.entity.TagVO;
-import com.gdj.blog.entity.UserDO;
+import com.gdj.blog.entity.*;
 import com.gdj.blog.mapper.RouteMapper;
 import com.gdj.blog.mapper.TagMapper;
 import com.gdj.blog.mapper.UserMapper;
@@ -73,6 +70,18 @@ class BlogServerApplicationTests {
 //        1702274830586533L
         IPage<DocumentVO> page = documentService.pageData(10, 0, 1702274739108752L, null, null);
         log.info(page.toString());
+    }
+
+    @Test
+    void addDocument() {
+//        {"name":"123","description":"111","routeId":1702274739108752,"fileId":18127383964564890,"tagIds":[1701072249798652]}
+        DocumentDO documentDO = new DocumentDO();
+        documentDO.setSee(0L);
+        documentDO.setName("123");
+        documentDO.setRouteId("1702274739108752");
+        documentDO.setFileId("18127383964564890");
+        documentDO.setTagIds("1701072249798652");
+        documentService.insert(documentDO);
     }
 
 }

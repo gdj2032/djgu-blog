@@ -9,7 +9,7 @@
         <result column="update_time" property="updateTime"/>
         <result column="description" property="description"/>
         <result column="see" property="see"/>
-        <result column="fileId" property="fileId"/>
+        <result column="file_id" property="fileId"/>
         <association property="route" javaType="com.gdj.blog.entity.RouteDO">
             <id column="route_id" property="id"/>
             <result column="route_name" property="name"/>
@@ -50,8 +50,7 @@
     </sql>
 
     <select id="pageData" resultMap="DocMap">
-        SELECT
-        distinct d.id,
+        SELECT distinct d.id,
         d.*,
         r.id AS route_id,
         r.name AS route_name,
@@ -69,6 +68,20 @@
         SELECT count(distinct d.id)
         FROM document d
         <include refid="pageDataCommon"/>
+    </select>
+
+    <select id="findById" resultMap="DocMap">
+        SELECT d.*,
+               r.id          AS route_id,
+               r.name        AS route_name,
+               r.path        AS route_path,
+               r.description AS route_description,
+               r.role        AS route_role
+        from document d
+                 LEFT JOIN route r ON r.id = d.route_id
+                 LEFT JOIN document_tag_relation dtp ON d.id = dtp.document_id
+                 LEFT JOIN tag t ON dtp.tag_id = t.id
+        where d.id = #{id}
     </select>
 
 </mapper>

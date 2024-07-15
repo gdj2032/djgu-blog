@@ -7,4 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IFileService extends IContainerBaseService<FileDO> {
 
     FileDO upload(MultipartFile file);
+
+    FileDO uploadByType(String filename, String type, String content);
+
+    void changeFile(String oldFileId, String newFileId);
 }

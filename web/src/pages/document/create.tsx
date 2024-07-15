@@ -43,7 +43,7 @@ function Create() {
           description: params.description,
           routeId: params.routeId,
           fileId,
-          tagIds: params.tagIds,
+          tagIds: params.tagIds?.join(','),
         })
         if (res.code === 200) {
           message.success('编辑文档成功')
@@ -55,7 +55,7 @@ function Create() {
           description: params.description,
           routeId: params.routeId,
           fileId,
-          tagIds: params.tagIds,
+          tagIds: params.tagIds?.join(','),
         })
         if (res.code === 200) {
           message.success('新增文档成功')

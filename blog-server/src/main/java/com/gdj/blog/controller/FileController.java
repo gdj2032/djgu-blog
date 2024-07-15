@@ -28,12 +28,19 @@ public class FileController {
 
     //    @ApiOperation(value = "上传文件")
     @PostMapping("/upload")
-    public WebResponse<?> upload(@RequestParam("file") MultipartFile file) {
+    public WebResponse<?> upload(@RequestParam(value = "file", required = false) MultipartFile file,
+                                 @RequestParam(value = "filename", required = false) String filename,
+                                 @RequestParam(value = "type", required = false) String type,
+                                 @RequestParam(value = "content", required = false) String content) {
+        if (Objects.nonNull(type)) {
+            return WebResponse.ok(fileService.uploadByType(filename, type, content));
+        }
+        if (file.isEmpty()) throw BaseResult.NOT_FOUND.exception();
         return WebResponse.ok(fileService.upload(file));
     }
 
     //    @ApiOperation(value = "下载文件")
-    @GetMapping("/download/{fileId}")
+    @GetMapping("/{fileId}")
     public void download(@PathVariable("fileId") String fileId, HttpServletResponse response) {
         if (Objects.isNull(fileId)) throw BaseResult.NOT_FOUND.exception();
         //  新建文件流，从磁盘读取文件流

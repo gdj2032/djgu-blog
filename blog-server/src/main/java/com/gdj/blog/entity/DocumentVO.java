@@ -12,7 +12,7 @@ public class DocumentVO {
     private String createTime;
     private String updateTime;
     private Long see;
-    private String fileId;
+    private Long fileId;
     private RouteDO route;
     private List<IdName> tags;
 }

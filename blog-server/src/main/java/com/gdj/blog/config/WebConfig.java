@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/route/list")
                 .excludePathPatterns("/tag/list")
                 .excludePathPatterns("/itemData/getInitTable")
-                .excludePathPatterns("/file/download")
+                .excludePathPatterns("/file/{id}")
                 .excludePathPatterns("/tools/data2Interface");
     }
 

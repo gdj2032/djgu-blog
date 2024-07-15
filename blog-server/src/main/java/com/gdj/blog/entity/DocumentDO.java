@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
@@ -22,8 +23,8 @@ public class DocumentDO implements Serializable {
     @NotEmpty(message = "文档名称不能为空")
     private String name;
     private String description;
-    private String createTime;
-    private String updateTime;
+    private Timestamp createTime;
+    private Timestamp updateTime;
     @NotEmpty(message = "路由id不能为空")
     private String routeId;
     private Long see;
