@@ -8,7 +8,7 @@ import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.mapper.RouteMapper;
 import com.gdj.blog.mapper.UserMapper;
 import com.gdj.blog.service.IRouteService;
-import com.gdj.blog.utils.CurrentLoginInfo;
+import com.gdj.blog.utils.LoginInfoUtil;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public class RouteServiceImpl extends ContainerServiceImpl<RouteMapper, RouteDO>
     public RouteDO insert(RouteDO entity) {
         if (Objects.nonNull(getByName(entity.getName()))) throw BaseResult.REPEAT.message("名称已存在").exception();
         if (Objects.nonNull(getByPath(entity.getPath()))) throw BaseResult.REPEAT.message("路径已存在").exception();
-        entity.setRole(userMapper.selectById(Objects.requireNonNull(CurrentLoginInfo.getUserInfo()).getId()).getRole());
+        entity.setRole(userMapper.selectById(Objects.requireNonNull(LoginInfoUtil.getUserInfo()).getId()).getRole());
         baseMapper.insert(entity);
         return getByName(entity.getName());
     }

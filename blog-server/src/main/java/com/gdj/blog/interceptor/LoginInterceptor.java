@@ -24,7 +24,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 //            throw BaseResult.NO_AUTH.message("未登录").exception();
 //        }
 //        try {
-//            JwtUtils.parseJwt(jwt);
+//            JwtUtil.parseJwt(jwt);
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //            log.info("令牌校验失败");

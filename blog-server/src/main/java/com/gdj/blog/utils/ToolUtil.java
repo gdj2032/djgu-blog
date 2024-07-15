@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ToolUtils {
+public class ToolUtil {
 
     private static final String filename = "demo.ts";
     private static final int common_blank = 2;
@@ -121,7 +121,8 @@ public class ToolUtils {
             jsArray2InterfaceFn(file, key, (List<?>) value.get(0), blank, i + 1);
         } else {
             JSONObject obj = new JSONObject();
-            value.forEach(e -> MergeUtils.merge(e, obj));
+            // 合并数组内所有对象属性
+            value.forEach(e -> MergeUtil.merge(e, obj));
             JSONObject jObj = JSONObject.parseObject(obj.toString());
             if (jObj.keySet().isEmpty()) {
                 ctx.set(getBlack(blank) + "'" + key + "': Object" + getArray(i) + ";" + System.lineSeparator());

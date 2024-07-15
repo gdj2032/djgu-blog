@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-public class CurrentLoginInfo {
+public class LoginInfoUtil {
 
     public static String getSession() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -25,7 +25,7 @@ public class CurrentLoginInfo {
             m.put(GlobalConstant.SESSION_ID, user.getId());
             m.put(GlobalConstant.SESSION_USERNAME, user.getUsername());
             m.put(GlobalConstant.SESSION, user.getSession());
-            String jwt = JwtUtils.generateJwt(m);
+            String jwt = JwtUtil.generateJwt(m);
             user.setSession(jwt);
         }
     }
@@ -34,7 +34,7 @@ public class CurrentLoginInfo {
         String session = getSession();
         if (session == null) return null;
         try {
-            Claims claims = JwtUtils.parseJwt(session);
+            Claims claims = JwtUtil.parseJwt(session);
             UserDO user = new UserDO();
             user.setId(Long.parseLong(claims.get(GlobalConstant.SESSION_ID).toString()));
             user.setUsername((String) claims.get(GlobalConstant.SESSION_USERNAME));

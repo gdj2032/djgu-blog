@@ -8,7 +8,7 @@ import com.gdj.blog.entity.UserVo;
 import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.mapper.UserMapper;
 import com.gdj.blog.service.IUserService;
-import com.gdj.blog.utils.CurrentLoginInfo;
+import com.gdj.blog.utils.LoginInfoUtil;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class UserServiceImpl extends ContainerServiceImpl<UserMapper, UserDO> im
                         .eq(UserDO::getPassword, user.getPassword())
         );
         if (u != null) {
-            CurrentLoginInfo.setUserInfo(u);
+            LoginInfoUtil.setUserInfo(u);
             log.info(String.valueOf(u));
             return u;
         }

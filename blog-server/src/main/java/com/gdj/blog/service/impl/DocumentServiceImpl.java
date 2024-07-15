@@ -8,13 +8,12 @@ import com.gdj.blog.entity.DocumentVO;
 import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.mapper.DocumentMapper;
 import com.gdj.blog.service.IDocumentService;
+import com.gdj.blog.utils.DateUtil;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,8 +38,8 @@ public class DocumentServiceImpl extends ContainerServiceImpl<DocumentMapper, Do
     @Override
     public DocumentDO insert(DocumentDO entity) {
         if (Objects.nonNull(getByName(entity.getName()))) throw BaseResult.REPEAT.message("名称已存在").exception();
-        entity.setSee((long) 0);
-        String time = String.valueOf(LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli());
+        entity.setSee(0L);
+        String time = DateUtil.currentTime().toString();
         entity.setCreateTime(time);
         entity.setUpdateTime(time);
         baseMapper.insert(entity);

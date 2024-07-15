@@ -6,7 +6,7 @@ import com.gdj.blog.entity.UserDO;
 import com.gdj.blog.entity.UserVo;
 import com.gdj.blog.entity.WebResponse;
 import com.gdj.blog.service.impl.UserServiceImpl;
-import com.gdj.blog.utils.PageUtils;
+import com.gdj.blog.utils.PageUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class UserController {
         @RequestParam(defaultValue = "10") Integer limit,
         @RequestParam(defaultValue = "0") Integer offset
     ) {
-        return WebResponse.ok(PageUtils.page2PageInfo(userService.pageData(limit, offset)));
+        return WebResponse.ok(PageUtil.page2PageInfo(userService.pageData(limit, offset)));
     }
 
 }

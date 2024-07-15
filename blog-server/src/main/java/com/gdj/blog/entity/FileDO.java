@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class FileDO implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long id;
-    private Boolean used;
+    private int used;
     private String url;
     private String createTime;
 }

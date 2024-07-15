@@ -1,9 +1,12 @@
 interface IDemo {
- 'productId': number;
- 'name': string;
- 'orderNum': number;
- 'id': number;
- 'type': number;
- 'parentId': number;
- 'url': string;
+ 'uid': string;
+ 'attrRoles': {
+  'productId': number;
+  'name': string;
+  'remark': string;
+  'updateTime': number;
+  'id': number;
+  'locked': number;
+ }[];
+ 'nickname': string;
 }

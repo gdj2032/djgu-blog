@@ -5,7 +5,7 @@ import com.gdj.blog.entity.DocumentVO;
 import com.gdj.blog.entity.PageInfo;
 import com.gdj.blog.entity.WebResponse;
 import com.gdj.blog.service.impl.DocumentServiceImpl;
-import com.gdj.blog.utils.PageUtils;
+import com.gdj.blog.utils.PageUtil;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class DocumentController {
             @RequestParam(defaultValue = "", required = false) Long routeId,
             @RequestParam(defaultValue = "", required = false) Long tagId
     ) {
-        return WebResponse.ok(PageUtils.page2PageInfo(documentService.pageData(limit, offset, routeId, tagId, nameLike)));
+        return WebResponse.ok(PageUtil.page2PageInfo(documentService.pageData(limit, offset, routeId, tagId, nameLike)));
     }
 
     @PostMapping("/create")

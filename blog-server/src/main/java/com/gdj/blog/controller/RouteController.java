@@ -5,7 +5,7 @@ import com.gdj.blog.entity.RouteDO;
 import com.gdj.blog.entity.WebResponse;
 import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.service.impl.RouteServiceImpl;
-import com.gdj.blog.utils.PageUtils;
+import com.gdj.blog.utils.PageUtil;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class RouteController {
         @RequestParam(defaultValue = "10") Integer limit,
         @RequestParam(defaultValue = "0") Integer offset
     ) {
-        return WebResponse.ok(PageUtils.page2PageInfo(routeService.pageData(limit, offset)));
+        return WebResponse.ok(PageUtil.page2PageInfo(routeService.pageData(limit, offset)));
     }
 
     @PostMapping("/create")

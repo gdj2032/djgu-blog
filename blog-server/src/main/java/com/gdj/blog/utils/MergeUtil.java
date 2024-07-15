@@ -3,7 +3,7 @@ package com.gdj.blog.utils;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 
-public class MergeUtils {
+public class MergeUtil {
     private static final CopyOptions options = CopyOptions.create().setIgnoreNullValue(true).setOverride(false);
     private static final CopyOptions optionsAllowOverride = CopyOptions.create().setIgnoreNullValue(true).setOverride(true);
 

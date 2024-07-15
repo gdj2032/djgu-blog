@@ -6,7 +6,7 @@ import com.gdj.blog.entity.TagVO;
 import com.gdj.blog.entity.WebResponse;
 import com.gdj.blog.exception.BaseResult;
 import com.gdj.blog.service.impl.TagServiceImpl;
-import com.gdj.blog.utils.PageUtils;
+import com.gdj.blog.utils.PageUtil;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class TagController {
             @RequestParam(defaultValue = "10") Integer limit,
             @RequestParam(defaultValue = "0") Integer offset
     ) {
-        return WebResponse.ok(PageUtils.page2PageInfo(tagService.pageData(limit, offset)));
+        return WebResponse.ok(PageUtil.page2PageInfo(tagService.pageData(limit, offset)));
     }
 
     @GetMapping("/list/tier")

@@ -12,7 +12,7 @@ import com.gdj.blog.mapper.RouteMapper;
 import com.gdj.blog.mapper.TagMapper;
 import com.gdj.blog.mapper.UserMapper;
 import com.gdj.blog.service.ITagService;
-import com.gdj.blog.utils.CurrentLoginInfo;
+import com.gdj.blog.utils.LoginInfoUtil;
 import com.gdj.blog.utils.SmartBeanUtil;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import jakarta.annotation.Resource;
@@ -49,7 +49,7 @@ public class TagServiceImpl extends ContainerServiceImpl<TagMapper, TagDO> imple
         String time = String.valueOf(LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli());
         entity.setCreateTime(time);
         entity.setUpdateTime(time);
-        entity.setUserId(Objects.requireNonNull(CurrentLoginInfo.getUserInfo()).getId());
+        entity.setUserId(Objects.requireNonNull(LoginInfoUtil.getUserInfo()).getId());
         baseMapper.insert(entity);
         return getByName(entity.getName());
     }
