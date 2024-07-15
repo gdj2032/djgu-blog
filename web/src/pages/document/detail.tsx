@@ -59,7 +59,7 @@ function Detail() {
       <div className="global-mgt-8">
         <Tag color="magenta">
           <HistoryOutlined />
-          <span className="global-mgl-12">{data?.createTime ? dayjs(+data.createTime).format(DATE_FORMAT.YMD_Hms) : ''}</span>
+          <span className="global-mgl-12">{data?.createTime ? dayjs(data.createTime).format(DATE_FORMAT.YMD_Hms) : ''}</span>
         </Tag>
         <Tag color="volcano" className="global-mgl-12">
           <EyeOutlined />

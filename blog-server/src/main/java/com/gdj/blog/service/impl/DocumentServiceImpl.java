@@ -77,7 +77,7 @@ public class DocumentServiceImpl extends ContainerServiceImpl<DocumentMapper, Do
     public Boolean addSee(Long id) {
         DocumentDO documentDO = getById(id);
         documentDO.setSee(documentDO.getSee() + 1);
-        baseMapper.updateById(documentDO);
+        updateById(documentDO);
         return true;
     }
 
