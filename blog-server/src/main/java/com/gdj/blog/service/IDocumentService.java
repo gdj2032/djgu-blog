@@ -18,4 +18,6 @@ public interface IDocumentService extends IContainerBaseService<DocumentDO> {
     Boolean addSee(Long id);
 
     DocumentVO edit(DocumentDO documentDO) throws IOException;
+
+    Boolean delete(Long id);
 }

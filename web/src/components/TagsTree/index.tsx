@@ -46,6 +46,7 @@ function TagsTree(props: IProps) {
           onSelect?.(info)
           dispatch(routeAction.setCurrentSelectKeys(k))
         }}
+        fieldNames={{ key: 'id', title: 'name' }}
       />
     </div>
   )

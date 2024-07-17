@@ -45,6 +45,11 @@ public class DocumentController {
         return WebResponse.ok(documentService.edit(documentDO));
     }
 
+    @DeleteMapping("/delete/{id}")
+    public WebResponse<Boolean> delete(@PathVariable Long id) {
+        return WebResponse.ok(documentService.delete(id));
+    }
+
     @PostMapping("/see/{id}")
     public WebResponse<Boolean> addSee(@PathVariable Long id) {
         return WebResponse.ok(documentService.addSee(id));

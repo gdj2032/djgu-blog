@@ -2,6 +2,7 @@ package com.gdj.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gdj.blog.constant.GlobalConstant;
 import com.gdj.blog.dao.ContainerServiceImpl;
 import com.gdj.blog.entity.DocumentDO;
 import com.gdj.blog.entity.DocumentTagRelationDo;
@@ -14,9 +15,12 @@ import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
@@ -102,6 +106,26 @@ public class DocumentServiceImpl extends ContainerServiceImpl<DocumentMapper, Do
         // 更新文件 删除旧文件和sql
         fileService.changeFile(oldFileId, documentDO.getFileId());
         return baseMapper.findById(documentDO.getId());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Boolean delete(Long id) {
+        DocumentDO documentDO = getById(id);
+        if (Objects.isNull(documentDO)) throw BaseResult.NOT_FOUND.exception();
+        // 删除文档关联的标签
+        documentTagRelationService.deleteByDocumentId(id);
+        // 删除文件
+        FileDO fileDO = fileService.getById(documentDO.getFileId());
+        fileService.removeById(fileDO.getId());
+        try {
+            FileUtils.delete(new File(GlobalConstant.ROOT_PATH + fileDO.getUrl()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 删除文档
+        removeById(id);
+        return true;
     }
 
 }
