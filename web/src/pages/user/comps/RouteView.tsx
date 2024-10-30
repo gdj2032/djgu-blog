@@ -27,6 +27,7 @@ function RouteView() {
         const res = await routeService.dDelete(id);
         if (res?.code === 200) {
           message.success('删除路由成功');
+          initRoutes();
         }
         debounceRefresh();
       }
