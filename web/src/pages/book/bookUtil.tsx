@@ -1,9 +1,9 @@
-import { bookAction, store } from "@/stores";
-import { BookService } from "@/typings/book";
+import { bookAction, store } from '@/stores';
+import { BookService } from '@/typings/book';
 
 interface IProps {
   id: string;
-  book: BookService.IBookItem
+  book: BookService.IBookItem;
   isInit?: boolean;
 }
 
@@ -14,48 +14,48 @@ class ReadBookUtil {
   constructor({ id, book, isInit = false }: IProps) {
     this.id = id;
     this.book = book;
-    this.init(isInit)
+    this.init(isInit);
   }
 
   init(isInit?: boolean) {
     this.setting = store.getState().book.setting;
-    const bookInfo = window.app.getBook({ filename: this.book.fullName })
+    const bookInfo = window.app.getBook({ filename: this.book.fullName });
     if (bookInfo?.content) {
-      store.dispatch(bookAction.setLoading(true))
-      const { fontSize, lineHeight } = this.setting
+      store.dispatch(bookAction.setLoading(true));
+      const { fontSize, lineHeight } = this.setting;
       const ctx0 = bookInfo.content;
-      const chapters0 = this.getChapters(ctx0)
-      const chapters: BookService.IChapter[] = []
-      let ctx = ctx0
+      const chapters0 = this.getChapters(ctx0);
+      const chapters: BookService.IChapter[] = [];
+      let ctx = ctx0;
       let id = 0;
-      let title = '序章'
+      let title = '序章';
 
       if (chapters0.length > 10) {
         for (const cp of chapters0) {
           if (!ctx) continue;
-          const ctx2 = ctx.split(cp)
-          const content = ctx2[0]
-          ctx = this.getCtx(ctx2, cp)
+          const ctx2 = ctx.split(cp);
+          const content = ctx2[0];
+          ctx = this.getCtx(ctx2, cp);
           const item: BookService.IChapter = {
             id,
             title,
             total: chapters0.length,
-            pages: this.getPages({ content, fontSize, lineHeight }),
-          }
-          chapters.push(item)
+            pages: this.getPages({ content, fontSize, lineHeight })
+          };
+          chapters.push(item);
           id++;
           title = cp;
           if (cp.includes('113') || cp.includes('114')) {
-            console.log(item, ctx)
+            console.log(item, ctx);
           }
         }
-        store.dispatch(bookAction.setChapters({ id: this.book.id, chapters }))
+        store.dispatch(bookAction.setChapters({ id: this.book.id, chapters }));
         if (isInit) {
-          store.dispatch(bookAction.setChapter({ id: this.book.id, chapter: { chapterId: 0, pageId: 0 } }))
+          store.dispatch(bookAction.setChapter({ id: this.book.id, chapter: { chapterId: 0, pageId: 0 } }));
         }
       }
       setTimeout(() => {
-        store.dispatch(bookAction.setLoading(false))
+        store.dispatch(bookAction.setLoading(false));
       }, 300);
     }
   }
@@ -63,75 +63,74 @@ class ReadBookUtil {
   getCtx = (ctx: string[], cp: string) => {
     let str = cp;
     for (let i = 1; i < ctx.length; i++) {
-      const item = ctx[i]
+      const item = ctx[i];
       str += item + cp;
     }
-    return str
-  }
+    return str;
+  };
 
   private getChapters(ctx: string) {
     let reg = /(正文){0,1}(第)([零〇一二三四五六七八九十百千万a-zA-Z0-9]{1,7})[章节卷集部篇回]((?! {4}).)((?!\t{1,4}).){0,30}\r?\n/g;
-    let res = ctx.match(reg)
+    let res = ctx.match(reg);
     if (res.length < 100) {
       reg = /([零〇一二三四五六七八九十百千万a-zA-Z0-9]{1,7})[ ]((?! {4}).)((?!\t{1,4}).){0,30}\r?\n/g;
-      res = ctx.match(reg)
-      console.log("🚀 ~ ReadBookUtil ~ getChapters ~ res:", res)
+      res = ctx.match(reg);
+      console.log('🚀 ~ ReadBookUtil ~ getChapters ~ res:', res);
     }
-    return res
+    return res;
   }
 
   paddingSize = 48;
-  getPages({ content, fontSize, lineHeight }: { content: string, fontSize: number, lineHeight: number }) {
-    const texts = content.split('\r\n')
-    const pages0: string[][] = []
+  getPages({ content, fontSize, lineHeight }: { content: string; fontSize: number; lineHeight: number }) {
+    const texts = content.split('\r\n');
+    const pages0: string[][] = [];
     const dom = document.getElementById(this.id);
     const w = dom.clientWidth - this.paddingSize;
     const h = dom.clientHeight - this.paddingSize;
     const oneWLineNum = +Math.floor(w / fontSize).toFixed(0);
     const oneHLineNum = +Math.floor(h / lineHeight).toFixed(0);
-    console.log("🚀 ~ ReadBookUtil ~ getPages ~ oneHLineNum:", oneHLineNum)
-    let pages: string[] = []
-    let lh = 0
+    console.log('🚀 ~ ReadBookUtil ~ getPages ~ oneHLineNum:', oneHLineNum);
+    let pages: string[] = [];
+    let lh = 0;
     for (const t1 of texts) {
-      const t2 = t1.replace('\r', '').trim()
+      const t2 = t1.replace('\r', '').trim();
       if (!t2) {
         continue;
       }
       if (t2.length <= oneWLineNum) {
-        pages.push(t2)
+        pages.push(t2);
         lh++;
       } else {
-        let t3 = ''
+        let t3 = '';
         for (const t4 of t2) {
           t3 += t4;
           if (t3.length === oneWLineNum) {
-            pages.push(t3)
-            t3 = ''
+            pages.push(t3);
+            t3 = '';
             lh++;
             if (lh >= oneHLineNum) {
-              pages0.push(pages)
-              lh = 0
-              pages = []
+              pages0.push(pages);
+              lh = 0;
+              pages = [];
             }
           }
         }
         if (t3) {
-          pages.push(t3)
+          pages.push(t3);
           lh++;
         }
       }
       if (lh >= oneHLineNum) {
-        pages0.push(pages)
-        pages = []
-        lh = 0
+        pages0.push(pages);
+        pages = [];
+        lh = 0;
       }
     }
     if (pages.length > 0) {
-      pages0.push(pages)
+      pages0.push(pages);
     }
     return pages0;
   }
-
 }
 
 export default ReadBookUtil;

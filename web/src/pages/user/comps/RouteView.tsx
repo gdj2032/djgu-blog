@@ -12,65 +12,70 @@ import { initRoutes } from '@/utils';
 
 function RouteView() {
   const { tableProps, paginationProps, debounceRefresh } = usePagination<RouteService.IListData>(async ({ limit, offset }) => {
-    const res = await routeService.dList({ limit, offset })
+    const res = await routeService.dList({ limit, offset });
     if (res?.code === 200) {
-      return { dataSource: res.data.data, total: +res.data.total }
+      return { dataSource: res.data.data, total: +res.data.total };
     }
-    return { dataSource: [], total: 0 }
-  })
+    return { dataSource: [], total: 0 };
+  });
 
-  const handleDelete = (id) => {
+  const handleDelete = id => {
     Modal.confirm({
       title: '是否删除路由?',
       icon: null,
       onOk: async () => {
         const res = await routeService.dDelete(id);
         if (res?.code === 200) {
-          message.success('删除路由成功')
+          message.success('删除路由成功');
         }
-        debounceRefresh()
+        debounceRefresh();
       }
-    })
-  }
+    });
+  };
 
   const handleUpdate = (info?: RouteService.IListData) => {
     const { destroy } = openModal2(UpdateRouteModal, {
       data: info,
-      afterClose: (isOk) => {
-        destroy()
-        debounceRefresh(isOk)
+      afterClose: isOk => {
+        destroy();
+        debounceRefresh(isOk);
         if (isOk) {
-          initRoutes()
+          initRoutes();
         }
       }
-    })
-  }
+    });
+  };
 
   const columns = () => [
     { title: '名称', dataIndex: 'name', key: 'name', render: (t, r) => t },
     { title: '路径', dataIndex: 'path', key: 'path' },
     { title: '描述', dataIndex: 'description', key: 'description' },
     {
-      title: '操作', dataIndex: 'operation', key: 'operation', render: (_, record) => USER_ROLE.isAdminForSelf() && (
-        <>
-          <Button type="link" onClick={() => handleUpdate(record)} disabled={USER_ROLE.isAdmin(record.role)}>编辑</Button>
-          <Button type="link" danger onClick={() => handleDelete(record.id)} disabled={USER_ROLE.isAdmin(record.role)}>删除</Button>
-        </>
-      )
-    },
-  ]
+      title: '操作',
+      dataIndex: 'operation',
+      key: 'operation',
+      render: (_, record) =>
+        USER_ROLE.isAdminForSelf() && (
+          <>
+            <Button type='link' onClick={() => handleUpdate(record)} disabled={!USER_ROLE.isAdmin(record.role)}>
+              编辑
+            </Button>
+            <Button type='link' danger onClick={() => handleDelete(record.id)} disabled={!USER_ROLE.isAdmin(record.role)}>
+              删除
+            </Button>
+          </>
+        )
+    }
+  ];
 
   return (
     <>
-      <Button type="link" onClick={() => handleUpdate()}>新增</Button>
-      <Table
-        columns={columns()}
-        {...tableProps}
-        pagination={paginationProps as any}
-        rowKey={r => r.id}
-      />
+      <Button type='link' onClick={() => handleUpdate()}>
+        新增
+      </Button>
+      <Table columns={columns()} {...tableProps} pagination={paginationProps as any} rowKey={r => r.id} />
     </>
-  )
+  );
 }
 
 RouteView.displayName = 'RouteView';
