@@ -1,113 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GDJ</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GDJ</title>
-</head>
-
-<script>
-  document.addEventListener("readystatechange", function (e) {
-    const webLoading = document.getElementById('web-loading');
-    if (e.target.readyState === 'complete') {
-      console.log("加载完成");
-      if (webLoading) {
-        webLoading.style.display = 'none'
+  <script>
+    document.addEventListener('readystatechange', function (e) {
+      const webLoading = document.getElementById('web-loading');
+      if (e.target.readyState === 'complete') {
+        console.log('加载完成');
+        if (webLoading) {
+          webLoading.style.display = 'none';
+        }
+      } else {
+        console.log('正在加载');
+        if (webLoading) {
+          webLoading.style.display = 'flex';
+        }
       }
-    } else {
-      console.log("正在加载");
-      if (webLoading) {
-        webLoading.style.display = 'flex'
+    });
+  </script>
+
+  <style>
+    .web-loading {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      display: none;
+      background-color: #fff;
+      z-index: 10000;
+    }
+
+    .web-loading-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .web-loading-container-logo {
+      width: 90px;
+      height: 90px;
+      margin-bottom: 20px;
+    }
+
+    .web-loading-container-title {
+      display: flex;
+      margin-top: 30px;
+      font-size: 30px;
+      color: rgba(0, 0, 0, 0.85);
+      justify-content: center;
+      align-items: center;
+    }
+
+    @-webkit-keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
       }
     }
-  })
-</script>
 
-<style>
-  .web-loading {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    display: none;
-    background-color: #fff;
-    z-index: 10000;
-  }
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
 
-  .web-loading-container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .web-loading-container-logo {
-    width: 90px;
-    height: 90px;
-    margin-bottom: 20px;
-  }
-
-  .web-loading-container-title {
-    display: flex;
-    margin-top: 30px;
-    font-size: 30px;
-    color: rgba(0, 0, 0, .85);
-    justify-content: center;
-    align-items: center;
-  }
-
-  @-webkit-keyframes rotate {
-    from {
-      transform: rotate(0deg);
+      to {
+        transform: rotate(360deg);
+      }
     }
 
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
+    .web-loading-container-loader-view {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    to {
-      transform: rotate(360deg);
+    .web-loading-container-loader {
+      border-width: 5px;
+      border-style: solid;
+      border-color: gainsboro gainsboro #00bebe gainsboro;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      -webkit-animation: rotate 1.5s linear infinite;
+      animation: rotate 1.5s linear infinite;
     }
-  }
+  </style>
 
-  .web-loading-container-loader-view {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .web-loading-container-loader {
-    border-width: 5px;
-    border-style: solid;
-    border-color: gainsboro gainsboro #00bebe gainsboro;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: rotate 1.5s linear infinite;
-    animation: rotate 1.5s linear infinite;
-  }
-</style>
-
-<body>
-  <div id="root">
-    <div class="web-loading" id="web-loading">
-      <div class="web-loading-container">
-        <!-- <img src="./favicon.ico" class="web-loading-container-logo" alt="logo" /> -->
-        <div class="web-loading-container-loader-view">
-          <div class="web-loading-container-loader"></div>
+  <body>
+    <div id="root">
+      <div class="web-loading" id="web-loading">
+        <div class="web-loading-container">
+          <!-- <img src="./favicon.ico" class="web-loading-container-logo" alt="logo" /> -->
+          <div class="web-loading-container-loader-view">
+            <div class="web-loading-container-loader"></div>
+          </div>
+          <div class="web-loading-container-title">GDJ-Blog</div>
         </div>
-        <div class="web-loading-container-title">GDJ-Blog</div>
       </div>
     </div>
-  </div>
-</body>
-
+  </body>
 </html>

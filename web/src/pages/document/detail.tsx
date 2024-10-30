@@ -11,98 +11,92 @@ import { useNavigate } from 'react-router';
 import dayjs from 'dayjs';
 
 function Detail() {
-  const { id } = useQuery()
-  const [data, setData] = useState<DocumentService.IListData>()
-  const [content, setContent] = useState<string>('')
-  const [spinning, setSpinning] = useState(false)
-  const navigate = useNavigate()
+  const { id } = useQuery();
+  const [data, setData] = useState<DocumentService.IListData>();
+  const [content, setContent] = useState<string>('');
+  const [spinning, setSpinning] = useState(false);
+  const navigate = useNavigate();
 
   const routes = [
-    { name: '返回', click: () => navigate(-1) },
-    { name: '详情' },
-  ]
+    // { name: '返回', click: () => navigate(-1) },
+    { name: '详情' }
+  ];
 
   const addSee = async () => {
     await documentService.dSee(id);
-  }
+  };
 
   const init = async () => {
-    setSpinning(true)
+    setSpinning(true);
     try {
-      await addSee()
+      await addSee();
       const res = await documentService.dDetail(id);
       if (res.code === 200) {
-        setData(res.data)
-        const res1 = await fileService.getFile(res.data.fileId)
-        console.log("🚀 ~ init ~ res1:", res1)
-        const fr = new FileReader()
+        setData(res.data);
+        const res1 = await fileService.getFile(res.data.fileId);
+        console.log('🚀 ~ init ~ res1:', res1);
+        const fr = new FileReader();
         fr.addEventListener('loadend', (e: any) => {
-          setContent(e.target.result)
-        })
-        fr.readAsText(res1)
+          setContent(e.target.result);
+        });
+        fr.readAsText(res1);
         // setContent(res1)
       }
     } catch (error) {
-      console.log("🚀 ~ file: detail.tsx:26 ~ init ~ error:", error)
+      console.log('🚀 ~ file: detail.tsx:26 ~ init ~ error:', error);
     } finally {
-      setSpinning(false)
+      setSpinning(false);
     }
-  }
+  };
 
   useEffect(() => {
-    init()
-  }, [])
+    init();
+  }, []);
 
   const renderContent = () => (
     <>
-      <div className="global-h1">{data?.name}</div>
-      <div className="global-mgt-8">
-        <Tag color="magenta">
+      <div className='global-h1'>{data?.name}</div>
+      <div className='global-mgt-8'>
+        <Tag color='magenta'>
           <HistoryOutlined />
-          <span className="global-mgl-12">{data?.createTime ? dayjs(data.createTime).format(DATE_FORMAT.YMD_Hms) : ''}</span>
+          <span className='global-mgl-12'>{data?.createTime ? dayjs(data.createTime).format(DATE_FORMAT.YMD_Hms) : ''}</span>
         </Tag>
-        <Tag color="volcano" className="global-mgl-12">
+        <Tag color='volcano' className='global-mgl-12'>
           <EyeOutlined />
-          <span className="global-mgl-12">{data?.see}</span>
+          <span className='global-mgl-12'>{data?.see}</span>
         </Tag>
-        <Tag color="cyan" className="global-mgl-12">
+        <Tag color='cyan' className='global-mgl-12'>
           <AppstoreOutlined />
-          <span className="global-mgl-12">{`${data?.route?.name}(${data?.route?.path})`}</span>
+          <span className='global-mgl-12'>{`${data?.route?.name}(${data?.route?.path})`}</span>
         </Tag>
       </div>
-      <div className="global-mgt-8">
-        <div className="global-description">{data.description}</div>
+      <div className='global-mgt-8'>
+        <div className='global-description'>{data.description}</div>
       </div>
-      <div className="global-mgt-8">
+      <div className='global-mgt-8'>
         <QuillEditor
           value={content}
           syntax
           readOnly
           onHref={e => {
-            const href = e.target.href
+            const href = e.target.href;
             if (isElectron) {
               window.app.openUrl(href);
             } else {
-              window.open(href, 'target')
+              window.open(href, 'target');
             }
           }}
         />
       </div>
     </>
-  )
+  );
 
   return (
     <div className={`g-document-detail ${spinning && 'g-document-detail-spin'}`}>
       <TBreadcrumb route={routes} />
-      <Card className="m-document-content">
-        {
-          data ?
-            renderContent()
-            : <Spin />
-        }
-      </Card>
+      <Card className='m-document-content'>{data ? renderContent() : <Spin />}</Card>
     </div>
-  )
+  );
 }
 
 Detail.displayName = 'Detail';

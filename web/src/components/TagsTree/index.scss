@@ -1,11 +1,12 @@
 .g-tags-tree {
   position: fixed;
-  top: 200px;
+  top: 140px;
   left: 20px;
-  padding: 1px;
-  background-color: #cdcdcd;
+  padding: 10px 0;
+  background-color: #fff;
   border-radius: 4px;
   max-height: 500px;
   max-width: 300px;
   overflow-y: auto;
+  border: 1px solid #ccc;
 }

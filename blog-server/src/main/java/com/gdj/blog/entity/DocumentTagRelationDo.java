@@ -1,10 +1,8 @@
 package com.gdj.blog.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.sql.Timestamp;
 
@@ -12,6 +10,8 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
+@ToString(callSuper = true)
 @TableName("document_tag_relation")
 public class DocumentTagRelationDo extends BaseEntity {
 
@@ -24,11 +24,9 @@ public class DocumentTagRelationDo extends BaseEntity {
      */
     private Long documentId;
 
-    public DocumentTagRelationDo(Long id, Long tagId, Long documentId, Timestamp createTime, Timestamp updateTime) {
+    public DocumentTagRelationDo(Long id, Timestamp createTime, Timestamp updateTime, Long tagId, Long documentId) {
         super(id, createTime, updateTime);
-        this.setTagId(tagId);
-        this.setDocumentId(documentId);
-        this.setCreateTime(createTime);
-        this.setUpdateTime(updateTime);
+        this.tagId = tagId;
+        this.documentId = documentId;
     }
 }

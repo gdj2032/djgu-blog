@@ -63,7 +63,7 @@ public class DocumentServiceImpl extends ContainerServiceImpl<DocumentMapper, Do
         Long documentDOId = documentDO.getId();
         // 关联文档标签
         String[] tagIds = documentDO.getTagIds().split(",");
-        Arrays.stream(tagIds).forEach(e -> documentTagRelationService.insert(new DocumentTagRelationDo(null, Long.valueOf(e), documentDOId, time, time)));
+        Arrays.stream(tagIds).forEach(e -> documentTagRelationService.insert(new DocumentTagRelationDo(null, time, time, Long.valueOf(e), documentDOId)));
         // 文件生效
         FileDO fileDO = fileService.getById(entity.getFileId());
         fileDO.setUsed(1);
@@ -101,7 +101,7 @@ public class DocumentServiceImpl extends ContainerServiceImpl<DocumentMapper, Do
         // 重置文档标签表的绑定
         documentTagRelationService.deleteByDocumentId(documentDO.getId());
         String[] newTagIds = documentDO.getTagIds().split(",");
-        List<DocumentTagRelationDo> documentTagRelationDos = Arrays.stream(newTagIds).map(e -> new DocumentTagRelationDo(null, Long.valueOf(e), old.getId(), time, time)).toList();
+        List<DocumentTagRelationDo> documentTagRelationDos = Arrays.stream(newTagIds).map(e -> new DocumentTagRelationDo(null, time, time, Long.valueOf(e), old.getId())).toList();
         documentTagRelationService.insertBatch(documentTagRelationDos);
         // 更新文件 删除旧文件和sql
         fileService.changeFile(oldFileId, documentDO.getFileId());

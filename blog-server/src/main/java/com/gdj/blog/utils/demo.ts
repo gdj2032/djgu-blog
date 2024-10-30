@@ -1,12 +1,14 @@
 interface IDemo {
- 'uid': string;
- 'attrRoles': {
-  'productId': number;
-  'name': string;
-  'remark': string;
-  'updateTime': number;
-  'id': number;
-  'locked': number;
- }[];
- 'nickname': string;
+ 'path': string;
+ 'createTime': number;
+ 'showInTab': boolean;
+ 'canEdit': boolean;
+ 'creatorId': string;
+ 'name': string;
+ 'viewType': string;
+ 'updateTime': number;
+ 'id': string;
+ 'title': string;
+ 'content': string;
+ 'canCancel': boolean;
 }

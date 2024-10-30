@@ -1,0 +1,60 @@
+.TestFlex {
+  padding: 40px;
+}
+
+.flex-start {
+  width: 300px;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  border: 1px solid #000;
+  margin-bottom: 20px;
+
+  &-item {
+    flex: 0 0 25%;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+}
+
+.flex-space-between1 {
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border: 1px solid #000;
+  margin-bottom: 20px;
+
+  &-item {
+    width: 24%;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+
+  &-item2 {
+    width: 24%;
+  }
+}
+
+.flex-space-between2 {
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border: 1px solid #000;
+  margin-bottom: 20px;
+
+  &-item {
+    width: 24%;
+    height: 50px;
+    margin-bottom: 10px;
+
+    &:last-child:nth-child(4n - 2) {
+      margin-right: calc(48% + 8% / 3);
+    }
+
+    &:last-child:nth-child(4n - 1) {
+      margin-right: calc(24% + 4% / 3);
+    }
+  }
+}

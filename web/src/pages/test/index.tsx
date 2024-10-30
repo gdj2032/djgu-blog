@@ -1,33 +1,39 @@
 import { Button } from 'antd';
 import React, { useCallback, useState } from 'react';
-import TestChild from './TestChild';
-import TestChild2 from './TestChild2';
-import TestChild3 from './TestChild3';
 import TestUseTransition from './TestUseTransition';
 import TestUseDeferredValue from './TestUseDeferredValue';
+import TestContext from './TestContext';
+import TestFlex from './TestFlex';
+import TestRedux from './TestRedux';
+import SquareCss from './SquareCss';
 
 function Test() {
-  const [num, setNum] = useState(0)
+  const [num, setNum] = useState(0);
   const fn = useCallback(() => {
     console.info('--- test-child --->');
-  }, [])
+  }, []);
 
   console.info('--- fn --->', fn.name);
+
   return (
     <div className='Test'>
+      {/* Context上下文 */}
+      {/* <TestContext /> */}
 
-      {/* <Button onClick={() => setNum(num + 1)}>add</Button>
-      <div>num: {num}</div>
-
-      <TestChild fn={fn} />
-
-      <TestChild2 />
-
-      <TestChild3 /> */}
+      {/* hooks 过度任务 */}
       {/* <TestUseTransition /> */}
-      <TestUseDeferredValue />
+      {/* <TestUseDeferredValue /> */}
+
+      {/* flex布局 */}
+      {/* <TestFlex /> */}
+
+      {/* 手写简易redux */}
+      <TestRedux />
+
+      {/* 仅使用 CSS 怎么实现宽高自适应的正方形？ */}
+      {/* <SquareCss /> */}
     </div>
-  )
+  );
 }
 
 Test.displayName = 'Test';

@@ -71,7 +71,7 @@ public class ToolUtil {
             Object obj = value.get(e);
             if ((obj instanceof String) || Objects.isNull(obj)) {
                 ctx.set(getBlack(blank) + "'" + e + "': string;" + System.lineSeparator());
-            } else if (obj instanceof Integer) {
+            } else if (obj instanceof Long) {
                 ctx.set(getBlack(blank) + "'" + e + "': number;" + System.lineSeparator());
             } else if (obj instanceof List<?>) {
                 try {
@@ -113,7 +113,7 @@ public class ToolUtil {
         AtomicReference<String> ctx = new AtomicReference<>(null);
         if (value.isEmpty()) {
             ctx.set(getBlack(blank) + "'" + key + "': string" + getArray(i) + ";" + System.lineSeparator());
-        } else if (value.get(0) instanceof Integer) {
+        } else if (value.get(0) instanceof Long) {
             ctx.set(getBlack(blank) + "'" + key + "': number" + getArray(i) + ";" + System.lineSeparator());
         } else if (value.get(0) instanceof String) {
             ctx.set(getBlack(blank) + "'" + key + "': string" + getArray(i) + ";" + System.lineSeparator());
